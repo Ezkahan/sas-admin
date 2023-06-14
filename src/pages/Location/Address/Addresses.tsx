@@ -1,0 +1,130 @@
+import { useTranslation } from "react-i18next"
+import { gql, useQuery } from '@apollo/client'
+import { useState } from "react"
+import ReactPaginate from 'react-paginate'
+import { NavLink } from "react-router-dom"
+import toast from "react-hot-toast"
+import AppLayout from "../../../layouts/AppLayout"
+import LocationNav from "../LocationNav"
+import MiniLoader from "../../../components/Loader/MiniLoader"
+import { GET_ADDRESSES } from "../../../graphql/queries/Location/Address/getAddressesQuery"
+import getByLocale from "../../../common/helpers/getByLocale"
+import { IoAddOutline, IoLocationOutline } from "react-icons/io5"
+
+const Addresses: React.FC = () => {
+    const {t} = useTranslation()
+    const [page, setPage] = useState(1)
+
+    const {loading, data} = useQuery(GET_ADDRESSES, {
+        variables: {page},
+        onError: () => toast.error(t('error_not_loaded'), {duration: 2000})
+    })
+
+    return (
+        <AppLayout>
+            <section className="xl:p-5 p-1">
+            <LocationNav />
+
+            <main className="bg-white xl:px-8 px-6 xl:py-6 py-4 mb-5 rounded-lg">
+                <header className=" flex justify-between items-center mb-5">
+                    <aside className="flex">
+                        <IoLocationOutline size={48} className="text-indigo-800 mr-2" />
+                        <div className="flex flex-col">
+                            <h1 className="text-xl font-montserrat-bold text-indigo-800">
+                                {t('addresses')}
+                            </h1>
+                            <small className="text-indigo-500">
+                                {t('total')}: <strong>{data?.addresses?.paginatorInfo?.total}</strong>
+                            </small>
+                        </div>
+                    </aside>
+
+                    <div className="ml-5">
+                        <button disabled className="flex items-center opacity-20 border border-indigo-500 hover:bg-indigo-600 text-indigo-600 hover:text-white duration-300 px-2 py-1.5 rounded-lg">
+                            <IoAddOutline size={22} />
+                            <p className="hidden xl:block">{t('add')}</p>
+                        </button>
+                    </div>
+                </header>
+
+                {
+                    loading && <MiniLoader />
+                }
+
+                {
+                    data && data.addresses.data &&
+
+                    <section className="overflow-x-auto">
+                        <table className="w-full table-fixed text-sm">
+                            <thead className="bg-slate-100 text-left text-gray-800">
+                                <tr className="border-b border-gray-100">
+                                    <th className="px-4 py-3 w-20 rounded-tl-lg rounded-bl-lg">{t('id')}</th>
+                                    <th className="px-4 py-3 w-52">{t('address')}</th>
+                                    <th className="px-4 py-3 w-52">{t('country')}</th>
+                                    <th className="px-4 py-3 w-52">{t('town')}</th>
+                                    <th className="px-4 py-3 w-52">{t('area')}</th>
+                                    <th className="px-4 py-3 w-52">{t('district')}</th>
+                                    <th className="px-4 py-3 w-16 rounded-tr-lg rounded-br-lg">{t('status')}</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {
+                                    data && data.addresses.data.map((address: any, index: number) => {
+                                        return (
+                                            <tr key={index} className="border-b border-stone-100 text-indigo-900/80">
+                                                <td className="border-r border-stone-100 px-3 py-2 text-xs">{address.id}</td>
+                                                <td className="px-3 py-2">
+                                                    <h1 className="font-bold">{address.address}</h1>
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    <h1 className="font-bold">{address.country && getByLocale(address.country.name)}</h1>
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    <h1 className="font-bold">{address.town && getByLocale(address.town.name)}</h1>
+                                                </td>
+
+                                                <td className="px-3 py-2">
+                                                    <h1 className="font-bold">{address.area && getByLocale(address.area.name)}</h1>
+                                                </td>
+
+                                                <td className="px-3 py-2">
+                                                    <h1 className="font-bold">{address.district}</h1>
+                                                </td>
+
+                                                <td className="w-10 px-3 py-2">
+                                                    <h1 className="font-bold">{address.status}</h1>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </section>
+                }
+            </main>
+
+            {
+                data && data.addresses.paginatorInfo.lastPage > 1 &&
+                <ReactPaginate
+                    previousClassName={'hidden'}
+                    nextClassName={'hidden'}
+                    breakLabel={'...'}
+                    breakClassName={'bg-white rounded-lg border-gray-300 text-gray-500 hover:bg-gray-50 md:inline-flex relative items-center m-1 px-4 py-2 border text-sm'}
+                    pageCount={data && data.addresses.paginatorInfo.lastPage}
+                    marginPagesDisplayed={1}
+                    pageRangeDisplayed={3}
+                    onPageChange={(data) => setPage(data.selected+1)}
+                    pageClassName={'bg-white page-link rounded-lg border-gray-300 text-gray-500 hover:bg-gray-50 md:inline-flex relative items-center m-1 border text-sm'}
+                    containerClassName={'relative z-0 inline-flex justify-center rounded-md mb-16 w-full'}
+                    activeClassName={'bg-gray-200'}
+                />
+            }
+            
+            </section>
+        </AppLayout>
+    )
+}
+
+export default Addresses

@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+    @font-face {
+        font-family: Montserrat-Medium;
+        src: url('../fonts/Montserrat-Medium.ttf');
+    }
+    @font-face {
+        font-family: Montserrat-Bold;
+        src: url('../fonts/Montserrat-Bold.ttf');
+    }
+
+    body {
+        background: rgb(241,245,249);
+    }
+
+    *:focus {
+        outline: none !important;
+    }
+
+    ::-webkit-scrollbar {
+        @apply w-2 h-1
+    }
+    ::-webkit-scrollbar-thumb {
+        /* background: #4f46e550; */
+        @apply bg-dark-purple
+    }
+
+    .hide-scroll::-webkit-scrollbar-thumb {
+        @apply bg-transparent
+    }
+
+    .page-link a {
+        display: block;
+        padding: .5rem 1rem;
+    }
+
+    .h-115 {
+        height: 24.5rem;
+    }
+
+    .dropdown-height {
+        min-height: 3rem;
+        max-height: 25rem;
+    }
+
+    .btn {
+        @apply bg-indigo-600 hover:bg-indigo-800 text-white font-montserrat-bold px-6 py-2.5 border border-indigo-600 duration-300 rounded-lg
+    }
+    
+    .navlink {
+        @apply bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 font-montserrat-bold px-6 py-3 duration-300 rounded-lg ml-10
+    }
+}
