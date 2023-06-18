@@ -2,5 +2,12 @@
     "title": "Banners",
     "link": "Link",
     "position": "Position",
-    "image": "Image"
+    "image": "Image",
+    "add": "Add banner",
+    "select_image": "Select image",
+    "url": "URL",
+    "url_placeholder": "example.com",
+    "position_placeholder": "Select position",
+    "category": "Category",
+    "category_placeholder": "Select category"
 }

@@ -14,7 +14,7 @@ import Paginate from "../../components/Paginate/Paginate";
 
 const Banners: React.FC = () => {
   const { t } = useTranslation(["common", "banner"]);
-  const [page, setPage] = useState("1");
+  const [page, setPage] = useState<number>(1);
   const [bannerDelete, setBannerDelete] = useState<IDeleteModal>({
     id: null,
     delete: false,
@@ -31,19 +31,19 @@ const Banners: React.FC = () => {
 
   return (
     <AppLayout>
-      <section className="xl:p-5 p-1">
+      <>
         <Modal isOpen={bannerDelete.delete} close={toggleDeleteModal}>
           <DeleteBanner id={bannerDelete.id} close={toggleDeleteModal} />
         </Modal>
 
-        <main className="bg-white xl:px-8 px-6 xl:py-6 py-4 mb-5 rounded-lg">
+        <main className="bg-white px-5 py-3 rounded-lg">
           <header className="flex justify-between items-center mb-5">
             <aside className="flex">
               <div className="flex flex-col">
                 <h1 className="text-xl font-montserrat-bold text-indigo-800">
                   {t("banner:title")}
                 </h1>
-                <small className="text-indigo-500">
+                <small className="text-indigo-500 flex gap-1">
                   {t("total")}:
                   <strong>{data?.banners?.paginatorInfo?.total}</strong>
                 </small>
@@ -57,7 +57,7 @@ const Banners: React.FC = () => {
 
           {loading && <MiniLoader />}
 
-          {data && data.banners.data && (
+          {data?.banners?.data && (
             <section className="overflow-x-auto hide-scroll">
               <table className="w-full table-fixed text-sm">
                 <thead className="bg-slate-100 text-left text-gray-800">
@@ -115,12 +115,14 @@ const Banners: React.FC = () => {
           )}
         </main>
 
-        <Paginate
-          currentPage={page}
-          lastPage={data?.banners?.paginatorInfo?.total}
-          setPage={setPage}
-        />
-      </section>
+        {data?.banners?.paginatorInfo?.lastPage > 1 && (
+          <Paginate
+            currentPage={page.toString()}
+            lastPage={data?.banners?.paginatorInfo?.lastPage}
+            setPage={setPage}
+          />
+        )}
+      </>
     </AppLayout>
   );
 };

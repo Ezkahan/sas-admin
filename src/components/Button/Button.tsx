@@ -19,12 +19,13 @@ const Button: ButtonCompositionType &
     IChildren & ButtonType & React.ButtonHTMLAttributes<HTMLButtonElement>
   > = ({ children, bg = "primary", link, ...rest }) => {
   const bg_list = {
-    secondary: "bg-slate-400 ring-slate-400 hover:bg-slate-500",
-    primary: "bg-indigo-500 ring-indigo-500 hover:bg-indigo-800",
-    success: "bg-green-500 ring-green-500 hover:bg-green-800",
-    info: "bg-blue-500 ring-blue-500 hover:bg-blue-800",
-    danger: "bg-red-500 ring-red-500 hover:bg-red-800",
-    warning: "bg-orange-400 ring-orange-400 hover:bg-orange-600",
+    secondary:
+      "bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200",
+    primary: "bg-indigo-500 hover:bg-indigo-800",
+    success: "bg-green-500 hover:bg-green-800",
+    info: "bg-blue-500 hover:bg-blue-800",
+    danger: "bg-red-500 hover:bg-red-800",
+    warning: "bg-orange-400 hover:bg-orange-600",
   };
 
   return link ? (

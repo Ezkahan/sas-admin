@@ -83,9 +83,10 @@ const ImageUpload = ({
       "image/png",
       1
     );
-  }, [completedCrop]);
+  }, [completedCrop, setCropedImage]);
+
   return (
-    <div className="col-span-12">
+    <div className="w-full">
       <aside className="grid grid-cols-12 gap-5">
         <ReactCrop
           className="col-span-12 lg:col-span-7"
@@ -108,15 +109,15 @@ const ImageUpload = ({
         </div>
       </aside>
 
-      <aside className="flex flex-col my-4">
-        <label className="text-sm" htmlFor="logo">
+      <aside className="flex flex-col border border-gray-200 bg-gray-50 rounded-md">
+        <label className="text-sm px-4 pt-2" htmlFor="logo">
           {label}
           {required && <span className="text-red-600 pl-2">*</span>}
         </label>
 
-        <div className="relative border border-gray-200 bg-gray-50 rounded-md my-2 px-4 py-2 h-12">
-          <label className="absolute top-3 left-4 text-gray-400" htmlFor="file">
-            {inputData.select_image}{" "}
+        <div className="relative h-10">
+          <label className="absolute top-2 left-4 text-gray-400" htmlFor="file">
+            {inputData.select_image}
           </label>
           <input
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

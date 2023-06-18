@@ -4,7 +4,11 @@ import { ISelectOptionsList } from "../../../common/interfaces/ISelect";
 
 interface IProps extends ISelectOptionsList {
   label: string;
-  handleChange: Function;
+  handleChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
   name: string;
   placeholder?: string;
 }
@@ -26,11 +30,8 @@ const Select: FC<IProps> = ({
       <select
         name={name}
         placeholder={placeholder}
-        onChange={(e) => {
-          //   console.log(e.target.value);
-          handleChange(e);
-        }}
-        className="bg-slate-50 px-4 py-2"
+        onChange={handleChange}
+        className="bg-slate-50 px-4 py-2 appearance-none"
       >
         {options.map((option) => {
           return (

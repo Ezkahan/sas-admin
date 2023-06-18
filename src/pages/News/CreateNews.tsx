@@ -2,7 +2,7 @@ import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/common/Form/TextField";
@@ -11,9 +11,10 @@ import { INewsCreate } from "../../common/interfaces/News/INewsCreate";
 import { CREATE_NEWS } from "../../graphql/mutations/News/createNewsMutation";
 import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
 import TextEditor from "../../components/common/Form/TextEditor";
+import Button from "../../components/Button/Button";
 
 const CreateNews: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common", "news"]);
   const navigate = useNavigate();
   const [inputImageData, setImageInputData] = useState({
     select_image: "Выберите",
@@ -91,7 +92,6 @@ const CreateNews: React.FC = () => {
           <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
             <TextField
               name="title_tm"
-              withLocale
               lang="tm"
               label="Label"
               required
@@ -100,7 +100,6 @@ const CreateNews: React.FC = () => {
             />
             <TextField
               name="title_ru"
-              withLocale
               label="Label"
               required
               placeholder="Input title"
@@ -111,10 +110,9 @@ const CreateNews: React.FC = () => {
             <div className="col-span-6">
               <TextEditor
                 label="Description"
-                withLocale
                 required
                 lang="tm"
-                onChange={(text: string) => {
+                handleChange={(text: string) => {
                   setNews({
                     ...news,
                     description_tm: text,
@@ -125,9 +123,8 @@ const CreateNews: React.FC = () => {
             <div className="col-span-6">
               <TextEditor
                 label="Description"
-                withLocale
                 required
-                onChange={(text: string) => {
+                handleChange={(text: string) => {
                   setNews({
                     ...news,
                     description_ru: text,
@@ -137,15 +134,15 @@ const CreateNews: React.FC = () => {
             </div>
           </aside>
 
-          <button className="bg-indigo-600 hover:bg-indigo-800 text-white font-montserrat-bold px-6 py-2.5 border border-indigo-600 duration-300 rounded-lg">
-            {t("save")}
-          </button>
-          <NavLink
-            to={RouteNames.category}
-            className="bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 font-montserrat-bold px-6 py-3 duration-300 rounded-lg ml-10"
-          >
-            {t("cancel")}
-          </NavLink>
+          <footer className="flex items-center justify-end gap-3">
+            <Button bg="secondary" link={RouteNames.category}>
+              <p>{t("common:cancel")}</p>
+            </Button>
+
+            <Button type="submit">
+              <p>{t("common:save")}</p>
+            </Button>
+          </footer>
         </form>
       </section>
     </AppLayout>

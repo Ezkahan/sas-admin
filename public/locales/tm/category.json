@@ -1,0 +1,14 @@
+{
+    "title": "Categories",
+    "name": "Name",
+    "image": "Image",
+    "visited_count": "Visited count",
+    "add": "Add category",
+    "select_image": "Select image",
+    "select_icon": "Select icon",
+    "name_tm": "Name tm",
+    "name_ru": "Name ru",
+    "description_tm": "Description tm",
+    "description_ru": "Description ru",
+    "select_category": "Select category"
+}

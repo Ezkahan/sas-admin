@@ -1,23 +1,21 @@
 import React from "react";
 import {
+  IoCartOutline,
   IoGridOutline,
   IoImageOutline,
-  IoLogoAmazon,
+  IoListOutline,
+  IoNewspaperOutline,
   IoPeopleOutline,
+  IoStarOutline,
+  IoTicketOutline,
 } from "react-icons/io5";
-import { MdProductionQuantityLimits } from "react-icons/md";
-import { BiCategoryAlt } from "react-icons/bi";
-import { HiOutlineNewspaper } from "react-icons/hi";
-import { RiCoupon4Line } from "react-icons/ri";
 
 const Banners = React.lazy(() => import("../pages/Banner/Banners"));
 const AddBanner = React.lazy(() => import("../pages/Banner/AddBanner"));
 const Brands = React.lazy(() => import("../pages/Brand/Brands"));
 const BrandCreate = React.lazy(() => import("../pages/Brand/CreateBrand"));
 const Categories = React.lazy(() => import("../pages/Category/Categories"));
-const CategoryCreate = React.lazy(
-  () => import("../pages/Category/CreateCategory")
-);
+const AddCategory = React.lazy(() => import("../pages/Category/AddCategory"));
 const CategoryEdit = React.lazy(() => import("../pages/Category/EditCategory"));
 const News = React.lazy(() => import("../pages/News/News"));
 const NewsCreate = React.lazy(() => import("../pages/News/CreateNews"));
@@ -37,7 +35,7 @@ const RouteNames = {
   brand: "/brand",
   brandCreate: "/brand/create",
   category: "/category",
-  categoryCreate: "/category/create",
+  categoryAdd: "/category/add",
   categoryEdit: "/category/:id/edit",
   coupon: "/coupon",
   couponCreate: "/coupon/create",
@@ -90,7 +88,7 @@ const navRoutes: INavRoute[] = [
     id: 2,
     path: RouteNames.brand,
     title: "Brendler",
-    icon: IoLogoAmazon,
+    icon: IoStarOutline,
     is_main: true,
     queryTotal: `
       brands(first: 10) {
@@ -104,7 +102,7 @@ const navRoutes: INavRoute[] = [
     id: 3,
     path: RouteNames.category,
     title: "Kategoriýalar",
-    icon: BiCategoryAlt,
+    icon: IoListOutline,
     queryTotal: `
       categories(first: 10) {
         paginatorInfo {
@@ -117,7 +115,7 @@ const navRoutes: INavRoute[] = [
     id: 4,
     path: RouteNames.coupon,
     title: "Kuponlar",
-    icon: RiCoupon4Line,
+    icon: IoTicketOutline,
     is_main: true,
     queryTotal: `
       coupons(first: 10) {
@@ -131,7 +129,7 @@ const navRoutes: INavRoute[] = [
     id: 5,
     path: RouteNames.news,
     title: "Habarlar",
-    icon: HiOutlineNewspaper,
+    icon: IoNewspaperOutline,
     is_main: true,
     queryTotal: `
       news(first: 10) {
@@ -145,7 +143,7 @@ const navRoutes: INavRoute[] = [
     id: 6,
     path: RouteNames.products,
     title: "Harytlar",
-    icon: MdProductionQuantityLimits,
+    icon: IoCartOutline,
     queryTotal: `
       news(first: 10) {
         paginatorInfo {
@@ -200,10 +198,10 @@ const routing: IRoute[] = [
     nav: navRoutes[3],
   },
   {
-    path: RouteNames.categoryCreate,
+    path: RouteNames.categoryAdd,
     private: true,
     priority: 5,
-    element: CategoryCreate,
+    element: AddCategory,
   },
   {
     path: RouteNames.categoryEdit,
