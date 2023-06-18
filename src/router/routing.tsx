@@ -19,7 +19,6 @@ const CategoryCreate = React.lazy(
   () => import("../pages/Category/CreateCategory")
 );
 const CategoryEdit = React.lazy(() => import("../pages/Category/EditCategory"));
-
 const News = React.lazy(() => import("../pages/News/News"));
 const NewsCreate = React.lazy(() => import("../pages/News/CreateNews"));
 const NewsDetail = React.lazy(() => import("../pages/News/ShowNews"));
