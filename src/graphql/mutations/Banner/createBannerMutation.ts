@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const CREATE_BANNER = gql`
   mutation AddBanner(
     $link: String
-    $image: Upload!
+    $image: String!
     $category_id: ID!
     $position: String!
   ) {

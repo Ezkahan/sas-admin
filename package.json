@@ -24,6 +24,7 @@
     "graphql": "^16.6.0",
     "i18next": "^21.6.3",
     "i18next-browser-languagedetector": "^6.1.2",
+    "i18next-http-backend": "^2.2.1",
     "js-cookie": "^3.0.1",
     "pretty-checkbox-react": "^3.2.0",
     "react": "^17.0.2",
@@ -34,7 +35,7 @@
     "react-icons": "^4.3.1",
     "react-image-crop": "^9.0.4",
     "react-paginate": "^8.1.0",
-    "react-router-dom": "6",
+    "react-router-dom": "^6.13.0",
     "react-scripts": "5.0.0",
     "react-select": "^5.2.2",
     "react-spinners": "^0.11.0",
@@ -57,7 +58,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://93.171.223.16",
   "eslintConfig": {
     "extends": [
       "react-app",

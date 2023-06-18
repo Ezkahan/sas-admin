@@ -11,7 +11,7 @@ import { HiOutlineNewspaper } from "react-icons/hi";
 import { RiCoupon4Line } from "react-icons/ri";
 
 const Banners = React.lazy(() => import("../pages/Banner/Banners"));
-const BannerCreate = React.lazy(() => import("../pages/Banner/CreateBanner"));
+const AddBanner = React.lazy(() => import("../pages/Banner/AddBanner"));
 const Brands = React.lazy(() => import("../pages/Brand/Brands"));
 const BrandCreate = React.lazy(() => import("../pages/Brand/CreateBrand"));
 const Categories = React.lazy(() => import("../pages/Category/Categories"));
@@ -34,7 +34,7 @@ const RouteNames = {
   home: "/",
   banner: "/banner",
   bannerDetail: "/banner/",
-  bannerCreate: "/banner/create",
+  addBanner: "/banner/create",
   brand: "/brand",
   brandCreate: "/brand/create",
   category: "/category",
@@ -174,10 +174,10 @@ const routing: IRoute[] = [
     nav: navRoutes[1],
   },
   {
-    path: RouteNames.bannerCreate,
+    path: RouteNames.addBanner,
     private: true,
     priority: 5,
-    element: BannerCreate,
+    element: AddBanner,
   },
   {
     path: RouteNames.brand,

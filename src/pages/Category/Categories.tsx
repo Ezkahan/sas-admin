@@ -118,7 +118,7 @@ const Categories: React.FC<IProps> = ({ nav }: IProps) => {
 
                               <button
                                 onClick={() => toggleDeleteModal(category.id)}
-                                className="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-300 w-8 h-8 mx-1 flex items-center justify-center rounded-full"
+                                className=""
                               >
                                 <IoTrashOutline size={18} />
                               </button>

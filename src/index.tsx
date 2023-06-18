@@ -3,18 +3,18 @@ import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
-import i18n from "./common/locales/i18next";
+import i18n from "./common/locales/i18n";
 import WebRoutes from "./router/WebRoutes";
 import { client } from "./common/configs/apolloClient";
-import "../src/assets/css/tailwind.css";
 import AuthProvider from "./components/Provider/AuthProvider";
+import "../src/assets/css/tailwind.css";
 
 ReactDOM.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18n}>
       <ApolloProvider client={client}>
         <BrowserRouter>
-          <AuthProvider >
+          <AuthProvider>
             <WebRoutes />
           </AuthProvider>
         </BrowserRouter>
