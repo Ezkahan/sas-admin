@@ -159,6 +159,7 @@ const navRoutes: INavRoute[] = [
 ];
 
 const routing: IRoute[] = [
+  { path: RouteNames.login, private: false, priority: 5, element: Login },
   {
     path: RouteNames.home,
     private: true,
@@ -244,18 +245,6 @@ const routing: IRoute[] = [
     priority: 5,
     element: NewsDetail,
   },
-  // { path: RouteNames.category, private: true, priority: 3 },
-  // { path: RouteNames.coupon, private: true, priority: 3 },
-  // { path: RouteNames.news, private: true, priority: 3 },
-  // { path: RouteNames.products, private: true, priority: 3 },
-  // {
-  //   path: RouteNames.profile,
-  //   private: true,
-  //   priority: 5,
-  //   element: <div>Profile</div>,
-  // },
-  { path: RouteNames.login, private: false, priority: 5, element: Login },
-  // { path: RouteNames.register, private: false, priority: 1 },
   {
     path: RouteNames.forbidden,
     private: true,
