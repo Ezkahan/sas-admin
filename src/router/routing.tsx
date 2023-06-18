@@ -33,7 +33,7 @@ const RouteNames = {
   home: "/",
   banner: "/banner",
   bannerDetail: "/banner/",
-  addBanner: "/banner/create",
+  addBanner: "/banner/add",
   brand: "/brand",
   brandCreate: "/brand/create",
   category: "/category",

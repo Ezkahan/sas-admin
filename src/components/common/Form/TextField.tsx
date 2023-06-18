@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import EN_FLAG from "../../../assets/icons/locales/en.jpg";
-import TM_FLAG from "../../assets/icons/locales/tm.png";
+import TM_FLAG from "../../../assets/icons/locales/tm.png";
 
 interface IProps {
   lang?: "tm" | "en";
