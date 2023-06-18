@@ -118,7 +118,6 @@ const CreateCategory: React.FC = () => {
               label="Label"
               required
               withLocale
-              lang="ru"
               placeholder="Adyny giriziň"
               handleChange={handleChange}
             />
@@ -126,7 +125,6 @@ const CreateCategory: React.FC = () => {
               name="description_ru"
               label="Description"
               withLocale
-              lang="ru"
               placeholder="input description"
               handleChange={handleChange}
             />

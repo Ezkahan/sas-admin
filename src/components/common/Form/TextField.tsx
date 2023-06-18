@@ -1,11 +1,10 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import EN_FLAG from "../../../assets/icons/locales/en.jpg";
-import RU_FLAG from "../../../assets/icons/locales/ru.jpg";
-import TM_FLAG from "../../../assets/icons/locales/tm.png";
+import TM_FLAG from "../../assets/icons/locales/tm.png";
 
 interface IProps {
-  lang?: "ru" | "tm" | "en";
+  lang?: "tm" | "en";
   handleChange: Function;
   placeholder: string;
   label: string;
@@ -16,21 +15,19 @@ interface IProps {
   defaultValue?: string | number;
 }
 
-const returnLangIcon = (lang: "ru" | "tm" | "en") => {
+const returnLangIcon = (lang: "tm" | "en") => {
   switch (lang) {
-    case "ru":
-      return RU_FLAG;
     case "tm":
       return TM_FLAG;
     case "en":
       return EN_FLAG;
     default:
-      return RU_FLAG;
+      return EN_FLAG;
   }
 };
 
 const TextField: FC<IProps> = ({
-  lang = "ru",
+  lang = "tm",
   handleChange,
   placeholder,
   required = false,
@@ -47,13 +44,6 @@ const TextField: FC<IProps> = ({
         <small className="px-4 pt-2">
           {t(label)} {required && <span className="text-red-600 pl-1">*</span>}
         </small>
-        {withLocale && (
-          <img
-            src={returnLangIcon(lang)}
-            alt="EN"
-            className="w-6 h-4 mr-4 mt-2"
-          />
-        )}
       </header>
       <input
         defaultValue={defaultValue}

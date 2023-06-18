@@ -105,7 +105,6 @@ const CreateCoupon: React.FC = () => {
             />
             <TextField
               withLocale
-              lang="ru"
               name="title"
               label="Title"
               placeholder="Input title"

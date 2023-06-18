@@ -101,7 +101,6 @@ const CreateNews: React.FC = () => {
             <TextField
               name="title_ru"
               withLocale
-              lang="ru"
               label="Label"
               required
               placeholder="Input title"
@@ -128,7 +127,6 @@ const CreateNews: React.FC = () => {
                 label="Description"
                 withLocale
                 required
-                lang="ru"
                 onChange={(text: string) => {
                   setNews({
                     ...news,

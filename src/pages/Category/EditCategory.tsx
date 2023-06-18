@@ -167,7 +167,6 @@ const EditCategory: React.FC = () => {
                 name="name_ru"
                 label="Label"
                 withLocale
-                lang="ru"
                 defaultValue={category.name_ru}
                 required
                 placeholder="Adyny giriziň"
@@ -177,7 +176,6 @@ const EditCategory: React.FC = () => {
                 name="description_ru"
                 label="Description"
                 withLocale
-                lang="ru"
                 defaultValue={category.description_ru}
                 placeholder="input description"
                 handleChange={handleChange}
