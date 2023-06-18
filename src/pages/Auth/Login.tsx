@@ -6,7 +6,7 @@ import { _LOGIN } from "../../graphql/mutations/Auth/LoginMutation";
 import { ILogin } from "../../common/interfaces/User/ILogin";
 import { Navigate, useLocation } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { RouteNames } from "../../router/routing";
 import { IAuthContext } from "../../common/interfaces/IAuthContext";
 import { AuthContext } from "../../components/Provider/AuthProvider";
@@ -49,6 +49,7 @@ const Login: React.FC = () => {
     if (!!Cookies.get("access_token")) setIsAuth(true);
   }, []);
 
+  // if (isAuth) window.location.replace(from) return <></>;
   if (isAuth) return <Navigate to={from} />;
   return (
     <section className="flex items-center justify-center h-screen bg-slate-50 font-montserrat-medium">
@@ -65,7 +66,10 @@ const Login: React.FC = () => {
           setTimeout(() => {
             login({
               variables: { phone: values.phone, password: values.password },
-            });
+            }).then(
+              (res) =>
+                res.data?.login.token != null && window.location.replace(from)
+            );
             setSubmitting(false);
           }, 500);
         }}
