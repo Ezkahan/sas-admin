@@ -22,7 +22,7 @@ interface IProps {
 }
 
 const Brands: React.FC<IProps> = ({ nav }: IProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common", "brand"]);
 
   const [page, setPage] = useState(1);
   const [brandDelete, setBrandDelete] = useState<IDeleteModal>({
@@ -90,11 +90,7 @@ const Brands: React.FC<IProps> = ({ nav }: IProps) => {
                         </td>
 
                         <td className="p-2">
-                          <img
-                            className="w-10"
-                            src={brand?.logotype}
-                            alt="img"
-                          />
+                          <img className="w-10" src={brand?.logo} alt="img" />
                         </td>
 
                         <td className="px-2 py-3">

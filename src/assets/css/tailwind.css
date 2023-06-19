@@ -55,6 +55,10 @@
         @apply flex items-center border border-indigo-500 hover:bg-indigo-600 text-indigo-600 hover:text-white duration-300 px-2 py-1.5 rounded-lg
     }
 
+    .btn__edit {
+        @apply border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white duration-300 w-8 h-8 mx-1 p-1 flex items-center justify-center rounded-full
+    }
+
     .btn__delete {
         @apply border border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-300 w-8 h-8 mx-1 flex items-center justify-center rounded-full
     }

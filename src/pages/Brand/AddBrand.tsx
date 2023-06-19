@@ -28,7 +28,6 @@ const AddBrand: React.FC = () => {
     image: "",
   });
 
-  console.log(categories);
   const [newCropedImage, setNewCropedImage] = useState();
 
   const handleChange = (
@@ -38,7 +37,6 @@ const AddBrand: React.FC = () => {
   ) => {
     // @ts-ignore
     const { files, value, name } = e.target;
-    console.log("onchacnge");
 
     setBrand({
       ...brand,
@@ -76,8 +74,6 @@ const AddBrand: React.FC = () => {
     });
   };
 
-  console.log(brand);
-
   return (
     <AppLayout>
       <form
@@ -86,22 +82,13 @@ const AddBrand: React.FC = () => {
       >
         <h1 className="text-lg font-montserrat-bold">New brand</h1>
 
-        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-          <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-            <ImageUpload
-              inputData={inputImageData}
-              setInputData={setImageInputData}
-              setCropedImage={setNewCropedImage}
-              label={"Картинка"}
-            />
-          </aside>
-          {/* <TextField
-            name="logo"
-            label="Logo"
-            type="file"
-            placeholder="Image file"
-            handleChange={handleChange}
-          /> */}
+        <aside className="mt-5 mb-8">
+          <ImageUpload
+            inputData={inputImageData}
+            setInputData={setImageInputData}
+            setCropedImage={setNewCropedImage}
+            label={"Картинка"}
+          />
         </aside>
 
         <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
@@ -118,9 +105,6 @@ const AddBrand: React.FC = () => {
             label="Категория"
             placeholder="Выберите категорию"
             handleChange={handleChange}
-            // options={categories.categories?.data?.map((c: ICategoryList) => {
-            //   return { title: jsonParseToLangs(c.name).tm, value: c.id };
-            // })}
             options={
               categories?.categories?.data?.length &&
               categories?.categories?.data.length > 0

@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import IChildren from "../../common/interfaces/IChildren";
-import { IoAddOutline, IoPencilOutline, IoTrashOutline } from "react-icons/io5";
+import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
+import { CiEdit } from "react-icons/ci";
 
 type ButtonType = {
   link?: string;
@@ -54,11 +55,11 @@ const AddButton: React.FC<ButtonType> = ({ link, onClick }) => {
 const EditButton: React.FC<ButtonType> = ({ link, onClick }) => {
   return link ? (
     <NavLink id="edit" to={link} className="btn__edit">
-      <IoPencilOutline size={18} />
+      <CiEdit size={28} />
     </NavLink>
   ) : (
     <button id="edit" onClick={onClick} className="btn__edit">
-      <IoPencilOutline size={18} />
+      <CiEdit size={28} />
     </button>
   );
 };

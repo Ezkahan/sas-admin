@@ -10,7 +10,6 @@ import { ICategoryList } from "../../common/interfaces/Category/ICategoryList";
 import { RouteNames } from "../../router/routing";
 import DeleteCategory from "./DeleteCategory";
 import { jsonParseToLangs } from "../../common/helpers/jsonParseToLangs";
-import NO_IMAGE from "../../assets/icons/no_image.png";
 import { GET_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategoriesQuery";
 import Paginate from "../../components/Paginate/Paginate";
 import Button from "../../components/Button/Button";
@@ -70,6 +69,7 @@ const Categories: React.FC = () => {
                     </th>
                     <th className="px-4 py-3">{t("category:name")}</th>
                     <th className="px-4 py-3">{t("category:image")}</th>
+                    <th className="px-4 py-3">{t("category:icon")}</th>
                     <th className="px-4 py-3 text-center">
                       {t("category:visited_count")}
                     </th>
@@ -88,6 +88,7 @@ const Categories: React.FC = () => {
                         <td className="border-r border-stone-100 px-4 py-3 text-xs">
                           {category.id}
                         </td>
+
                         <td className="border-r border-stone-100 px-4 py-3">
                           <h1 className="font-bold">
                             {jsonParseToLangs(category.name).tm}
@@ -95,10 +96,17 @@ const Categories: React.FC = () => {
                         </td>
 
                         <td className="px-4 py-3">
-                          <object data={NO_IMAGE} type="image/png">
-                            <img src={category.image} alt="img" />
-                          </object>
+                          <img
+                            src={category.image}
+                            alt="img"
+                            className="w-12"
+                          />
                         </td>
+
+                        <td className="px-4 py-3">
+                          <img src={category.icon} alt="img" className="w-12" />
+                        </td>
+
                         <td className="px-4 py-3 text-center">
                           {category.visited_count}
                         </td>
