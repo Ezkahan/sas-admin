@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { IBrandCreate } from "../../common/interfaces/Brand/IBrandCreate";
 import { CREATE_BRAND } from "../../graphql/mutations/Brand/createBrandMutation";
 import { GET_BRANDS } from "../../graphql/queries/Brand/getBrandsQuery";
-import Add from "../../components/Brand/Add";
 import { GET_SHORT_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategoriesQuery";
 import AppLayout from "../../layouts/AppLayout";
 import ImageUpload from "../../components/common/Form/imageUpload";

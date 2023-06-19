@@ -2,22 +2,20 @@ import { useQuery } from "@apollo/client";
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import ReactPaginate from "react-paginate";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import { NavLink } from "react-router-dom";
-import { IoEyeOutline, IoPencilOutline, IoTrashOutline } from "react-icons/io5";
+import { IoEyeOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
-
 import { IBrandList } from "../../common/interfaces/Brand/IBrandList";
-
 import { RouteNames } from "../../router/routing";
 import { GET_BRANDS } from "../../graphql/queries/Brand/getBrandsQuery";
 import DeleteBrand from "./DeleteBrand";
-
 import { INavRoute } from "../../router/routing";
 import PageHeader from "../../components/pageHeader";
+import Button from "../../components/Button/Button";
+import Paginate from "../../components/Paginate/Paginate";
 
 interface IProps {
   nav?: INavRoute;
@@ -43,12 +41,12 @@ const Brands: React.FC<IProps> = ({ nav }: IProps) => {
 
   return (
     <AppLayout>
-      <section className="xl:p-5 p-1">
+      <>
         <Modal isOpen={brandDelete.delete} close={toggleDeleteModal}>
           <DeleteBrand id={brandDelete.id} close={toggleDeleteModal} />
         </Modal>
 
-        <main className="bg-white xl:px-8 px-6 xl:py-6 py-4 mb-5 rounded-lg">
+        <main className="bg-white px-5 py-3 rounded-lg">
           <PageHeader
             addPath={RouteNames.brandCreate}
             nav={nav}
@@ -108,19 +106,13 @@ const Brands: React.FC<IProps> = ({ nav }: IProps) => {
                               <IoEyeOutline size={18} />
                             </NavLink>
 
-                            <NavLink
-                              to={`${RouteNames.banner}/${brand.id}/edit`}
-                              className="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white duration-300 w-8 h-8 mx-1 flex items-center justify-center rounded-full"
-                            >
-                              <IoPencilOutline size={18} />
-                            </NavLink>
+                            <Button.Edit
+                              link={`${RouteNames.banner}/${brand.id}/edit`}
+                            />
 
-                            <button
+                            <Button.Delete
                               onClick={() => toggleDeleteModal(brand.id)}
-                              className="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-300 w-8 h-8 mx-1 flex items-center justify-center rounded-full"
-                            >
-                              <IoTrashOutline size={18} />
-                            </button>
+                            />
                           </div>
                         </td>
                       </tr>
@@ -132,26 +124,14 @@ const Brands: React.FC<IProps> = ({ nav }: IProps) => {
           )}
         </main>
 
-        <ReactPaginate
-          previousClassName={"hidden"}
-          nextClassName={"hidden"}
-          breakLabel={"..."}
-          breakClassName={
-            "bg-white border-gray-300 rounded-lg text-gray-500 hover:bg-gray-50 md:inline-flex relative items-center m-1 px-4 py-2 border text-sm"
-          }
-          pageCount={data ? data.brands.paginatorInfo.lastPage : 1}
-          marginPagesDisplayed={1}
-          pageRangeDisplayed={3}
-          onPageChange={(data) => setPage(data.selected + 1)}
-          pageClassName={
-            "bg-white page-link rounded-lg border-gray-300 text-gray-500 hover:bg-gray-50 md:inline-flex relative items-center m-1 border text-sm"
-          }
-          containerClassName={
-            "relative z-0 inline-flex justify-center rounded-md mb-16 w-full"
-          }
-          activeClassName={"bg-gray-200"}
-        />
-      </section>
+        {data?.banners?.paginatorInfo?.lastPage > 1 && (
+          <Paginate
+            currentPage={page.toString()}
+            lastPage={data?.banners?.paginatorInfo?.lastPage}
+            setPage={setPage}
+          />
+        )}
+      </>
     </AppLayout>
   );
 };

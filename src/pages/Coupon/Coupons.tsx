@@ -5,7 +5,7 @@ import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import { NavLink } from "react-router-dom";
-import { IoEyeOutline, IoTrashOutline } from "react-icons/io5";
+import { IoEyeOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
@@ -16,6 +16,7 @@ import { ICouponList } from "../../common/interfaces/Coupon/ICouponList";
 import { GET_COUPONS } from "../../graphql/queries/Coupon/getCouponsQuery";
 import DeleteCoupon from "./DeleteCoupon";
 import { jsonParseToLangs } from "../../common/helpers/jsonParseToLangs";
+import Button from "../../components/Button/Button";
 
 interface IProps {
   nav?: INavRoute;
@@ -41,12 +42,12 @@ const Coupons: React.FC<IProps> = ({ nav }: IProps) => {
 
   return (
     <AppLayout>
-      <section className="xl:p-5 p-1">
+      <>
         <Modal isOpen={couponDelete.delete} close={toggleDeleteModal}>
           <DeleteCoupon id={couponDelete.id} close={toggleDeleteModal} />
         </Modal>
 
-        <main className="bg-white xl:px-8 px-6 xl:py-6 py-4 mb-5 rounded-lg">
+        <main className="bg-white px-5 py-3 rounded-lg">
           <PageHeader
             addPath={RouteNames.couponCreate}
             nav={nav}
@@ -56,7 +57,7 @@ const Coupons: React.FC<IProps> = ({ nav }: IProps) => {
           {loading && <MiniLoader />}
 
           {data && data.coupons.data && (
-            <section className="overflow-x-auto">
+            <section className="overflow-x-auto hide-scroll">
               <table className="w-full table-fixed text-sm">
                 <thead className="bg-slate-100 text-left text-gray-800">
                   <tr>
@@ -109,12 +110,9 @@ const Coupons: React.FC<IProps> = ({ nav }: IProps) => {
                                 <IoEyeOutline size={18} />
                               </NavLink>
 
-                              <button
+                              <Button.Delete
                                 onClick={() => toggleDeleteModal(coupon.id)}
-                                className="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-300 w-8 h-8 mx-1 flex items-center justify-center rounded-full"
-                              >
-                                <IoTrashOutline size={18} />
-                              </button>
+                              />
                             </div>
                           </td>
                         </tr>
@@ -146,7 +144,7 @@ const Coupons: React.FC<IProps> = ({ nav }: IProps) => {
           }
           activeClassName={"bg-gray-200"}
         />
-      </section>
+      </>
     </AppLayout>
   );
 };
