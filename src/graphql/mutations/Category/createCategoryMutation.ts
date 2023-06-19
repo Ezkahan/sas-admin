@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 export const CREATE_CATEGORY = gql`
   mutation AddCategory(
-    $icon: Upload
-    $image: Upload
+    $icon: String
+    $image: String
     $parent_id: ID
     $name: JSON!
     $description: JSON
