@@ -9,6 +9,8 @@ import {
   IoStarOutline,
   IoTicketOutline,
 } from "react-icons/io5";
+import Products from "../pages/Products/Products";
+import AddProduct from "../pages/Products/AddProduct";
 
 const Banners = React.lazy(() => import("../pages/Banner/Banners"));
 const AddBanner = React.lazy(() => import("../pages/Banner/AddBanner"));
@@ -44,6 +46,7 @@ const RouteNames = {
   newsDetail: "/news/:id",
   users: "/users",
   products: "/products",
+  productAdd: "/product/add",
   profile: "/user/profile",
   login: "/auth/login",
   register: "/auth/register",
@@ -222,6 +225,18 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: CouponCreate,
+  },
+  {
+    path: RouteNames.products,
+    private: true,
+    priority: 5,
+    element: Products,
+  },
+  {
+    path: RouteNames.productAdd,
+    private: true,
+    priority: 5,
+    element: AddProduct,
   },
   {
     path: RouteNames.news,

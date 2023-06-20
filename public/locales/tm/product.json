@@ -1,0 +1,13 @@
+{
+  "title": "Products",
+  "link": "Link",
+  "position": "Position",
+  "image": "Image",
+  "add": "Add product",
+  "select_image": "Select image",
+  "url": "URL",
+  "url_placeholder": "example.com",
+  "position_placeholder": "Select position",
+  "category": "Category",
+  "category_placeholder": "Select category"
+}
