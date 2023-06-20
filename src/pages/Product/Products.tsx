@@ -6,119 +6,107 @@ import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
 import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
-import { ICategoryList } from "../../common/interfaces/Category/ICategoryList";
 import { RouteNames } from "../../router/routing";
-import DeleteCategory from "./DeleteCategory";
-import { jsonParseToLangs } from "../../common/helpers/jsonParseToLangs";
-import { GET_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategoriesQuery";
-import Paginate from "../../components/Paginate/Paginate";
+import DeleteNews from "./DeleteProduct";
 import Button from "../../components/Button/Button";
+import { IProduct } from "./IProduct";
+import Paginate from "../../components/Paginate/Paginate";
+import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
 
-const Categories: React.FC = () => {
-  const { t } = useTranslation(["common", "category"]);
+const Products: React.FC = () => {
+  const { t } = useTranslation(["common"]);
   const [page, setPage] = useState<number>(1);
-  const [categoryDelete, setCategoryDelete] = useState<IDeleteModal>({
+
+  const [deleteProduct, setDeleteProduct] = useState<IDeleteModal>({
     id: null,
     delete: false,
   });
 
-  const { loading, data } = useQuery(GET_CATEGORY_LIST, {
-    variables: { page },
-    onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
-  });
-
-  const toggleDeleteModal = (id: number | null = null) => {
-    setCategoryDelete({ delete: !categoryDelete.delete, id });
+  const toggleDeleteModal = (id: number) => {
+    setDeleteProduct({ delete: !deleteProduct.delete, id });
   };
+
+  const onError = () => toast.error(t("error_not_loaded"), { duration: 2000 });
+
+  const { loading, data } = useQuery(GET_PRODUCTS, {
+    variables: { page },
+    onError,
+  });
 
   return (
     <AppLayout>
       <>
-        <Modal isOpen={categoryDelete.delete} close={toggleDeleteModal}>
-          <DeleteCategory id={categoryDelete.id} close={toggleDeleteModal} />
+        <Modal isOpen={deleteProduct.delete} close={toggleDeleteModal}>
+          <DeleteNews id={deleteProduct.id} close={toggleDeleteModal} />
         </Modal>
-
         <main className="bg-white px-5 py-3 rounded-lg">
           <header className="flex justify-between items-center mb-5">
             <aside className="flex">
               <div className="flex flex-col">
                 <h1 className="text-xl font-montserrat-bold text-indigo-800">
-                  {t("category:title")}
+                  {t("product:title")}
                 </h1>
                 <small className="text-indigo-500 flex gap-1">
                   {t("common:total")}:
-                  <strong>{data?.categories?.paginatorInfo?.total}</strong>
+                  <strong>{data?.products?.paginatorInfo?.total}</strong>
                 </small>
               </div>
             </aside>
 
             <div className="ml-5">
-              <Button.Add link="/category/add" />
+              <Button.Add link="/product/add" />
             </div>
           </header>
 
           {loading && <MiniLoader />}
 
-          {data?.categories?.data && (
-            <section className="overflow-x-auto hide-scroll">
+          {data?.products?.data && (
+            <section className="overflow-x-auto">
               <table className="w-full table-fixed text-sm">
                 <thead className="bg-slate-100 text-left text-gray-800">
                   <tr>
                     <th className="px-4 py-3 rounded-tl-lg rounded-bl-lg">
                       {t("common:id")}
                     </th>
-                    <th className="px-4 py-3">{t("category:name")}</th>
-                    <th className="px-4 py-3">{t("category:image")}</th>
-                    <th className="px-4 py-3">{t("category:icon")}</th>
-                    <th className="px-4 py-3 text-center">
-                      {t("category:visited_count")}
-                    </th>
+                    <th className="px-4 py-3">{t("common:title")}</th>
+                    <th className="px-4 py-3">{t("common:description")}</th>
                     <th className="px-4 py-3 rounded-tr-lg rounded-br-lg">
                       {t("common:options")}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.categories.data.map((category: ICategoryList) => {
+                  {data?.products?.data?.map((product: IProduct) => {
                     return (
                       <tr
-                        key={category.id}
+                        key={product.id}
                         className="border-b border-stone-100 text-indigo-900/80"
                       >
                         <td className="border-r border-stone-100 px-4 py-3 text-xs">
-                          {category.id}
+                          {product.id}
                         </td>
-
-                        <td className="border-r border-stone-100 px-4 py-3">
+                        <td className="border-r border-stone-100 w-96 px-4 py-3">
                           <h1 className="font-bold">
-                            {jsonParseToLangs(category.name).tm}
+                            {JSON.stringify(product.title)}
                           </h1>
                         </td>
 
-                        <td className="px-4 py-3">
-                          <img
-                            src={category.image}
-                            alt="img"
-                            className="w-12"
-                          />
+                        <td className="border-r border-stone-100 px-4 py-3">
+                          <p>{JSON.stringify(product.description)}</p>
                         </td>
 
                         <td className="px-4 py-3">
-                          <img src={category.icon} alt="img" className="w-12" />
-                        </td>
-
-                        <td className="px-4 py-3 text-center">
-                          {category.visited_count}
+                          <img src={product.image} alt="img" />
                         </td>
 
                         <td className="px-2 py-3">
                           <div className="flex">
                             <Button.Edit
-                              link={`${RouteNames.category}/${category.id}/edit`}
-                            />
+                              link={`${RouteNames.editProduct}/${product.id}/edit`}
+                            ></Button.Edit>
 
                             <Button.Delete
-                              onClick={() => toggleDeleteModal(category.id)}
+                              onClick={() => toggleDeleteModal(product.id)}
                             />
                           </div>
                         </td>
@@ -131,7 +119,7 @@ const Categories: React.FC = () => {
           )}
         </main>
 
-        {data?.categories?.paginatorInfo?.lastPage > 1 && (
+        {data?.products?.paginatorInfo?.lastPage > 1 && (
           <Paginate
             currentPage={page.toString()}
             lastPage={data?.categories?.paginatorInfo?.lastPage}
@@ -143,4 +131,4 @@ const Categories: React.FC = () => {
   );
 };
 
-export default Categories;
+export default Products;

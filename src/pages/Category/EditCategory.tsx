@@ -53,7 +53,7 @@ const EditCategory: React.FC = () => {
       name_ru: data.name_ru,
       description_tm: data.description_tm,
       description_ru: data.description_ru,
-      image: data.image,
+      image: newCropedImage,
       parent_id: data.parent_id,
     });
   };

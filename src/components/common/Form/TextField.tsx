@@ -1,7 +1,5 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import EN_FLAG from "../../../assets/icons/locales/en.jpg";
-import TM_FLAG from "../../../assets/icons/locales/tm.png";
 
 interface IProps {
   lang?: "tm" | "en";
@@ -15,25 +13,12 @@ interface IProps {
   defaultValue?: string | number;
 }
 
-const returnLangIcon = (lang: "tm" | "en") => {
-  switch (lang) {
-    case "tm":
-      return TM_FLAG;
-    case "en":
-      return EN_FLAG;
-    default:
-      return EN_FLAG;
-  }
-};
-
 const TextField: FC<IProps> = ({
-  lang = "tm",
   handleChange,
   placeholder,
   required = false,
   label,
   name,
-  withLocale = false,
   type = "text",
   defaultValue,
 }: IProps) => {
