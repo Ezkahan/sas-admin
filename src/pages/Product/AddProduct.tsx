@@ -8,10 +8,9 @@ import { RouteNames } from "../../router/routing";
 import TextField from "../../components/common/Form/TextField";
 import ImageUpload from "../../components/common/Form/imageUpload";
 import { INewsCreate } from "../../common/interfaces/News/INewsCreate";
-import { CREATE_NEWS } from "../../graphql/mutations/News/createNewsMutation";
-import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
 import TextEditor from "../../components/common/Form/TextEditor";
 import Button from "../../components/Button/Button";
+import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
 
 const AddProduct: React.FC = () => {
   const { t } = useTranslation(["common", "news"]);
@@ -44,12 +43,12 @@ const AddProduct: React.FC = () => {
       setTimeout(() => navigate(RouteNames.news), 2000);
   };
 
-  const [createNews] = useMutation(CREATE_NEWS, {
+  const [mutate] = useMutation(ADD_PRODUCT, {
     onCompleted,
     onError: () => toast.error(t("error_not_saved"), { duration: 2000 }),
     refetchQueries: [
       {
-        query: GET_NEWS,
+        query: GET_PRODUCTS,
         variables: { page: 1 },
       },
     ],
@@ -57,7 +56,7 @@ const AddProduct: React.FC = () => {
 
   const onSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    createNews({
+    mutate({
       variables: {
         image: newCropedImage,
         title: JSON.stringify({
@@ -76,7 +75,7 @@ const AddProduct: React.FC = () => {
     <AppLayout>
       <section className="xl:p-5 p-1">
         <form
-          onSubmit={(e) => onSubmit(e)}
+          onSubmit={onSubmit}
           className="bg-white xl:px-8 px-5 xl:py-6 py-4 xl:my-5 my-3 rounded-lg"
         >
           <h1 className="text-lg font-montserrat-bold">Add news</h1>

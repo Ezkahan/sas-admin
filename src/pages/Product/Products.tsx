@@ -14,7 +14,7 @@ import Paginate from "../../components/Paginate/Paginate";
 import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
 
 const Products: React.FC = () => {
-  const { t } = useTranslation(["common"]);
+  const { t } = useTranslation(["common", "product"]);
   const [page, setPage] = useState<number>(1);
 
   const [deleteProduct, setDeleteProduct] = useState<IDeleteModal>({
