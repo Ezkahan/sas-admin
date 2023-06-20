@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_ONE_NEWS = gql`
+export const GET_PRODUCT = gql`
   query oneNews($id: ID!) {
-    newsById(id: $id) {
+    product(id: $id) {
       id
       title
       description

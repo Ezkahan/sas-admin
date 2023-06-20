@@ -86,7 +86,7 @@ const ImageUpload = ({
   }, [completedCrop, setCropedImage]);
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <aside className="grid grid-cols-12 gap-5">
         <ReactCrop
           className="col-span-12 lg:col-span-7"

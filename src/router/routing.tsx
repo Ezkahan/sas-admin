@@ -245,6 +245,18 @@ const routing: IRoute[] = [
     element: CouponCreate,
   },
   {
+    path: RouteNames.products,
+    private: true,
+    priority: 5,
+    element: Products,
+  },
+  {
+    path: RouteNames.addProduct,
+    private: true,
+    priority: 5,
+    element: AddProduct,
+  },
+  {
     path: RouteNames.news,
     private: true,
     priority: 5,

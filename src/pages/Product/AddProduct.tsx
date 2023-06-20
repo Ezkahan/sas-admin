@@ -11,9 +11,10 @@ import { INewsCreate } from "../../common/interfaces/News/INewsCreate";
 import TextEditor from "../../components/common/Form/TextEditor";
 import Button from "../../components/Button/Button";
 import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
+import { ADD_PRODUCT } from "../../graphql/mutations/Product/addProductMutation";
 
 const AddProduct: React.FC = () => {
-  const { t } = useTranslation(["common", "news"]);
+  const { t } = useTranslation(["common", "product"]);
   const navigate = useNavigate();
   const [inputImageData, setImageInputData] = useState({
     select_image: "Выберите",
@@ -73,77 +74,72 @@ const AddProduct: React.FC = () => {
 
   return (
     <AppLayout>
-      <section className="xl:p-5 p-1">
-        <form
-          onSubmit={onSubmit}
-          className="bg-white xl:px-8 px-5 xl:py-6 py-4 xl:my-5 my-3 rounded-lg"
-        >
-          <h1 className="text-lg font-montserrat-bold">Add news</h1>
+      <form onSubmit={onSubmit} className="bg-white px-5 py-3 my-3 rounded-lg">
+        <h1 className="text-lg font-montserrat-bold">{t("product:add")}</h1>
 
-          <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-            <ImageUpload
-              inputData={inputImageData}
-              setInputData={setImageInputData}
-              setCropedImage={setNewCropedImage}
-              label={"Картинка"}
-            />
-          </aside>
-          <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-            <TextField
-              name="title_tm"
+        <aside className="mt-5 mb-8">
+          <ImageUpload
+            inputData={inputImageData}
+            setInputData={setImageInputData}
+            setCropedImage={setNewCropedImage}
+            label={t("product:select_image")}
+          />
+        </aside>
+        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
+          <TextField
+            name="title_tm"
+            lang="tm"
+            label="Label"
+            required
+            placeholder="Input title"
+            handleChange={handleChange}
+          />
+          <TextField
+            name="title_ru"
+            label="Label"
+            required
+            placeholder="Input title"
+            handleChange={handleChange}
+          />
+        </aside>
+        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
+          <div className="col-span-6">
+            <TextEditor
+              label="Description"
+              required
               lang="tm"
-              label="Label"
-              required
-              placeholder="Input title"
-              handleChange={handleChange}
+              handleChange={(text: string) => {
+                setNews({
+                  ...news,
+                  description_tm: text,
+                });
+              }}
             />
-            <TextField
-              name="title_ru"
-              label="Label"
+          </div>
+          <div className="col-span-6">
+            <TextEditor
+              label="Description"
               required
-              placeholder="Input title"
-              handleChange={handleChange}
+              handleChange={(text: string) => {
+                setNews({
+                  ...news,
+                  description_ru: text,
+                });
+              }}
             />
-          </aside>
-          <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-            <div className="col-span-6">
-              <TextEditor
-                label="Description"
-                required
-                lang="tm"
-                handleChange={(text: string) => {
-                  setNews({
-                    ...news,
-                    description_tm: text,
-                  });
-                }}
-              />
-            </div>
-            <div className="col-span-6">
-              <TextEditor
-                label="Description"
-                required
-                handleChange={(text: string) => {
-                  setNews({
-                    ...news,
-                    description_ru: text,
-                  });
-                }}
-              />
-            </div>
-          </aside>
+          </div>
+        </aside>
 
-          <footer className="flex items-center justify-end gap-3">
-            <Button bg="secondary" link={RouteNames.category}>
-              <p>{t("common:cancel")}</p>
-            </Button>
+        <footer className="flex items-center justify-end gap-3">
+          <Button bg="secondary" link={RouteNames.category}>
+            <p>{t("common:cancel")}</p>
+          </Button>
 
-            <Button type="submit">
-              <p>{t("common:save")}</p>
-            </Button>
-          </footer>
-        </form>
-      </section>
+          <Button type="submit">
+            <p>{t("common:save")}</p>
+          </Button>
+        </footer>
+      </form>
     </AppLayout>
   );
 };
