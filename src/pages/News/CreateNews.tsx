@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/common/Form/TextField";
-import ImageUpload from "../../components/common/Form/imageUpload";
+import ImageUpload from "../../components/common/Form/ImageEditor";
 import { INewsCreate } from "../../common/interfaces/News/INewsCreate";
 import { CREATE_NEWS } from "../../graphql/mutations/News/createNewsMutation";
 import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
@@ -82,12 +82,12 @@ const CreateNews: React.FC = () => {
           <h1 className="text-lg font-montserrat-bold">Add news</h1>
 
           <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-            <ImageUpload
+            {/* <ImageUpload
               inputData={inputImageData}
               setInputData={setImageInputData}
               setCropedImage={setNewCropedImage}
               label={"Картинка"}
-            />
+            /> */}
           </aside>
           <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
             <TextField

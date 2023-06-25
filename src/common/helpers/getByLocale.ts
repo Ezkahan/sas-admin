@@ -1,11 +1,10 @@
-import i18next from "i18next"
-import React from "react"
-import { ITranslatable } from "../interfaces/ITranslatable"
+import i18n from "i18next";
+import { ITranslatable } from "../interfaces/ITranslatable";
 
-const getByLocale: React.FC<ITranslatable | any> = (text) => {
-    const getLanguage = i18next.language || window.localStorage.i18nextLng
+type LocaleType = keyof ITranslatable;
+const getByLocale = (text: ITranslatable) => {
+  const lang: LocaleType = i18n.language as LocaleType;
+  return text[lang];
+};
 
-    return getLanguage === "ru" ? text.ru : text.en
-}
-
-export default getByLocale
+export default getByLocale;

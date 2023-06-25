@@ -1,48 +1,28 @@
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import React from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/common/Form/TextField";
-import ImageUpload from "../../components/common/Form/imageUpload";
-import { ICategoryCreate } from "../../common/interfaces/Category/ICategoryCreate";
-import { CREATE_CATEGORY } from "../../graphql/mutations/Category/createCategoryMutation";
-import { GET_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategoriesQuery";
+import ImageUpload from "../../components/common/Form/ImageEditor";
+import {
+  GET_CATEGORY_LIST,
+  GET_SHORT_CATEGORY_LIST,
+} from "../../graphql/queries/Categories/getCategoriesQuery";
 import Button from "../../components/Button/Button";
 import Select from "../../components/common/Form/Select";
+import CategoryListDTO from "./CategoryListDTO";
+import { ADD_CATEGORY } from "../../graphql/mutations/Category/addCategoryMutation";
+import { useFormik } from "formik";
+import { ICategory } from "./Category/ICategory";
+import * as Yup from "yup";
 
 const AddCategory: React.FC = () => {
   const { t } = useTranslation(["common", "category"]);
   const navigate = useNavigate();
-  const [image, setImage] = useState({
-    select_image: t("common:select_image"),
-    image: "",
-  });
-  const [cropedImage, setCropedImage] = useState();
-  const [cropedIcon, setCropedIcon] = useState();
-
-  const [category, setCategory] = useState<ICategoryCreate>({
-    name_tm: "",
-    name_ru: "",
-    description_tm: "",
-    description_ru: "",
-    icon: "",
-    image: "",
-    parent_id: null,
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    setCategory({
-      ...category,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const { data } = useQuery(GET_SHORT_CATEGORY_LIST);
 
   const onCompleted = () => {
     toast.success(t("success_saved"), { duration: 1500 }) &&
@@ -51,7 +31,7 @@ const AddCategory: React.FC = () => {
 
   const onError = () => toast.error(t("error_not_saved"), { duration: 2000 });
 
-  const [createCategory] = useMutation(CREATE_CATEGORY, {
+  const [mutate] = useMutation(ADD_CATEGORY, {
     onCompleted,
     onError,
     refetchQueries: [
@@ -62,57 +42,62 @@ const AddCategory: React.FC = () => {
     ],
   });
 
-  const onSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
-    createCategory({
-      variables: {
-        image: cropedImage,
-        icon: cropedIcon,
-        parent_id: category.parent_id,
-        name: JSON.stringify({
-          tm: category.name_tm,
-          ru: category.name_ru || category.name_tm,
-        }),
-        description: JSON.stringify({
-          description_tm: category.description_tm,
-          description_ru: category.description_ru || category.description_tm,
-        }),
-      },
+  const validationSchema = () => {
+    return Yup.object().shape({
+      image: Yup.string().required(t("category:image_required")),
+      icon: Yup.string().required(t("category:icon_required")),
     });
   };
 
+  const formik = useFormik({
+    initialValues: {} as ICategory,
+    validationSchema,
+    onSubmit: (values) => {
+      mutate({
+        variables: values,
+      });
+    },
+  });
+
+  const handleCroppedImage = (reader: FileReader) =>
+    formik.setFieldValue("image", reader.result);
+
+  const handleFile = (files: FileList | null) =>
+    formik.setFieldValue("image", files?.[0]);
+
+  const handleCroppedIcon = (reader: FileReader) =>
+    formik.setFieldValue("icon", reader.result);
+
+  const handleIconFile = (files: FileList | null) =>
+    formik.setFieldValue("icon", files?.[0]);
+
   return (
     <AppLayout>
-      <form onSubmit={onSubmit} className="bg-white px-5 py-3 rounded-lg">
+      <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("category:add")}</h1>
 
-        <aside className="flex gap-5 mt-5 mb-8">
+        <aside className="flex gap-5">
           <ImageUpload
-            required={false}
-            inputData={image}
-            setInputData={setImage}
-            setCropedImage={setCropedImage}
-            label={t("category:select_image")}
+            handleFile={handleFile}
+            handleCroppedImage={handleCroppedImage}
+            label={t("common:select_image")}
           />
 
           <ImageUpload
-            required={false}
-            inputData={image}
-            setInputData={setImage}
-            setCropedImage={setCropedIcon}
-            label={t("category:select_icon")}
+            handleFile={handleIconFile}
+            handleCroppedImage={handleCroppedIcon}
+            label={t("common:select_icon")}
           />
         </aside>
 
-        <aside className="grid grid-cols-12 gap-5 mt-3 mb-8">
+        <aside className="flex gap-5">
           <TextField
             name="name_tm"
             required
             lang="tm"
             label={t("category:name_tm")}
             placeholder={t("category:name_tm")}
-            handleChange={handleChange}
+            handleChange={formik.handleChange}
           />
 
           <TextField
@@ -121,17 +106,17 @@ const AddCategory: React.FC = () => {
             lang="tm"
             label={t("category:name_ru")}
             placeholder={t("category:name_ru")}
-            handleChange={handleChange}
+            handleChange={formik.handleChange}
           />
         </aside>
 
-        <aside className="flex gap-5 mt-5 mb-8">
+        <aside className="flex gap-5">
           <TextField
             name="description_tm"
             required
             label={t("category:description_tm")}
             placeholder={t("category:description_tm")}
-            handleChange={handleChange}
+            handleChange={formik.handleChange}
           />
 
           <TextField
@@ -139,20 +124,17 @@ const AddCategory: React.FC = () => {
             required
             label={t("category:description_ru")}
             placeholder={t("category:description_ru")}
-            handleChange={handleChange}
+            handleChange={formik.handleChange}
           />
         </aside>
 
-        <aside className="mt-5 mb-8">
+        <aside className="flex gap-5">
           <Select
-            name="parent_id"
-            label={t("category:select_category")}
-            placeholder={t("category:select_category")}
-            handleChange={handleChange}
-            options={[
-              { title: "1", value: 1 },
-              { title: "2", value: 2 },
-            ]}
+            name="category_id"
+            label={t("common:category")}
+            placeholder={t("common:category_placeholder")}
+            handleChange={formik.handleChange}
+            options={CategoryListDTO(data?.categories?.data)}
           />
         </aside>
 

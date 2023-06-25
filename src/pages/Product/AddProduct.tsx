@@ -1,52 +1,58 @@
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
+import React from "react";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/common/Form/TextField";
-import ImageUpload from "../../components/common/Form/imageUpload";
-import { INewsCreate } from "../../common/interfaces/News/INewsCreate";
-import TextEditor from "../../components/common/Form/TextEditor";
+import ImageEditor from "../../components/common/Form/ImageEditor";
 import Button from "../../components/Button/Button";
 import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
 import { ADD_PRODUCT } from "../../graphql/mutations/Product/addProductMutation";
+import { IProduct } from "./IProduct";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const AddProduct: React.FC = () => {
   const { t } = useTranslation(["common", "product"]);
   const navigate = useNavigate();
-  const [inputImageData, setImageInputData] = useState({
-    select_image: "Выберите",
-    image: "",
-  });
-  const [newCropedImage, setNewCropedImage] = useState();
+  const initialValues: IProduct = {} as IProduct;
 
-  const [news, setNews] = useState<INewsCreate>({
-    title_tm: "",
-    title_ru: "",
-    description_tm: "",
-    description_ru: "",
-    image: "",
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setNews({
-      ...news,
-      [e.target.name]: e.target.value,
+  const validationSchema = () => {
+    return Yup.object().shape({
+      title: Yup.object().shape({
+        tm: Yup.string().required(t("product:name_tm_required")),
+        ru: Yup.string().required(t("product:name_ru_required")),
+      }),
+      description: Yup.object().shape({
+        tm: Yup.string().required(t("product:name_tm_required")),
+        ru: Yup.string().required(t("product:name_ru_required")),
+      }),
     });
   };
 
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: (values) => {
+      mutate({
+        variables: values,
+      });
+    },
+  });
+
   const onCompleted = () => {
-    toast.success(t("success_saved"), { duration: 1500 }) &&
+    toast.success(t("common:success_saved"), { duration: 1500 }) &&
       setTimeout(() => navigate(RouteNames.news), 2000);
   };
 
+  const onError = () =>
+    toast.error(t("common:error_not_saved"), { duration: 2000 });
+
   const [mutate] = useMutation(ADD_PRODUCT, {
     onCompleted,
-    onError: () => toast.error(t("error_not_saved"), { duration: 2000 }),
+    onError,
     refetchQueries: [
       {
         query: GET_PRODUCTS,
@@ -55,63 +61,58 @@ const AddProduct: React.FC = () => {
     ],
   });
 
-  const onSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    mutate({
-      variables: {
-        image: newCropedImage,
-        title: JSON.stringify({
-          tm: news.title_tm,
-          ru: news.title_ru || news.title_tm,
-        }),
-        description: JSON.stringify({
-          tm: news.description_tm,
-          ru: news.description_ru || news.description_tm,
-        }),
-      },
-    });
-  };
+  const handleCroppedImage = (reader: FileReader) =>
+    formik.setFieldValue("cropped_image", reader.result);
+
+  const handleFile = (files: FileList | null) =>
+    formik.setFieldValue("image", files?.[0]);
 
   return (
     <AppLayout>
-      <form onSubmit={onSubmit} className="bg-white px-5 py-3 my-3 rounded-lg">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="bg-white px-5 py-3 my-3 rounded-lg"
+      >
         <h1 className="text-lg font-montserrat-bold">{t("product:add")}</h1>
 
         <aside className="mt-5 mb-8">
-          <ImageUpload
-            inputData={inputImageData}
-            setInputData={setImageInputData}
-            setCropedImage={setNewCropedImage}
+          <ImageEditor
+            handleFile={handleFile}
+            handleCroppedImage={handleCroppedImage}
             label={t("product:select_image")}
           />
         </aside>
+
         <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
           <TextField
-            name="title_tm"
+            name="title.tm"
             lang="tm"
-            label="Label"
             required
-            placeholder="Input title"
-            handleChange={handleChange}
+            label={t("product:title_tm")}
+            placeholder={t("product:title_tm")}
+            handleChange={formik.handleChange}
           />
+
           <TextField
-            name="title_ru"
-            label="Label"
+            name="title.ru"
+            lang="ru"
             required
-            placeholder="Input title"
-            handleChange={handleChange}
+            label={t("product:title_ru")}
+            placeholder={t("product:title_ru")}
+            handleChange={formik.handleChange}
           />
         </aside>
-        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
+
+        {/* <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
           <div className="col-span-6">
             <TextEditor
               label="Description"
               required
               lang="tm"
               handleChange={(text: string) => {
-                setNews({
-                  ...news,
-                  description_tm: text,
+                setProduct({
+                  ...product,
+                  description: text,
                 });
               }}
             />
@@ -121,14 +122,14 @@ const AddProduct: React.FC = () => {
               label="Description"
               required
               handleChange={(text: string) => {
-                setNews({
-                  ...news,
-                  description_ru: text,
+                setProduct({
+                  ...product,
+                  description: text,
                 });
               }}
             />
           </div>
-        </aside>
+        </aside> */}
 
         <footer className="flex items-center justify-end gap-3">
           <Button bg="secondary" link={RouteNames.category}>

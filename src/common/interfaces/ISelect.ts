@@ -1,8 +1,8 @@
-export type TSelectOption = {
-  title: string;
+export type SelectOption = {
+  label?: string;
   value: string | number;
 };
 
 export interface ISelectOptionsList {
-  options: TSelectOption[];
+  options: SelectOption[];
 }

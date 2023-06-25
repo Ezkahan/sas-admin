@@ -16,7 +16,7 @@ i18n
   .use(Backend)
   .init({
     lng: defaultLocale ?? "tm",
-    supportedLngs: ["tm", "ru"],
+    supportedLngs: ["tm", "ru", "en"],
     fallbackLng: "tm",
     interpolation: {
       escapeValue: false,

@@ -6,13 +6,13 @@ import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
 import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
-import { ICategoryList } from "../../common/interfaces/Category/ICategoryList";
+import { ICategory } from "./Category/ICategory";
 import { RouteNames } from "../../router/routing";
 import DeleteCategory from "./DeleteCategory";
-import { jsonParseToLangs } from "../../common/helpers/jsonParseToLangs";
 import { GET_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategoriesQuery";
 import Paginate from "../../components/Paginate/Paginate";
 import Button from "../../components/Button/Button";
+import getByLocale from "../../common/helpers/getByLocale";
 
 const Categories: React.FC = () => {
   const { t } = useTranslation(["common", "category"]);
@@ -67,9 +67,9 @@ const Categories: React.FC = () => {
                     <th className="px-4 py-3 rounded-tl-lg rounded-bl-lg">
                       {t("common:id")}
                     </th>
-                    <th className="px-4 py-3">{t("category:name")}</th>
-                    <th className="px-4 py-3">{t("category:image")}</th>
-                    <th className="px-4 py-3">{t("category:icon")}</th>
+                    <th className="px-4 py-3">{t("common:name")}</th>
+                    <th className="px-4 py-3">{t("common:image")}</th>
+                    <th className="px-4 py-3">{t("common:icon")}</th>
                     <th className="px-4 py-3 text-center">
                       {t("category:visited_count")}
                     </th>
@@ -79,7 +79,7 @@ const Categories: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.categories.data.map((category: ICategoryList) => {
+                  {data.categories.data.map((category: ICategory) => {
                     return (
                       <tr
                         key={category.id}
@@ -91,7 +91,7 @@ const Categories: React.FC = () => {
 
                         <td className="border-r border-stone-100 px-4 py-3">
                           <h1 className="font-bold">
-                            {jsonParseToLangs(category.name).tm}
+                            {getByLocale(JSON.parse(category?.name))}
                           </h1>
                         </td>
 

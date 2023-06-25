@@ -8,9 +8,9 @@ import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
 import DeleteBanner from "./DeleteBanner";
 import { GET_BANNERS } from "../../graphql/queries/Banner/getBannersQuery";
-import { IBannerList } from "../../common/interfaces/Banner/IBannerList";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
+import { IBannerList } from "./IBanner";
 
 const Banners: React.FC = () => {
   const { t } = useTranslation(["common", "banner"]);
@@ -36,7 +36,7 @@ const Banners: React.FC = () => {
           <DeleteBanner id={bannerDelete.id} close={toggleDeleteModal} />
         </Modal>
 
-        <main className="bg-white px-5 py-3 rounded-lg">
+        <main className="section">
           <header className="flex justify-between items-center mb-5">
             <aside className="flex">
               <div className="flex flex-col">
@@ -44,7 +44,7 @@ const Banners: React.FC = () => {
                   {t("banner:title")}
                 </h1>
                 <small className="text-indigo-500 flex gap-1">
-                  {t("total")}:
+                  {t("common:total")}:
                   <strong>{data?.banners?.paginatorInfo?.total}</strong>
                 </small>
               </div>
@@ -74,41 +74,35 @@ const Banners: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.banners.data.map(
-                    (banner: IBannerList, index: number) => {
-                      return (
-                        <tr
-                          key={index}
-                          className="border-b border-stone-100 text-indigo-900/80"
-                        >
-                          <td className="border-r border-stone-100 px-4 py-3 text-xs">
-                            {banner.id}
-                          </td>
-                          <td className="border-r border-stone-100 w-96 px-4 py-3">
-                            <h1 className="font-bold">{banner.link}</h1>
-                          </td>
+                  {data.banners.data.map((banner: IBannerList) => {
+                    return (
+                      <tr
+                        key={banner.id}
+                        className="border-b border-stone-100 text-indigo-900/80"
+                      >
+                        <td className="border-r border-stone-100 px-4 py-3 text-xs">
+                          {banner.id}
+                        </td>
+                        <td className="border-r border-stone-100 w-96 px-4 py-3">
+                          <h1 className="font-bold">{banner.link}</h1>
+                        </td>
 
-                          <td className="border-r border-stone-100 px-4 py-3">
-                            <p>{banner.position}</p>
-                          </td>
+                        <td className="border-r border-stone-100 px-4 py-3">
+                          <p>{banner.position}</p>
+                        </td>
 
-                          <td className="px-4 py-3">
-                            <img
-                              src={banner.image}
-                              alt="img"
-                              className="w-20"
-                            />
-                          </td>
+                        <td className="px-4 py-3">
+                          <img src={banner.image} alt="img" className="w-20" />
+                        </td>
 
-                          <td className="px-2 py-3">
-                            <Button.Delete
-                              onClick={() => toggleDeleteModal(banner.id)}
-                            />
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )}
+                        <td className="px-2 py-3">
+                          <Button.Delete
+                            onClick={() => toggleDeleteModal(banner.id)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </section>

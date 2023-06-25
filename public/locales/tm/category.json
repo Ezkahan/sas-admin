@@ -1,14 +1,11 @@
 {
-    "title": "Categories",
-    "name": "Name",
-    "image": "Image",
-    "visited_count": "Visited count",
-    "add": "Add category",
-    "select_image": "Select image",
-    "select_icon": "Select icon",
-    "name_tm": "Name tm",
-    "name_ru": "Name ru",
-    "description_tm": "Description tm",
-    "description_ru": "Description ru",
-    "select_category": "Select category"
+    "title": "Bölümler",
+    "visited_count": "Görülen sany",
+    "add": "Bölüm goşmak",
+    "name_tm": "Türkmençe ady",
+    "name_ru": "Rusça ady",
+    "description_tm": "Türkmençe maglumat",
+    "description_ru": "Rusça maglumat",
+    "image_required": "Surat saýlaň",
+    "icon_required": "Nyşan saýlaň"
 }

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const CREATE_BANNER = gql`
+export const ADD_BANNER = gql`
   mutation AddBanner(
     $link: String
     $image: String!

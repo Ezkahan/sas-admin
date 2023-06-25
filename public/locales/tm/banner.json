@@ -1,13 +1,11 @@
 {
-    "title": "Banners",
-    "link": "Link",
-    "position": "Position",
-    "image": "Image",
-    "add": "Add banner",
-    "select_image": "Select image",
-    "url": "URL",
+    "title": "Bannerlar",
+    "link": "Salgy",
+    "position": "Tertip",
+    "image": "Surat",
+    "add": "Banner goşmak",
+    "select_image": "Surat saýlaň",
+    "url": "URL salgy",
     "url_placeholder": "example.com",
-    "position_placeholder": "Select position",
-    "category": "Category",
-    "category_placeholder": "Select category"
+    "position_placeholder": "Tertibini belläň"
 }

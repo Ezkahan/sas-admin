@@ -15,7 +15,7 @@ import Products from "../pages/Product/Products";
 const Banners = React.lazy(() => import("../pages/Banner/Banners"));
 const AddBanner = React.lazy(() => import("../pages/Banner/AddBanner"));
 const Brands = React.lazy(() => import("../pages/Brand/Brands"));
-const BrandCreate = React.lazy(() => import("../pages/Brand/AddBrand"));
+const AddBrand = React.lazy(() => import("../pages/Brand/AddBrand"));
 const Categories = React.lazy(() => import("../pages/Category/Categories"));
 const AddCategory = React.lazy(() => import("../pages/Category/AddCategory"));
 const CategoryEdit = React.lazy(() => import("../pages/Category/EditCategory"));
@@ -35,7 +35,7 @@ const RouteNames = {
   bannerDetail: "/banner/",
   addBanner: "/banner/add",
   brand: "/brand",
-  brandCreate: "/brand/create",
+  addBrand: "/brand/add",
   category: "/category",
   categoryAdd: "/category/add",
   categoryEdit: "/category/:id/edit",
@@ -189,10 +189,10 @@ const routing: IRoute[] = [
     nav: navRoutes[2],
   },
   {
-    path: RouteNames.brandCreate,
+    path: RouteNames.addBrand,
     private: true,
     priority: 5,
-    element: BrandCreate,
+    element: AddBrand,
   },
   {
     path: RouteNames.category,

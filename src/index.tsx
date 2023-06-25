@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
-import i18n from "./common/locales/i18n";
+import i18n from "./common/configs/i18n";
 import WebRoutes from "./router/WebRoutes";
 import { client } from "./common/configs/apolloClient";
 import AuthProvider from "./components/Provider/AuthProvider";

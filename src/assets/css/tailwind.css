@@ -47,8 +47,12 @@
         max-height: 25rem;
     }
 
+    .section {
+        @apply bg-white lg:px-8 px-5 lg:py-6 py-3 rounded-lg
+    }
+
     .btn {
-        @apply bg-indigo-600 hover:bg-indigo-800 text-white font-montserrat-bold px-6 py-2.5 duration-300 rounded-lg
+        @apply bg-indigo-600 hover:bg-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-montserrat-bold px-6 py-2.5 duration-300 rounded-lg
     }
 
     .btn__add {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TM_FLAG from "../../assets/icons/locales/tm.png";
 import EN_FLAG from "../../assets/icons/locales/en.jpg";
-import changeLocale from "../../common/locales/changeLocale";
+import changeLocale from "../../common/helpers/changeLocale";
 
 const Locale = () => {
   const [select, setSelect] = useState(false);

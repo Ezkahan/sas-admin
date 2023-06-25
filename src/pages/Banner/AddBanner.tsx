@@ -1,54 +1,44 @@
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import React from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { IBannerCreate } from "../../common/interfaces/Banner/IBannerCreate";
 import { GET_BANNERS } from "../../graphql/queries/Banner/getBannersQuery";
-import { CREATE_BANNER } from "../../graphql/mutations/Banner/createBannerMutation";
+import { ADD_BANNER } from "../../graphql/mutations/Banner/addBannerMutation";
 import TextField from "../../components/common/Form/TextField";
 import Select from "../../components/common/Form/Select";
-import ImageUpload from "../../components/common/Form/imageUpload";
+import ImageUpload from "../../components/common/Form/ImageEditor";
 import Button from "../../components/Button/Button";
 import { RouteNames } from "../../router/routing";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { BannerType } from "./IBanner";
+import CategoryListDTO from "../Category/CategoryListDTO";
+import { GET_SHORT_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategoriesQuery";
 
 const AddBanner: React.FC = () => {
   const { t } = useTranslation(["common", "banner"]);
   const navigate = useNavigate();
+  const { data } = useQuery(GET_SHORT_CATEGORY_LIST);
 
-  const [inputImageData, setImageInputData] = useState({
-    select_image: t("common:select_image"),
-    image: "",
-  });
-  const [newCropedImage, setNewCropedImage] = useState();
-
-  const [banner, setBanner] = useState<IBannerCreate>({
-    category_id: 1,
-    image: "",
-    position: "",
-    link: "",
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    setBanner({
-      ...banner,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const positions = [
+    { label: "TOP", value: "TOP" },
+    { label: "MAIN", value: "MAIN" },
+    { label: "BOTTOM", value: "BOTTOM" },
+  ];
 
   const onCompleted = () => {
     toast.success(t("success_saved"), { duration: 1500 }) &&
       setTimeout(() => navigate("/banner"), 2000);
   };
 
-  const [createBanner] = useMutation(CREATE_BANNER, {
+  const onError = () =>
+    toast.error(t("common:error_not_saved"), { duration: 2000 });
+
+  const [mutate] = useMutation(ADD_BANNER, {
     onCompleted,
-    onError: () => toast.error(t("error_not_saved"), { duration: 2000 }),
+    onError,
     refetchQueries: [
       {
         query: GET_BANNERS,
@@ -57,65 +47,65 @@ const AddBanner: React.FC = () => {
     ],
   });
 
-  const onSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    createBanner({
-      variables: {
-        image: newCropedImage,
-        link: banner.link,
-        position: banner.position,
-        category_id: banner.category_id,
-      },
+  const validationSchema = () => {
+    return Yup.object().shape({
+      image: Yup.string().required(t("banner:image_required")),
+      position: Yup.string().required(t("banner:position_required")),
+      link: Yup.string().required(t("banner:link_required")),
+      category_id: Yup.string().required(t("banner:category_required")),
     });
   };
 
+  const formik = useFormik({
+    initialValues: {} as BannerType,
+    validationSchema,
+    onSubmit: (values) => {
+      mutate({
+        variables: values,
+      });
+    },
+  });
+
+  const handleCroppedImage = (reader: FileReader) =>
+    formik.setFieldValue("image", reader.result);
+
+  const handleFile = (files: FileList | null) =>
+    formik.setFieldValue("image", files?.[0]);
+
   return (
     <AppLayout>
-      <form
-        onSubmit={(e) => onSubmit(e)}
-        className="bg-white px-5 py-3 rounded-lg"
-      >
+      <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("banner:add")}</h1>
 
-        <aside className="grid grid-cols-12 gap-5 mt-3">
-          <ImageUpload
-            inputData={inputImageData}
-            setInputData={setImageInputData}
-            setCropedImage={setNewCropedImage}
-            label={t("banner:select_image")}
-          />
-        </aside>
+        <ImageUpload
+          handleFile={handleFile}
+          handleCroppedImage={handleCroppedImage}
+          label={t("banner:select_image")}
+        />
 
-        <aside className="grid grid-cols-12 gap-5 mt-3 mb-8">
+        <aside className="flex gap-5">
           <TextField
             name="link"
             label={t("banner:url")}
             placeholder={t("banner:url_placeholder")}
-            handleChange={handleChange}
+            handleChange={formik.handleChange}
           />
           <Select
             name="position"
             label={t("banner:position")}
             placeholder={t("banner:position_placeholder")}
-            handleChange={handleChange}
-            options={[
-              { title: "TOP", value: "TOP" },
-              { title: "MAIN", value: "MAIN" },
-              { title: "BOTTOM", value: "BOTTOM" },
-            ]}
+            handleChange={formik.handleChange}
+            options={positions}
           />
         </aside>
 
-        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
+        <aside className="flex gap-5">
           <Select
             name="category_id"
-            label={t("banner:category")}
-            placeholder={t("banner:category_placeholder")}
-            handleChange={handleChange}
-            options={[
-              { title: "1", value: 1 },
-              { title: "2", value: 2 },
-            ]}
+            label={t("common:category")}
+            placeholder={t("common:category_placeholder")}
+            handleChange={formik.handleChange}
+            options={CategoryListDTO(data?.categories?.data)}
           />
         </aside>
 
@@ -124,7 +114,7 @@ const AddBanner: React.FC = () => {
             <p>{t("common:cancel")}</p>
           </Button>
 
-          <Button type="submit">
+          <Button type="submit" disabled={!(formik.dirty && formik.isValid)}>
             <p>{t("common:save")}</p>
           </Button>
         </footer>

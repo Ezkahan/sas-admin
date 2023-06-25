@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const CREATE_BRAND = gql`
+export const ADD_BRAND = gql`
   mutation AddBrand($logo: String!, $name: String!, $category_id: ID!) {
     addBrand(name: $name, logo: $logo, category_id: $category_id) {
       id

@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 interface IProps {
-  lang?: "tm" | "en";
+  lang?: "tm" | "ru" | "en";
   handleChange: Function;
   placeholder: string;
   label: string;
