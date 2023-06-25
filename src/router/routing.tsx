@@ -18,7 +18,7 @@ const Brands = React.lazy(() => import("../pages/Brand/Brands"));
 const AddBrand = React.lazy(() => import("../pages/Brand/AddBrand"));
 const Categories = React.lazy(() => import("../pages/Category/Categories"));
 const AddCategory = React.lazy(() => import("../pages/Category/AddCategory"));
-const CategoryEdit = React.lazy(() => import("../pages/Category/EditCategory"));
+const EditCategory = React.lazy(() => import("../pages/Category/EditCategory"));
 const News = React.lazy(() => import("../pages/News/News"));
 const NewsCreate = React.lazy(() => import("../pages/News/CreateNews"));
 const NewsDetail = React.lazy(() => import("../pages/News/ShowNews"));
@@ -37,8 +37,8 @@ const RouteNames = {
   brand: "/brand",
   addBrand: "/brand/add",
   category: "/category",
-  categoryAdd: "/category/add",
-  categoryEdit: "/category/:id/edit",
+  addCategory: "/category/add",
+  editCategory: "/category/:id/edit",
   coupon: "/coupon",
   couponCreate: "/coupon/create",
   news: "/news",
@@ -202,16 +202,16 @@ const routing: IRoute[] = [
     nav: navRoutes[3],
   },
   {
-    path: RouteNames.categoryAdd,
+    path: RouteNames.addCategory,
     private: true,
     priority: 5,
     element: AddCategory,
   },
   {
-    path: RouteNames.categoryEdit,
+    path: RouteNames.editCategory,
     private: true,
     priority: 5,
-    element: CategoryEdit,
+    element: EditCategory,
   },
   {
     path: RouteNames.coupon,

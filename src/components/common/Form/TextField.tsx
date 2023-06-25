@@ -24,7 +24,7 @@ const TextField: FC<IProps> = ({
 }: IProps) => {
   const { t } = useTranslation("translation");
   return (
-    <div className="col-span-12 xl:col-span-6 bg-slate-50 border border-slate-200 rounded-lg flex flex-col w-full overflow-hidden">
+    <div className="bg-slate-50 border border-slate-200 rounded-lg flex flex-col w-full overflow-hidden">
       <header className="flex items-center justify-between">
         <small className="px-4 pt-2">
           {t(label)} {required && <span className="text-red-600 pl-1">*</span>}

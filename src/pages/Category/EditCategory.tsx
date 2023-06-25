@@ -2,44 +2,38 @@ import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
-import { GET_CATEGORY } from "../../graphql/queries/Categories/getCategoryQuery";
-import { UPDATE_CATEGORY } from "../../graphql/mutations/Category/updateCategoryMutation";
 import TextField from "../../components/common/Form/TextField";
-import { ICategory } from "./Category/ICategory";
-import NavigateBack from "../../components/Core/NavigateBack";
+import ImageEditor from "../../components/common/Form/ImageEditor";
 import {
   GET_CATEGORY_LIST,
   GET_SHORT_CATEGORY_LIST,
 } from "../../graphql/queries/Categories/getCategoriesQuery";
-import { useFormik } from "formik";
-import ImageUpload from "../../components/common/Form/ImageEditor";
-import * as Yup from "yup";
-import CategoryListDTO from "./CategoryListDTO";
-import Select from "../../components/common/Form/Select";
 import Button from "../../components/Button/Button";
+import Select from "../../components/common/Form/Select";
+import CategoryListDTO from "./CategoryListDTO";
+import { ADD_CATEGORY } from "../../graphql/mutations/Category/addCategoryMutation";
+import { useFormik } from "formik";
+import { ICategory } from "./Category/ICategory";
+import * as Yup from "yup";
 
 const EditCategory: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common", "category"]);
   const navigate = useNavigate();
-  const { id } = useParams();
-  const { data: shortCategories } = useQuery(GET_SHORT_CATEGORY_LIST);
+  const { data } = useQuery(GET_SHORT_CATEGORY_LIST);
 
   const onCompleted = () => {
     toast.success(t("success_saved"), { duration: 1500 }) &&
       setTimeout(() => navigate(RouteNames.category), 2000);
   };
 
-  const { loading, data } = useQuery(GET_CATEGORY, {
-    variables: { id: id },
-    onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
-  });
+  const onError = () => toast.error(t("error_not_saved"), { duration: 2000 });
 
-  const [mutate] = useMutation(UPDATE_CATEGORY, {
+  const [mutate] = useMutation(ADD_CATEGORY, {
     onCompleted,
-    onError: () => toast.error(t("error_not_saved"), { duration: 2000 }),
+    onError,
     refetchQueries: [
       {
         query: GET_CATEGORY_LIST,
@@ -60,7 +54,11 @@ const EditCategory: React.FC = () => {
     validationSchema,
     onSubmit: (values) => {
       mutate({
-        variables: values,
+        variables: {
+          ...values,
+          name: JSON.stringify(values.name),
+          description: JSON.stringify(values.description),
+        },
       });
     },
   });
@@ -71,59 +69,65 @@ const EditCategory: React.FC = () => {
   const handleFile = (files: FileList | null) =>
     formik.setFieldValue("image", files?.[0]);
 
+  const handleCroppedIcon = (reader: FileReader) =>
+    formik.setFieldValue("icon", reader.result);
+
+  const handleIconFile = (files: FileList | null) =>
+    formik.setFieldValue("icon", files?.[0]);
+
   return (
     <AppLayout>
-      {/* {loading && <MiniLoader />} */}
-
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
-        <NavigateBack backPath={RouteNames.category} />
+        <h1 className="text-lg font-montserrat-bold">{t("category:edit")}</h1>
 
-        <h1 className="text-lg font-montserrat-bold">Edit category</h1>
-
-        <ImageUpload
-          handleFile={handleFile}
-          handleCroppedImage={handleCroppedImage}
-          label={t("common:select_image")}
-        />
-
-        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-          <TextField
-            name="name_tm"
-            label="Label"
-            withLocale
-            lang="tm"
-            required
-            placeholder="Adyny giriziň"
-            handleChange={formik.handleChange}
-            defaultValue={formik.values.name}
+        <aside className="flex gap-5">
+          <ImageEditor
+            handleFile={handleFile}
+            handleCroppedImage={handleCroppedImage}
+            label={t("common:select_image")}
           />
+
+          <ImageEditor
+            handleFile={handleIconFile}
+            handleCroppedImage={handleCroppedIcon}
+            label={t("common:select_icon")}
+          />
+        </aside>
+
+        <aside className="flex gap-5">
           <TextField
-            name="description_tm"
-            label="Description"
-            withLocale
+            name="name.tm"
+            required
             lang="tm"
-            placeholder="input description"
-            // defaultValue={formik.values.description}
+            label={t("category:name_tm")}
+            placeholder={t("category:name_tm")}
+            handleChange={formik.handleChange}
+          />
+
+          <TextField
+            name="name.ru"
+            required
+            lang="tm"
+            label={t("category:name_ru")}
+            placeholder={t("category:name_ru")}
             handleChange={formik.handleChange}
           />
         </aside>
 
-        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
+        <aside className="flex gap-5">
           <TextField
-            name="name_ru"
-            label="Label"
-            withLocale
-            defaultValue={formik.values.name}
+            name="description.tm"
             required
-            placeholder="Adyny giriziň"
+            label={t("category:description_tm")}
+            placeholder={t("category:description_tm")}
             handleChange={formik.handleChange}
           />
+
           <TextField
-            name="description_ru"
-            label="Description"
-            withLocale
-            // defaultValue={formik.values.description}
-            placeholder="input description"
+            name="description.ru"
+            required
+            label={t("category:description_ru")}
+            placeholder={t("category:description_ru")}
             handleChange={formik.handleChange}
           />
         </aside>
@@ -134,15 +138,7 @@ const EditCategory: React.FC = () => {
             label={t("common:category")}
             placeholder={t("common:category_placeholder")}
             handleChange={formik.handleChange}
-            options={CategoryListDTO(shortCategories?.categories?.data)}
-          />
-
-          <TextField
-            name="icon"
-            label="Icon"
-            type="file"
-            placeholder="icon file"
-            handleChange={formik.handleChange}
+            options={CategoryListDTO(data?.categories?.data)}
           />
         </aside>
 

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/common/Form/TextField";
-import ImageUpload from "../../components/common/Form/ImageEditor";
+import ImageEditor from "../../components/common/Form/ImageEditor";
 import {
   GET_CATEGORY_LIST,
   GET_SHORT_CATEGORY_LIST,
@@ -54,7 +54,11 @@ const AddCategory: React.FC = () => {
     validationSchema,
     onSubmit: (values) => {
       mutate({
-        variables: values,
+        variables: {
+          ...values,
+          name: JSON.stringify(values.name),
+          description: JSON.stringify(values.description),
+        },
       });
     },
   });
@@ -76,14 +80,14 @@ const AddCategory: React.FC = () => {
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("category:add")}</h1>
 
-        <aside className="flex gap-5">
-          <ImageUpload
+        <aside className="flex gap-x-5">
+          <ImageEditor
             handleFile={handleFile}
             handleCroppedImage={handleCroppedImage}
             label={t("common:select_image")}
           />
 
-          <ImageUpload
+          <ImageEditor
             handleFile={handleIconFile}
             handleCroppedImage={handleCroppedIcon}
             label={t("common:select_icon")}
@@ -92,7 +96,7 @@ const AddCategory: React.FC = () => {
 
         <aside className="flex gap-5">
           <TextField
-            name="name_tm"
+            name="name.tm"
             required
             lang="tm"
             label={t("category:name_tm")}
@@ -101,7 +105,7 @@ const AddCategory: React.FC = () => {
           />
 
           <TextField
-            name="name_tm"
+            name="name.ru"
             required
             lang="tm"
             label={t("category:name_ru")}
@@ -112,7 +116,7 @@ const AddCategory: React.FC = () => {
 
         <aside className="flex gap-5">
           <TextField
-            name="description_tm"
+            name="description.tm"
             required
             label={t("category:description_tm")}
             placeholder={t("category:description_tm")}
@@ -120,7 +124,7 @@ const AddCategory: React.FC = () => {
           />
 
           <TextField
-            name="description_ru"
+            name="description.ru"
             required
             label={t("category:description_ru")}
             placeholder={t("category:description_ru")}

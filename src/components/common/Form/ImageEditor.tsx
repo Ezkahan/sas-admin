@@ -82,31 +82,27 @@ const ImageEditor: React.FC<ImageEditorType> = ({
   }, [completedCrop, handleCroppedImage]);
 
   return (
-    <div className="w-full">
-      <aside className="grid grid-cols-12 gap-5">
-        <ReactCrop
-          className="col-span-12 lg:col-span-7"
-          src={upImg}
-          onImageLoaded={onLoad}
-          crop={crop}
-          onChange={(c) => setCrop(c)}
-          onComplete={(c) => setCompletedCrop(c)}
-        />
-        <div className="col-span-12 lg:col-span-5">
-          <canvas
-            className="max-w-full h-auto"
-            ref={previewCanvasRef}
-            // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-            style={{
-              width: Math.round(completedCrop?.width ?? 0),
-              // height: Math.round(completedCrop?.height ?? 0)
-            }}
-          />
-        </div>
-      </aside>
+    <div className="w-full border bg-green-500">
+      <ReactCrop
+        className="bg-red-500 p-0 m-0"
+        src={upImg}
+        onImageLoaded={onLoad}
+        crop={crop}
+        onChange={(c) => setCrop(c)}
+        onComplete={(c) => setCompletedCrop(c)}
+      />
+      <canvas
+        className="max-w-full h-auto"
+        ref={previewCanvasRef}
+        // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
+        style={{
+          width: Math.round(completedCrop?.width ?? 0),
+          // height: Math.round(completedCrop?.height ?? 0)
+        }}
+      />
 
       <aside className="flex flex-col border border-gray-200 bg-gray-50 rounded-md">
-        <label className="text-sm px-4 pt-2">{label}</label>
+        <label className="text-sm px-4 pt-2 w-max">{label}</label>
 
         <div className="relative h-10">
           <label className="absolute top-2 left-4 text-gray-400">

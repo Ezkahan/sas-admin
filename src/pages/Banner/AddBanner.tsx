@@ -8,7 +8,7 @@ import { GET_BANNERS } from "../../graphql/queries/Banner/getBannersQuery";
 import { ADD_BANNER } from "../../graphql/mutations/Banner/addBannerMutation";
 import TextField from "../../components/common/Form/TextField";
 import Select from "../../components/common/Form/Select";
-import ImageUpload from "../../components/common/Form/ImageEditor";
+import ImageEditor from "../../components/common/Form/ImageEditor";
 import Button from "../../components/Button/Button";
 import { RouteNames } from "../../router/routing";
 import { useFormik } from "formik";
@@ -77,7 +77,7 @@ const AddBanner: React.FC = () => {
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("banner:add")}</h1>
 
-        <ImageUpload
+        <ImageEditor
           handleFile={handleFile}
           handleCroppedImage={handleCroppedImage}
           label={t("banner:select_image")}
