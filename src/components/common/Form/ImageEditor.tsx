@@ -82,9 +82,8 @@ const ImageEditor: React.FC<ImageEditorType> = ({
   }, [completedCrop, handleCroppedImage]);
 
   return (
-    <div className="w-full border bg-green-500">
+    <div className="flex">
       <ReactCrop
-        className="bg-red-500 p-0 m-0"
         src={upImg}
         onImageLoaded={onLoad}
         crop={crop}
@@ -101,7 +100,7 @@ const ImageEditor: React.FC<ImageEditorType> = ({
         }}
       />
 
-      <aside className="flex flex-col border border-gray-200 bg-gray-50 rounded-md">
+      <aside className="flex flex-col border border-gray-200 bg-gray-50 rounded-md w-full">
         <label className="text-sm px-4 pt-2 w-max">{label}</label>
 
         <div className="relative h-10">

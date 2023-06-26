@@ -13,11 +13,11 @@ import { ADD_PRODUCT } from "../../graphql/mutations/Product/addProductMutation"
 import { IProduct } from "./IProduct";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import TextEditor from "../../components/common/Form/TextEditor";
 
 const AddProduct: React.FC = () => {
   const { t } = useTranslation(["common", "product"]);
   const navigate = useNavigate();
-  const initialValues: IProduct = {} as IProduct;
 
   const validationSchema = () => {
     return Yup.object().shape({
@@ -33,7 +33,7 @@ const AddProduct: React.FC = () => {
   };
 
   const formik = useFormik({
-    initialValues,
+    initialValues: {} as IProduct,
     validationSchema,
     onSubmit: (values) => {
       mutate({
@@ -69,24 +69,18 @@ const AddProduct: React.FC = () => {
 
   return (
     <AppLayout>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="bg-white px-5 py-3 my-3 rounded-lg"
-      >
+      <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("product:add")}</h1>
 
-        <aside className="mt-5 mb-8">
-          <ImageEditor
-            handleFile={handleFile}
-            handleCroppedImage={handleCroppedImage}
-            label={t("product:select_image")}
-          />
-        </aside>
+        <ImageEditor
+          handleFile={handleFile}
+          handleCroppedImage={handleCroppedImage}
+          label={t("common:select_image")}
+        />
 
-        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
+        <aside className="flex gap-5">
           <TextField
             name="title.tm"
-            lang="tm"
             required
             label={t("product:title_tm")}
             placeholder={t("product:title_tm")}
@@ -95,7 +89,6 @@ const AddProduct: React.FC = () => {
 
           <TextField
             name="title.ru"
-            lang="ru"
             required
             label={t("product:title_ru")}
             placeholder={t("product:title_ru")}
@@ -103,36 +96,40 @@ const AddProduct: React.FC = () => {
           />
         </aside>
 
-        {/* <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-          <div className="col-span-6">
-            <TextEditor
-              label="Description"
-              required
-              lang="tm"
-              handleChange={(text: string) => {
-                setProduct({
-                  ...product,
-                  description: text,
-                });
-              }}
-            />
-          </div>
-          <div className="col-span-6">
-            <TextEditor
-              label="Description"
-              required
-              handleChange={(text: string) => {
-                setProduct({
-                  ...product,
-                  description: text,
-                });
-              }}
-            />
-          </div>
-        </aside> */}
+        <aside className="flex gap-5">
+          <TextField
+            name="code"
+            required
+            label={t("product:code")}
+            placeholder={t("product:code")}
+            handleChange={formik.handleChange}
+          />
+
+          <TextField
+            name="price"
+            required
+            label={t("product:price")}
+            placeholder={t("product:price")}
+            handleChange={formik.handleChange}
+          />
+
+          <TextField
+            name="percent"
+            required
+            label={t("product:percent")}
+            placeholder={t("product:percent")}
+            handleChange={formik.handleChange}
+          />
+        </aside>
+
+        <TextEditor
+          label={t("product:description")}
+          required
+          handleChange={formik.handleChange}
+        />
 
         <footer className="flex items-center justify-end gap-3">
-          <Button bg="secondary" link={RouteNames.category}>
+          <Button bg="secondary" link={RouteNames.products}>
             <p>{t("common:cancel")}</p>
           </Button>
 
@@ -146,3 +143,13 @@ const AddProduct: React.FC = () => {
 };
 
 export default AddProduct;
+
+// title: JSON
+// description: JSON
+// code: String
+// brand_id: ID
+// category_id: ID
+// price: String
+// percent: String
+// in_stock: Boolean
+// status: Boolean

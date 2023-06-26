@@ -8,7 +8,7 @@ const MainContainer: React.FC<IChildren> = ({ children }: IChildren) => {
       animate={{ opacity: 1 }}
       transition={{ type: "tween", duration: 0.9 }}
     >
-      <section className="absolute top-12 left-0 xl:left-72 right-0 bottom-0 duration-500 p-2.5 xl:p-5">
+      <section className="absolute top-0 left-0 xl:left-72 right-0 bottom-0 duration-500 p-2.5 xl:p-5">
         {children}
       </section>
     </motion.div>

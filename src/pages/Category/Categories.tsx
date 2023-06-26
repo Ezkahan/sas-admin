@@ -38,7 +38,7 @@ const Categories: React.FC = () => {
           <DeleteCategory id={categoryDelete.id} close={toggleDeleteModal} />
         </Modal>
 
-        <main className="bg-white px-5 py-3 rounded-lg">
+        <main className="section">
           <header className="flex justify-between items-center mb-5">
             <aside className="flex">
               <div className="flex flex-col">

@@ -13,5 +13,9 @@
     "name": "Ady",
     "category": "Bölüm",
     "category_placeholder": "Bölüm saýlaň",
-    "logo": "Nyşan"
+    "logo": "Nyşan",
+    "title": "Sözbaşy",
+    "description": "Düşündirilişi",
+    "started_at": "Başlaýan wagty",
+    "ended_at": "Gutarýan wagty"
 }

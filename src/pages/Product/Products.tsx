@@ -39,7 +39,7 @@ const Products: React.FC = () => {
         <Modal isOpen={deleteProduct.delete} close={toggleDeleteModal}>
           <DeleteNews id={deleteProduct.id} close={toggleDeleteModal} />
         </Modal>
-        <main className="bg-white px-5 py-3 rounded-lg">
+        <main className="section">
           <header className="flex justify-between items-center mb-5">
             <aside className="flex">
               <div className="flex flex-col">
@@ -122,7 +122,7 @@ const Products: React.FC = () => {
         {data?.products?.paginatorInfo?.lastPage > 1 && (
           <Paginate
             currentPage={page.toString()}
-            lastPage={data?.categories?.paginatorInfo?.lastPage}
+            lastPage={data?.products?.paginatorInfo?.lastPage}
             setPage={setPage}
           />
         )}

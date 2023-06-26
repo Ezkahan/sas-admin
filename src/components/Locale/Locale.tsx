@@ -5,7 +5,7 @@ import changeLocale from "../../common/helpers/changeLocale";
 
 const Locale = () => {
   const [select, setSelect] = useState(false);
-  const locale = localStorage.getItem("orlan_locale") ?? "ru";
+  const locale = localStorage.getItem("sas_locale") ?? "tm";
   const locales = {
     tm: TM_FLAG,
     en: EN_FLAG,
@@ -19,7 +19,7 @@ const Locale = () => {
   return (
     <aside className="flex items-center">
       <div
-        className="uppercase font-bold w-8 ml-4"
+        className="uppercase font-bold w-8"
         onClick={() => setSelect(!select)}
       >
         {locale === "tm" ? (
@@ -29,18 +29,12 @@ const Locale = () => {
         )}
       </div>
       {select && (
-        <main className="bg-white absolute top-16 right-4 rounded-xl shadow">
-          <div
-            onClick={() => localeChange("tm")}
-            className="cursor-pointer px-4 py-2"
-          >
+        <main className="bg-white bg-opacity-10 absolute bottom-16 left-20 flex items-center gap-2 p-2 rounded-xl shadow">
+          <div onClick={() => localeChange("tm")} className="cursor-pointer">
             <img className="w-10 p-1 mx-1" src={TM_FLAG} alt="Turkmen" />
           </div>
 
-          <div
-            onClick={() => localeChange("en")}
-            className="cursor-pointer px-4 py-2"
-          >
+          <div onClick={() => localeChange("en")} className="cursor-pointer">
             <img className="w-10 p-1 mx-1" src={EN_FLAG} alt="English" />
           </div>
         </main>

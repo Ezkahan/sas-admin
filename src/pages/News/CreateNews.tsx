@@ -1,52 +1,64 @@
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
+import React from "react";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/common/Form/TextField";
-import ImageUpload from "../../components/common/Form/ImageEditor";
-import { INewsCreate } from "../../common/interfaces/News/INewsCreate";
-import { CREATE_NEWS } from "../../graphql/mutations/News/createNewsMutation";
+import { ADD_NEWS } from "../../graphql/mutations/News/addNewsMutation";
 import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
 import TextEditor from "../../components/common/Form/TextEditor";
 import Button from "../../components/Button/Button";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { INews } from "./INews";
+import ImageEditor from "../../components/common/Form/ImageEditor";
 
 const CreateNews: React.FC = () => {
   const { t } = useTranslation(["common", "news"]);
   const navigate = useNavigate();
-  const [inputImageData, setImageInputData] = useState({
-    select_image: "Выберите",
-    image: "",
-  });
-  const [newCropedImage, setNewCropedImage] = useState();
 
-  const [news, setNews] = useState<INewsCreate>({
-    title_tm: "",
-    title_ru: "",
-    description_tm: "",
-    description_ru: "",
-    image: "",
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setNews({
-      ...news,
-      [e.target.name]: e.target.value,
+  const validationSchema = () => {
+    return Yup.object().shape({
+      title: Yup.object().shape({
+        tm: Yup.string().required(t("product:name_tm_required")),
+        ru: Yup.string().required(t("product:name_ru_required")),
+      }),
+      description: Yup.object().shape({
+        tm: Yup.string().required(t("product:name_tm_required")),
+        ru: Yup.string().required(t("product:name_ru_required")),
+      }),
     });
   };
 
+  const formik = useFormik({
+    initialValues: {} as INews,
+    validationSchema,
+    onSubmit: (values) => {
+      mutate({
+        variables: values,
+      });
+    },
+  });
+
   const onCompleted = () => {
-    toast.success(t("success_saved"), { duration: 1500 }) &&
+    toast.success(t("common:success_saved"), { duration: 1500 }) &&
       setTimeout(() => navigate(RouteNames.news), 2000);
   };
 
-  const [createNews] = useMutation(CREATE_NEWS, {
+  const onError = () =>
+    toast.error(t("common:error_not_saved"), { duration: 2000 });
+
+  const handleCroppedImage = (reader: FileReader) =>
+    formik.setFieldValue("cropped_image", reader.result);
+
+  const handleFile = (files: FileList | null) =>
+    formik.setFieldValue("image", files?.[0]);
+
+  const [mutate] = useMutation(ADD_NEWS, {
     onCompleted,
-    onError: () => toast.error(t("error_not_saved"), { duration: 2000 }),
+    onError,
     refetchQueries: [
       {
         query: GET_NEWS,
@@ -55,96 +67,62 @@ const CreateNews: React.FC = () => {
     ],
   });
 
-  const onSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    createNews({
-      variables: {
-        image: newCropedImage,
-        title: JSON.stringify({
-          tm: news.title_tm,
-          ru: news.title_ru || news.title_tm,
-        }),
-        description: JSON.stringify({
-          tm: news.description_tm,
-          ru: news.description_ru || news.description_tm,
-        }),
-      },
-    });
-  };
-
   return (
     <AppLayout>
-      <section className="xl:p-5 p-1">
-        <form
-          onSubmit={(e) => onSubmit(e)}
-          className="bg-white xl:px-8 px-5 xl:py-6 py-4 xl:my-5 my-3 rounded-lg"
-        >
-          <h1 className="text-lg font-montserrat-bold">Add news</h1>
+      <form onSubmit={formik.handleSubmit} className="section space-y-6">
+        <h1 className="text-lg font-montserrat-bold">{t("news:title")}</h1>
 
-          <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-            {/* <ImageUpload
-              inputData={inputImageData}
-              setInputData={setImageInputData}
-              setCropedImage={setNewCropedImage}
-              label={"Картинка"}
-            /> */}
-          </aside>
-          <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-            <TextField
-              name="title_tm"
+        <ImageEditor
+          handleFile={handleFile}
+          handleCroppedImage={handleCroppedImage}
+          label={t("common:select_image")}
+        />
+
+        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
+          <TextField
+            name="title_tm"
+            lang="tm"
+            label="Label"
+            required
+            placeholder="Input title"
+            handleChange={formik.handleChange}
+          />
+          <TextField
+            name="title_ru"
+            label="Label"
+            required
+            placeholder="Input title"
+            handleChange={formik.handleChange}
+          />
+        </aside>
+        <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
+          <div className="col-span-6">
+            <TextEditor
+              label="Description"
+              required
               lang="tm"
-              label="Label"
-              required
-              placeholder="Input title"
-              handleChange={handleChange}
+              handleChange={formik.handleChange}
             />
-            <TextField
-              name="title_ru"
-              label="Label"
+          </div>
+          <div className="col-span-6">
+            <TextEditor
+              label="Description"
               required
-              placeholder="Input title"
-              handleChange={handleChange}
+              handleChange={formik.handleChange}
             />
-          </aside>
-          <aside className="grid grid-cols-12 gap-5 mt-5 mb-8">
-            <div className="col-span-6">
-              <TextEditor
-                label="Description"
-                required
-                lang="tm"
-                handleChange={(text: string) => {
-                  setNews({
-                    ...news,
-                    description_tm: text,
-                  });
-                }}
-              />
-            </div>
-            <div className="col-span-6">
-              <TextEditor
-                label="Description"
-                required
-                handleChange={(text: string) => {
-                  setNews({
-                    ...news,
-                    description_ru: text,
-                  });
-                }}
-              />
-            </div>
-          </aside>
+          </div>
+        </aside>
 
-          <footer className="flex items-center justify-end gap-3">
-            <Button bg="secondary" link={RouteNames.category}>
-              <p>{t("common:cancel")}</p>
-            </Button>
+        <footer className="flex items-center justify-end gap-3">
+          <Button bg="secondary" link={RouteNames.news}>
+            <p>{t("common:cancel")}</p>
+          </Button>
 
-            <Button type="submit">
-              <p>{t("common:save")}</p>
-            </Button>
-          </footer>
-        </form>
-      </section>
+          <Button type="submit">
+            <p>{t("common:save")}</p>
+          </Button>
+        </footer>
+      </form>
     </AppLayout>
   );
 };

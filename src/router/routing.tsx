@@ -5,7 +5,9 @@ import {
   IoImageOutline,
   IoListOutline,
   IoNewspaperOutline,
+  IoNotificationsOutline,
   IoPeopleOutline,
+  IoSettingsOutline,
   IoStarOutline,
   IoTicketOutline,
 } from "react-icons/io5";
@@ -51,6 +53,8 @@ const RouteNames = {
   profile: "/user/profile",
   login: "/auth/login",
   register: "/auth/register",
+  settings: "/settings",
+  notifications: "/notifications",
   forbidden: "/403",
   notFound: "*",
 };
@@ -157,6 +161,18 @@ const navRoutes: INavRoute[] = [
     `,
   },
   { id: 7, path: RouteNames.users, title: "Ulanyjylar", icon: IoPeopleOutline },
+  {
+    id: 8,
+    path: RouteNames.notifications,
+    title: "Bildirişler",
+    icon: IoNotificationsOutline,
+  },
+  {
+    id: 9,
+    path: RouteNames.settings,
+    title: "Sazlamalar",
+    icon: IoSettingsOutline,
+  },
 ];
 
 const routing: IRoute[] = [

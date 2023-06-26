@@ -1,13 +1,15 @@
 {
-  "title": "Products",
-  "link": "Link",
-  "position": "Position",
-  "image": "Image",
-  "add": "Add product",
-  "select_image": "Select image",
-  "url": "URL",
+  "title": "Harytlar",
+  "link": "Salgy",
+  "position": "Tertip",
+  "image": "Surat",
+  "add": "Haryt goşmak",
+  "url": "URL salgy",
   "url_placeholder": "example.com",
-  "position_placeholder": "Select position",
-  "category": "Category",
-  "category_placeholder": "Select category"
+  "position_placeholder": "Tertibini saýlaň",
+  "title_tm": "Türkmençe ady",
+  "title_ru": "Rusça ady",
+  "code": "Haryt kody",
+  "price": "Bahasy",
+  "percent": "Göterimi"
 }
