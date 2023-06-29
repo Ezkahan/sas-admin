@@ -86,4 +86,9 @@
     .activeLinkClassName {
         @apply bg-gray-200
     }
+
+
+    .ck-toolbar__items {
+        @apply bg-slate-100 border border-red-500
+    }
 }

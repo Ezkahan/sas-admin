@@ -17,5 +17,7 @@
     "title": "Sözbaşy",
     "description": "Düşündirilişi",
     "started_at": "Başlaýan wagty",
-    "ended_at": "Gutarýan wagty"
+    "ended_at": "Gutarýan wagty",
+    "yes": "Hawa",
+    "no": "Ýok"
 }

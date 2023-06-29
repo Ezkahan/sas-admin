@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/common/Form/TextField";
-import ImageEditor from "../../components/common/Form/ImageEditor";
 import Button from "../../components/Button/Button";
 import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
 import { ADD_PRODUCT } from "../../graphql/mutations/Product/addProductMutation";
@@ -61,22 +60,10 @@ const AddProduct: React.FC = () => {
     ],
   });
 
-  const handleCroppedImage = (reader: FileReader) =>
-    formik.setFieldValue("cropped_image", reader.result);
-
-  const handleFile = (files: FileList | null) =>
-    formik.setFieldValue("image", files?.[0]);
-
   return (
     <AppLayout>
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("product:add")}</h1>
-
-        <ImageEditor
-          handleFile={handleFile}
-          handleCroppedImage={handleCroppedImage}
-          label={t("common:select_image")}
-        />
 
         <aside className="flex gap-5">
           <TextField

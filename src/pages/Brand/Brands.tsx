@@ -99,7 +99,7 @@ const Brands: React.FC = () => {
                         <td className="px-2 py-3">
                           <div className="flex">
                             <Button.Edit
-                              link={`${RouteNames.banner}/${brand.id}/edit`}
+                              link={`${RouteNames.brand}/${brand.id}/edit`}
                             />
 
                             <Button.Delete

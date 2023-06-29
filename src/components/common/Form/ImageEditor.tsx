@@ -21,9 +21,6 @@ const ImageEditor: React.FC<ImageEditorType> = ({
   const [crop, setCrop] = useState<any>({
     unit: "%",
     width: 30,
-    // height: 30,
-    // x: 0,
-    // y: 0,
   });
   const [completedCrop, setCompletedCrop] = useState<any>(null);
 
@@ -79,7 +76,7 @@ const ImageEditor: React.FC<ImageEditorType> = ({
       "image/png",
       1
     );
-  }, [completedCrop, handleCroppedImage]);
+  }, [completedCrop]);
 
   return (
     <div className="flex">
