@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import React from "react";
+import React, { useCallback } from "react";
 import { ApolloError, useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -10,12 +10,14 @@ import AppLayout from "../../layouts/AppLayout";
 import TextField from "../../components/Form/TextField";
 import Select from "../../components/Form/Select";
 import Button from "../../components/Button/Button";
-import ImageUpload from "../../components/Image/ImageEditor";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IBrand } from "./IBrand";
 import { RouteNames } from "../../router/routing";
 import CategoryListDTO from "../Category/CategoryListDTO";
+import ImageGallery from "../../components/Image/ImageGallery";
+import ImageInput from "../../components/Image/ImageInput";
+import { compressImage } from "../../common/helpers/compressImage";
 
 const AddBrand: React.FC = () => {
   const { t } = useTranslation(["common", "brand"]);
@@ -45,7 +47,9 @@ const AddBrand: React.FC = () => {
 
   const validationSchema = () => {
     return Yup.object().shape({
-      logo: Yup.string().required(t("brand:image_required")),
+      logo: Yup.string().required(t("brand:logo_required")),
+      name: Yup.string().required(t("brand:name_required")),
+      category_id: Yup.string().required(t("brand:category_required")),
     });
   };
 
@@ -59,22 +63,29 @@ const AddBrand: React.FC = () => {
     },
   });
 
-  const handleCroppedImage = (reader: FileReader) =>
-    formik.setFieldValue("logo", reader.result);
+  const handleImage = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
 
-  const handleFile = (files: FileList | null) =>
-    formik.setFieldValue("logo", files?.[0]);
+      const compressedFile = await compressImage(file as File, {
+        quality: 0.5,
+        type: "image/jpeg",
+      });
+
+      formik.setFieldValue("logo", compressedFile);
+    },
+    []
+  );
 
   return (
     <AppLayout>
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("brand:add")}</h1>
 
-        <ImageUpload
-          handleFile={handleFile}
-          handleCroppedImage={handleCroppedImage}
-          label={t("common:select_image")}
-        />
+        <aside className="flex flex-col gap-5">
+          {formik.values.logo && <ImageGallery image={formik.values.logo} />}
+          <ImageInput label={t("common:image")} handleImage={handleImage} />
+        </aside>
 
         <aside className="flex gap-5">
           <TextField

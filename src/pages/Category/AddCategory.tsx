@@ -1,6 +1,6 @@
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
-import React from "react";
+import React, { useCallback } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -18,6 +18,9 @@ import { ADD_CATEGORY } from "../../graphql/mutations/Category/addCategoryMutati
 import { useFormik } from "formik";
 import { ICategory } from "./ICategory";
 import * as Yup from "yup";
+import ImageInput from "../../components/Image/ImageInput";
+import ImageGallery from "../../components/Image/ImageGallery";
+import { compressImage } from "../../common/helpers/compressImage";
 
 const AddCategory: React.FC = () => {
   const { t } = useTranslation(["common", "category"]);
@@ -63,17 +66,19 @@ const AddCategory: React.FC = () => {
     },
   });
 
-  const handleCroppedImage = (reader: FileReader) =>
-    formik.setFieldValue("image", reader.result);
+  const handleImage = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
 
-  const handleFile = (files: FileList | null) =>
-    formik.setFieldValue("image", files?.[0]);
+      const compressedFile = await compressImage(file as File, {
+        quality: 0.5,
+        type: "image/jpeg",
+      });
 
-  const handleCroppedIcon = (reader: FileReader) =>
-    formik.setFieldValue("icon", reader.result);
-
-  const handleIconFile = (files: FileList | null) =>
-    formik.setFieldValue("icon", files?.[0]);
+      formik.setFieldValue(e.target.name, compressedFile);
+    },
+    []
+  );
 
   return (
     <AppLayout>
@@ -81,17 +86,25 @@ const AddCategory: React.FC = () => {
         <h1 className="text-lg font-montserrat-bold">{t("category:add")}</h1>
 
         <aside className="flex gap-x-5">
-          <ImageEditor
-            handleFile={handleFile}
-            handleCroppedImage={handleCroppedImage}
-            label={t("common:select_image")}
-          />
+          <div className="flex flex-col gap-5 w-full">
+            {formik.values.image && (
+              <ImageGallery image={formik.values.image} />
+            )}
+            <ImageInput
+              name="image"
+              label={t("common:image")}
+              handleImage={handleImage}
+            />
+          </div>
 
-          <ImageEditor
-            handleFile={handleIconFile}
-            handleCroppedImage={handleCroppedIcon}
-            label={t("common:select_icon")}
-          />
+          <div className="flex flex-col gap-5 w-full">
+            {formik.values.icon && <ImageGallery image={formik.values.icon} />}
+            <ImageInput
+              name="icon"
+              label={t("category:icon")}
+              handleImage={handleImage}
+            />
+          </div>
         </aside>
 
         <aside className="flex gap-5">

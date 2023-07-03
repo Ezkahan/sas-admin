@@ -95,7 +95,7 @@ const AddBanner: React.FC = () => {
 
         <aside className="flex flex-col gap-5">
           {formik.values.image && <ImageGallery image={formik.values.image} />}
-          <ImageInput label={t("banner:image")} handleImage={handleImage} />
+          <ImageInput label={t("common:image")} handleImage={handleImage} />
         </aside>
 
         <aside className="flex gap-5">

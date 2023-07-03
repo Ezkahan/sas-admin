@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -11,6 +11,8 @@ import { GET_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategorie
 import Paginate from "../../components/Paginate/Paginate";
 import Button from "../../components/Button/Button";
 import getByLocale from "../../common/helpers/getByLocale";
+import { DELETE_CATEGORY } from "../../graphql/mutations/Category/deleteCategoryMutation";
+import DeleteModal from "../../components/Modal/DeleteModal";
 
 const Categories: React.FC = () => {
   const { t } = useTranslation(["common", "category"]);
@@ -19,21 +21,44 @@ const Categories: React.FC = () => {
     {} as IDeleteModal
   );
 
+  const toggleDeleteModal = (id?: number) =>
+    setCategoryDelete({ delete: !categoryDelete.delete, id });
+
   const { loading, data } = useQuery(GET_CATEGORY_LIST, {
     variables: { page },
     onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number) => {
-    setCategoryDelete({ delete: !categoryDelete.delete, id });
-  };
+  const [mutate] = useMutation(DELETE_CATEGORY, {
+    onCompleted: () => {
+      toast.success(t("common:success_deleted"), { duration: 2000 });
+      toggleDeleteModal();
+    },
+    onError: () =>
+      toast.error(t("common:error_not_deleted"), { duration: 2000 }),
+    refetchQueries: [
+      {
+        query: GET_CATEGORY_LIST,
+        variables: { page: 1 },
+      },
+    ],
+  });
 
+  const handleDelete = (
+    e: React.FormEvent<HTMLFormElement>,
+    id: number = categoryDelete.id as number
+  ) => {
+    e.preventDefault();
+    mutate({ variables: { id } });
+  };
   return (
     <AppLayout>
       <>
-        {/* <Modal isOpen={categoryDelete.delete} close={toggleDeleteModal}>
-          <DeleteCategory id={categoryDelete.id} close={toggleDeleteModal} />
-        </Modal> */}
+        <DeleteModal
+          isOpen={categoryDelete.delete}
+          handleDelete={handleDelete}
+          toggle={toggleDeleteModal}
+        />
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
@@ -94,14 +119,18 @@ const Categories: React.FC = () => {
 
                         <td className="px-4 py-3">
                           <img
-                            src={category.image}
+                            src={category.image_url}
                             alt="img"
                             className="w-12"
                           />
                         </td>
 
                         <td className="px-4 py-3">
-                          <img src={category.icon} alt="img" className="w-12" />
+                          <img
+                            src={category.icon_url}
+                            alt="img"
+                            className="w-12"
+                          />
                         </td>
 
                         <td className="px-4 py-3 text-center">

@@ -6,7 +6,7 @@ export const GET_BRANDS = gql`
       data {
         id
         name
-        logo
+        logo_url
         category_id
       }
       paginatorInfo {

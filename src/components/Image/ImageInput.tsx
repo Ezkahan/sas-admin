@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 interface ImageInputType {
   label: string;
+  name?: string;
   multiple?: boolean;
   handleImage: any;
 }
@@ -9,6 +10,7 @@ interface ImageInputType {
 const ImageInput: React.FC<ImageInputType> = ({
   handleImage,
   label,
+  name,
   multiple = false,
 }) => {
   const { t } = useTranslation("common");
@@ -23,6 +25,7 @@ const ImageInput: React.FC<ImageInputType> = ({
         </label>
 
         <input
+          name={name}
           onChange={handleImage}
           type="file"
           multiple={multiple}

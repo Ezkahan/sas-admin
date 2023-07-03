@@ -5,5 +5,8 @@
     "link": "Salgy",
     "position": "Tertip",
     "image": "Surat",
-    "image_required": "Surat saýlaň"
+    "image_required": "Surat saýlaň",
+    "logo_required": "Logo saýlaň",
+    "name_required": "Adyny girizin",
+    "category_required": "Bolumini saylan"
 }

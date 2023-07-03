@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -10,6 +10,8 @@ import { GET_BRANDS } from "../../graphql/queries/Brand/getBrandsQuery";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
 import { IBrand } from "./IBrand";
+import DeleteModal from "../../components/Modal/DeleteModal";
+import { DELETE_BRAND } from "../../graphql/mutations/Brand/deleteBrandMutation";
 
 const Brands: React.FC = () => {
   const { t } = useTranslation(["common", "brand"]);
@@ -18,21 +20,45 @@ const Brands: React.FC = () => {
     {} as IDeleteModal
   );
 
+  const toggleDeleteModal = (id?: number) =>
+    setBrandDelete({ delete: !brandDelete.delete, id });
+
   const { loading, data } = useQuery(GET_BRANDS, {
     variables: { page },
     onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number) => {
-    setBrandDelete({ delete: !brandDelete.delete, id });
+  const [mutate] = useMutation(DELETE_BRAND, {
+    onCompleted: () => {
+      toast.success(t("common:success_deleted"), { duration: 2000 });
+      toggleDeleteModal();
+    },
+    onError: () =>
+      toast.error(t("common:error_not_deleted"), { duration: 2000 }),
+    refetchQueries: [
+      {
+        query: GET_BRANDS,
+        variables: { page: 1 },
+      },
+    ],
+  });
+
+  const handleDelete = (
+    e: React.FormEvent<HTMLFormElement>,
+    id: number = brandDelete.id as number
+  ) => {
+    e.preventDefault();
+    mutate({ variables: { id } });
   };
 
   return (
     <AppLayout>
       <>
-        {/* <Modal isOpen={brandDelete.delete} close={toggleDeleteModal}>
-          <DeleteBrand id={brandDelete.id} close={toggleDeleteModal} />
-        </Modal> */}
+        <DeleteModal
+          isOpen={brandDelete.delete}
+          handleDelete={handleDelete}
+          toggle={toggleDeleteModal}
+        />
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
@@ -90,7 +116,11 @@ const Brands: React.FC = () => {
                         </td>
 
                         <td className="p-2">
-                          <img className="w-10" src={brand?.logo} alt="img" />
+                          <img
+                            className="w-10"
+                            src={brand?.logo_url}
+                            alt="img"
+                          />
                         </td>
 
                         <td className="px-2 py-3">

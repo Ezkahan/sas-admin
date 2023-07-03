@@ -6,8 +6,8 @@ export const GET_CATEGORY_LIST = gql`
       data {
         id
         name
-        icon
-        image
+        icon_url
+        image_url
         visited_count
       }
       paginatorInfo {

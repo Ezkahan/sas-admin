@@ -5,6 +5,7 @@ export const GET_BRAND = gql`
     brand(id: $id) {
       id
       name
+      logo_url
       category_id
     }
   }

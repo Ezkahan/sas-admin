@@ -4,8 +4,10 @@ export interface ICategory {
   id: number;
   name: string;
   description?: ITranslatable;
-  icon: string;
-  image: string;
+  icon: File | null;
+  icon_url: string;
+  image: File | null;
+  image_url: string;
   parent_id: number;
   visited_count: number;
   category: ICategory;
