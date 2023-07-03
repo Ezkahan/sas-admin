@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { IRoute, routing } from "./routing";
-import PrivateRoute from "../components/common/PrivateRoute";
+import PrivateRoute from "../components/PrivateRoute";
 import FullLoader from "../components/Loader/FullLoader";
 
 const WebRoutes = () => {

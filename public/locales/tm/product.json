@@ -3,13 +3,19 @@
   "link": "Salgy",
   "position": "Tertip",
   "image": "Surat",
+  "images": "Harydyn suratlary",
   "add": "Haryt goşmak",
   "url": "URL salgy",
   "url_placeholder": "example.com",
   "position_placeholder": "Tertibini saýlaň",
   "title_tm": "Türkmençe ady",
   "title_ru": "Rusça ady",
+  "description_tm": "Türkmençe mazmuny",
+  "description_ru": "Rusça mazmuny",
   "code": "Haryt kody",
   "price": "Bahasy",
-  "percent": "Göterimi"
+  "percent": "Göterimi",
+  "price_required": "Baha hokmany",
+  "brand_required": "Marka hokmany",
+  "category_required": "Bolum hokmany"
 }

@@ -5,18 +5,18 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
-import TextField from "../../components/common/Form/TextField";
-import ImageEditor from "../../components/common/Form/ImageEditor";
+import TextField from "../../components/Form/TextField";
+import ImageEditor from "../../components/Image/ImageEditor";
 import {
   GET_CATEGORY_LIST,
   GET_SHORT_CATEGORY_LIST,
 } from "../../graphql/queries/Categories/getCategoriesQuery";
 import Button from "../../components/Button/Button";
-import Select from "../../components/common/Form/Select";
+import Select from "../../components/Form/Select";
 import CategoryListDTO from "./CategoryListDTO";
 import { ADD_CATEGORY } from "../../graphql/mutations/Category/addCategoryMutation";
 import { useFormik } from "formik";
-import { ICategory } from "./Category/ICategory";
+import { ICategory } from "./ICategory";
 import * as Yup from "yup";
 
 const EditCategory: React.FC = () => {

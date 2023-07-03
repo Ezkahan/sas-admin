@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
-import TextField from "../../components/common/Form/TextField";
+import TextField from "../../components/Form/TextField";
 import { ICouponCreate } from "../../common/interfaces/Coupon/ICouponCreate";
 import { CREATE_COUPON } from "../../graphql/mutations/Coupon/createCouponMutation";
 import { GET_COUPONS } from "../../graphql/queries/Coupon/getCouponsQuery";

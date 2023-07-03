@@ -29,20 +29,16 @@ const DeleteProduct: React.FC<IDeleteModal & IModal> = ({ id, close }) => {
   return (
     <main>
       <header className="text-center p-2 mb-4">
-        <h1 className="text-xl font-montserrat-bold">
-          {" "}
-          {t("confirm_delete")}{" "}
-        </h1>
-
-        <small> ID: {id} </small>
+        <h1 className="text-xl font-montserrat-bold">{t("confirm_delete")}</h1>
       </header>
+
       <footer className="flex items-center justify-center p-2">
         <button
           onClick={() => deleteCategory({ variables: { id: id } })}
           className="bg-red-400 hover:bg-red-600 duration-300 text-white px-5 py-2.5 flex items-center rounded-lg mx-3"
         >
           <IoTrashOutline size={20} />
-          <p className="mx-2"> {t("yes")} </p>
+          <p className="mx-2"> {t("common:yes")} </p>
         </button>
 
         <button

@@ -4,10 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
-import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
 import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
-import DeleteNews from "./DeleteNews";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
 import { INews } from "./INews";
@@ -15,10 +13,9 @@ import { INews } from "./INews";
 const News: React.FC = () => {
   const { t } = useTranslation(["common", "news"]);
   const [page, setPage] = useState(1);
-  const [newsDelete, setNewsDelete] = useState<IDeleteModal>({
-    id: null,
-    delete: false,
-  });
+  const [newsDelete, setNewsDelete] = useState<IDeleteModal>(
+    {} as IDeleteModal
+  );
 
   const { loading, data } = useQuery(GET_NEWS, {
     variables: { page },
@@ -26,15 +23,15 @@ const News: React.FC = () => {
       toast.error(t("common:error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number | null = null) =>
+  const toggleDeleteModal = (id: number) =>
     setNewsDelete({ delete: !newsDelete.delete, id });
 
   return (
     <AppLayout>
       <>
-        <Modal isOpen={newsDelete.delete} close={toggleDeleteModal}>
+        {/* <Modal isOpen={newsDelete.delete} close={toggleDeleteModal}>
           <DeleteNews id={newsDelete.id} close={toggleDeleteModal} />
-        </Modal>
+        </Modal> */}
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">

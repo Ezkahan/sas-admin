@@ -9,15 +9,21 @@
     "select_icon": "Nyşan saýlaň",
     "error_not_saved": "Näsazlyk! Ýatda saklanylmady!",
     "success_saved": "Üstünlikli ýatda saklandy",
+    "success_deleted": "Üstünlikli pozuldy",
+    "error_not_deleted": "Näsazlyk! Pozulmady",
+    "error_not_loaded": "Näsazlyk! Yuklenmedi",
     "total": "Jemi",
     "name": "Ady",
     "category": "Bölüm",
     "category_placeholder": "Bölüm saýlaň",
+    "brand": "Marka",
+    "brand_placeholder": "Markany saýlaň",
     "logo": "Nyşan",
     "title": "Sözbaşy",
     "description": "Düşündirilişi",
     "started_at": "Başlaýan wagty",
     "ended_at": "Gutarýan wagty",
     "yes": "Hawa",
-    "no": "Ýok"
+    "no": "Ýok",
+    "confirm_delete": "Pozmagy tassyklan"
 }

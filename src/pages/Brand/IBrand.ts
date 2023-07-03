@@ -1,5 +1,5 @@
 export interface IBrand {
-  id?: number;
+  id: number;
   logo: string;
   selected_logo: File | null;
   name: string;

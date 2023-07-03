@@ -1,6 +1,6 @@
 import i18n from "../../common/configs/i18n";
 import getByLocale from "../../common/helpers/getByLocale";
-import { ICategory } from "./Category/ICategory";
+import { ICategory } from "./ICategory";
 
 const CategoryListDTO = (categories: ICategory[]) => {
   return [

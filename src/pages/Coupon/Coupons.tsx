@@ -4,12 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
-import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
 import { RouteNames } from "../../router/routing";
 import { ICoupon } from "../../common/interfaces/Coupon/ICouponList";
 import { GET_COUPONS } from "../../graphql/queries/Coupon/getCouponsQuery";
-import DeleteCoupon from "./DeleteCoupon";
 import { jsonParseToLangs } from "../../common/helpers/jsonParseToLangs";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
@@ -17,25 +15,24 @@ import Paginate from "../../components/Paginate/Paginate";
 const Coupons: React.FC = () => {
   const { t } = useTranslation(["common", "coupon"]);
   const [page, setPage] = useState(1);
-  const [couponDelete, setCouponDelete] = useState<IDeleteModal>({
-    id: null,
-    delete: false,
-  });
+  const [couponDelete, setCouponDelete] = useState<IDeleteModal>(
+    {} as IDeleteModal
+  );
 
   const { loading, data } = useQuery(GET_COUPONS, {
     variables: { page },
     onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number | null = null) =>
+  const toggleDeleteModal = (id: number) =>
     setCouponDelete({ delete: !couponDelete.delete, id });
 
   return (
     <AppLayout>
       <>
-        <Modal isOpen={couponDelete.delete} close={toggleDeleteModal}>
+        {/* <Modal isOpen={couponDelete.delete} close={toggleDeleteModal}>
           <DeleteCoupon id={couponDelete.id} close={toggleDeleteModal} />
-        </Modal>
+        </Modal> */}
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">

@@ -43,7 +43,6 @@ const ImageEditor: React.FC<ImageEditorType> = ({
     const image: HTMLImageElement = imgRef.current;
     const canvas: HTMLCanvasElement = previewCanvasRef.current;
     const crop: any = completedCrop;
-
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
     const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
@@ -81,12 +80,14 @@ const ImageEditor: React.FC<ImageEditorType> = ({
   return (
     <div className="flex">
       <ReactCrop
-        src={upImg}
-        onImageLoaded={onLoad}
+        aspect={16 / 16}
         crop={crop}
         onChange={(c) => setCrop(c)}
         onComplete={(c) => setCompletedCrop(c)}
-      />
+      >
+        <img src={upImg} onLoad={onLoad} alt="" />
+      </ReactCrop>
+
       <canvas
         className="max-w-full h-auto"
         ref={previewCanvasRef}

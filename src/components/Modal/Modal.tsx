@@ -20,7 +20,7 @@ const Modal: React.FC<IModal> = ({ isOpen, children, close }) => {
               animate={{ translateY: 0, opacity: 1 }}
               exit={{ translateY: "-100%", opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white w-max z-50 rounded-xl overflow-x-hidden"
+              className="bg-white w-max min-w-[20rem] z-50 rounded-xl overflow-x-hidden"
             >
               <div className="bg-white p-3">{children}</div>
             </motion.main>

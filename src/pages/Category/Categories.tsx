@@ -4,11 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
-import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
-import { ICategory } from "./Category/ICategory";
+import { ICategory } from "./ICategory";
 import { RouteNames } from "../../router/routing";
-import DeleteCategory from "./DeleteCategory";
 import { GET_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategoriesQuery";
 import Paginate from "../../components/Paginate/Paginate";
 import Button from "../../components/Button/Button";
@@ -17,26 +15,25 @@ import getByLocale from "../../common/helpers/getByLocale";
 const Categories: React.FC = () => {
   const { t } = useTranslation(["common", "category"]);
   const [page, setPage] = useState<number>(1);
-  const [categoryDelete, setCategoryDelete] = useState<IDeleteModal>({
-    id: null,
-    delete: false,
-  });
+  const [categoryDelete, setCategoryDelete] = useState<IDeleteModal>(
+    {} as IDeleteModal
+  );
 
   const { loading, data } = useQuery(GET_CATEGORY_LIST, {
     variables: { page },
     onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number | null = null) => {
+  const toggleDeleteModal = (id: number) => {
     setCategoryDelete({ delete: !categoryDelete.delete, id });
   };
 
   return (
     <AppLayout>
       <>
-        <Modal isOpen={categoryDelete.delete} close={toggleDeleteModal}>
+        {/* <Modal isOpen={categoryDelete.delete} close={toggleDeleteModal}>
           <DeleteCategory id={categoryDelete.id} close={toggleDeleteModal} />
-        </Modal>
+        </Modal> */}
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">

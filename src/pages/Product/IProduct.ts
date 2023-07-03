@@ -1,9 +1,7 @@
-import { ITranslatable } from "../../common/interfaces/ITranslatable";
-
 export interface IProduct {
   id: number;
-  title: ITranslatable;
-  description: ITranslatable;
+  title: string;
+  description: string;
   code: string;
   brand_id: number;
   brand: string;
@@ -16,4 +14,6 @@ export interface IProduct {
   stock: string;
   preview: number;
   image: string;
+  images: any;
+  files: any;
 }

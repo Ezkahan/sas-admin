@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ISelectOptionsList } from "../../../common/interfaces/ISelect";
+import { ISelectOptionsList } from "../../common/interfaces/ISelect";
 
 interface IProps extends ISelectOptionsList {
   label: string;

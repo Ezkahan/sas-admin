@@ -4,11 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
-import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
 import { RouteNames } from "../../router/routing";
 import { GET_BRANDS } from "../../graphql/queries/Brand/getBrandsQuery";
-import DeleteBrand from "./DeleteBrand";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
 import { IBrand } from "./IBrand";
@@ -16,26 +14,25 @@ import { IBrand } from "./IBrand";
 const Brands: React.FC = () => {
   const { t } = useTranslation(["common", "brand"]);
   const [page, setPage] = useState(1);
-  const [brandDelete, setBrandDelete] = useState<IDeleteModal>({
-    id: null,
-    delete: false,
-  });
+  const [brandDelete, setBrandDelete] = useState<IDeleteModal>(
+    {} as IDeleteModal
+  );
 
   const { loading, data } = useQuery(GET_BRANDS, {
     variables: { page },
     onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number | null = null) => {
+  const toggleDeleteModal = (id: number) => {
     setBrandDelete({ delete: !brandDelete.delete, id });
   };
 
   return (
     <AppLayout>
       <>
-        <Modal isOpen={brandDelete.delete} close={toggleDeleteModal}>
+        {/* <Modal isOpen={brandDelete.delete} close={toggleDeleteModal}>
           <DeleteBrand id={brandDelete.id} close={toggleDeleteModal} />
-        </Modal>
+        </Modal> */}
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">

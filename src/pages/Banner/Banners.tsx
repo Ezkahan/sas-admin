@@ -1,40 +1,64 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
-import Modal from "../../components/Modal/Modal";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
-import DeleteBanner from "./DeleteBanner";
 import { GET_BANNERS } from "../../graphql/queries/Banner/getBannersQuery";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
 import { IBannerList } from "./IBanner";
+import DeleteModal from "../../components/Modal/DeleteModal";
+import { DELETE_BANNER } from "../../graphql/mutations/Banner/deleteBannerMutation";
 
 const Banners: React.FC = () => {
   const { t } = useTranslation(["common", "banner"]);
   const [page, setPage] = useState<number>(1);
-  const [bannerDelete, setBannerDelete] = useState<IDeleteModal>({
-    id: null,
-    delete: false,
-  });
+  const [bannerDelete, setBannerDelete] = useState<IDeleteModal>(
+    {} as IDeleteModal
+  );
+
+  const toggleDeleteModal = (id?: number) =>
+    setBannerDelete({ delete: !bannerDelete.delete, id });
 
   const { loading, data } = useQuery(GET_BANNERS, {
     variables: { page },
-    onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
+    onError: () =>
+      toast.error(t("common:error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number | null = null) => {
-    setBannerDelete({ delete: !bannerDelete.delete, id });
+  const [mutate] = useMutation(DELETE_BANNER, {
+    onCompleted: () => {
+      toast.success(t("common:success_deleted"), { duration: 2000 });
+      toggleDeleteModal();
+    },
+    onError: () =>
+      toast.error(t("common:error_not_deleted"), { duration: 2000 }),
+    refetchQueries: [
+      {
+        query: GET_BANNERS,
+        variables: { page: 1 },
+      },
+    ],
+  });
+
+  const handleDelete = (
+    e: React.FormEvent<HTMLFormElement>,
+    id: number = bannerDelete.id as number
+  ) => {
+    e.preventDefault();
+    mutate({ variables: { id } });
   };
 
   return (
     <AppLayout>
       <>
-        <Modal isOpen={bannerDelete.delete} close={toggleDeleteModal}>
-          <DeleteBanner id={bannerDelete.id} close={toggleDeleteModal} />
-        </Modal>
+        <DeleteModal
+          isOpen={bannerDelete.delete}
+          handleDelete={handleDelete}
+          toggle={toggleDeleteModal}
+        />
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
@@ -67,6 +91,7 @@ const Banners: React.FC = () => {
                     </th>
                     <th className="px-4 py-3">{t("banner:link")}</th>
                     <th className="px-4 py-3">{t("banner:position")}</th>
+                    <th className="px-4 py-3">{t("banner:type")}</th>
                     <th className="px-4 py-3">{t("banner:image")}</th>
                     <th className="px-4 py-3 rounded-tr-lg rounded-br-lg">
                       {t("common:options")}
@@ -91,8 +116,16 @@ const Banners: React.FC = () => {
                           <p>{banner.position}</p>
                         </td>
 
+                        <td className="border-r border-stone-100 px-4 py-3">
+                          <p>{banner.type}</p>
+                        </td>
+
                         <td className="px-4 py-3">
-                          <img src={banner.image} alt="img" className="w-20" />
+                          <img
+                            src={banner.image_url}
+                            alt="img"
+                            className="w-20 rounded-md"
+                          />
                         </td>
 
                         <td className="px-2 py-3">

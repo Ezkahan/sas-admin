@@ -3351,10 +3351,10 @@ cliui@^7.0.2:
     strip-ansi "^6.0.0"
     wrap-ansi "^7.0.0"
 
-clsx@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
-  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
+clsx@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
+  integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
 
 co@^4.6.0:
   version "4.6.0"
@@ -7884,12 +7884,12 @@ react-icons@^4.9.0:
   resolved "https://registry.npmjs.org/react-icons/-/react-icons-4.9.0.tgz#ba44f436a053393adb1bdcafbc5c158b7b70d2a3"
   integrity sha512-ijUnFr//ycebOqujtqtV9PFS7JjhWg0QU6ykURVHuL4cbofvRCf3f6GMn9+fBktEFQOIVZnuAYLZdiyadRQRFg==
 
-react-image-crop@^9.0.4:
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/react-image-crop/-/react-image-crop-9.1.1.tgz#b44aef24ee429a3bd0397f734d387da9fc16f575"
-  integrity sha512-n7O3Cn7RuZJF8ooau2atwCGWZHqO7akl/pa6IR+1jWy5X0x4enTOCWOeswYhcBOv0ohmDHctAlf6mcUuSSwsow==
+react-image-crop@^10.1.5:
+  version "10.1.5"
+  resolved "https://registry.npmjs.org/react-image-crop/-/react-image-crop-10.1.5.tgz#60f9d81405b01b6925629cae235e8406616fc0e5"
+  integrity sha512-BL8Rd/UHCE4O5GcYQiWDKVh5JOJb0Ic/Gde2W171v5nY7RyQzFLM1cxIzlYfESLO/lNgBVhDHuEV9RHnqALMkA==
   dependencies:
-    clsx "^1.1.1"
+    clsx "^1.2.1"
 
 react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"

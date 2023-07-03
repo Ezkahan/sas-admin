@@ -1,22 +1,32 @@
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
-import React from "react";
-import { useMutation } from "@apollo/client";
+import React, { useCallback } from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
-import TextField from "../../components/common/Form/TextField";
+import TextField from "../../components/Form/TextField";
 import Button from "../../components/Button/Button";
 import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
 import { ADD_PRODUCT } from "../../graphql/mutations/Product/addProductMutation";
 import { IProduct } from "./IProduct";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import TextEditor from "../../components/common/Form/TextEditor";
+import TextEditor from "../../components/Form/TextEditor";
+import { GET_BRANDS } from "../../graphql/queries/Brand/getBrandsQuery";
+import Select from "../../components/Form/Select";
+import CategoryListDTO from "../Category/CategoryListDTO";
+import { GET_SHORT_CATEGORY_LIST } from "../../graphql/queries/Categories/getCategoriesQuery";
+import BrandListDTO from "../Brand/BrandListDTO";
+import ImageGallery from "../../components/Image/ImageGallery";
+import ImageInput from "../../components/Image/ImageInput";
+import { compressImage } from "../../common/helpers/compressImage";
 
 const AddProduct: React.FC = () => {
   const { t } = useTranslation(["common", "product"]);
   const navigate = useNavigate();
+  const { data: brand } = useQuery(GET_BRANDS);
+  const { data: category } = useQuery(GET_SHORT_CATEGORY_LIST);
 
   const validationSchema = () => {
     return Yup.object().shape({
@@ -28,6 +38,9 @@ const AddProduct: React.FC = () => {
         tm: Yup.string().required(t("product:name_tm_required")),
         ru: Yup.string().required(t("product:name_ru_required")),
       }),
+      price: Yup.number().required(t("product:price_required")),
+      brand_id: Yup.number().required(t("product:brand_required")),
+      category_id: Yup.number().required(t("product:category_required")),
     });
   };
 
@@ -36,14 +49,18 @@ const AddProduct: React.FC = () => {
     validationSchema,
     onSubmit: (values) => {
       mutate({
-        variables: values,
+        variables: {
+          ...values,
+          title: JSON.stringify(values.title),
+          description: JSON.stringify(values.description),
+        },
       });
     },
   });
 
   const onCompleted = () => {
-    toast.success(t("common:success_saved"), { duration: 1500 }) &&
-      setTimeout(() => navigate(RouteNames.news), 2000);
+    toast.success(t("common:success_saved"), { duration: 500 }) &&
+      setTimeout(() => navigate(RouteNames.products), 500);
   };
 
   const onError = () =>
@@ -60,10 +77,41 @@ const AddProduct: React.FC = () => {
     ],
   });
 
+  const handleDescription = (data: string, name: string) => {
+    formik.setFieldValue(name, data);
+  };
+
+  const handleImage = useCallback(async (files: FileList | null) => {
+    if (!files?.length) return;
+    const dataTransfer = new DataTransfer();
+    // @ts-ignore
+    for (const file of files) {
+      if (!file.type.startsWith("image")) {
+        dataTransfer.items.add(file);
+        continue;
+      }
+      const compressedFile = await compressImage(file, {
+        quality: 0.5,
+        type: "image/jpeg",
+      });
+      dataTransfer.items.add(compressedFile);
+    }
+    files = dataTransfer.files;
+    // @ts-ignore
+    formik.setFieldValue("images", [...files]);
+  }, []);
+
   return (
     <AppLayout>
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("product:add")}</h1>
+
+        <aside className="flex flex-col gap-5">
+          {formik.values.images && (
+            <ImageGallery images={formik.values.images} />
+          )}
+          <ImageInput label={t("product:images")} handleImage={handleImage} />
+        </aside>
 
         <aside className="flex gap-5">
           <TextField
@@ -109,10 +157,36 @@ const AddProduct: React.FC = () => {
           />
         </aside>
 
+        <aside className="flex gap-5">
+          <Select
+            name="category_id"
+            label={t("common:category")}
+            placeholder={t("common:category_placeholder")}
+            handleChange={formik.handleChange}
+            options={CategoryListDTO(category?.categories?.data)}
+          />
+
+          <Select
+            name="brand_id"
+            label={t("common:brand")}
+            placeholder={t("common:brand_placeholder")}
+            handleChange={formik.handleChange}
+            options={BrandListDTO(brand?.brands?.data)}
+          />
+        </aside>
+
         <TextEditor
-          label={t("product:description")}
+          label={t("product:description_tm")}
           required
-          handleChange={formik.handleChange}
+          name="description.tm"
+          handleChange={handleDescription}
+        />
+
+        <TextEditor
+          label={t("product:description_ru")}
+          required
+          name="description.ru"
+          handleChange={handleDescription}
         />
 
         <footer className="flex items-center justify-end gap-3">
@@ -130,13 +204,3 @@ const AddProduct: React.FC = () => {
 };
 
 export default AddProduct;
-
-// title: JSON
-// description: JSON
-// code: String
-// brand_id: ID
-// category_id: ID
-// price: String
-// percent: String
-// in_stock: Boolean
-// status: Boolean

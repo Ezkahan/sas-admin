@@ -1,4 +1,4 @@
-import { ITranslatable } from "../../../common/interfaces/ITranslatable";
+import { ITranslatable } from "../../common/interfaces/ITranslatable";
 
 export interface ICategory {
   id: number;

@@ -2,13 +2,14 @@ import { FC } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useTranslation } from "react-i18next";
-import "../../../assets/css/ckeditor-custom.css";
+import "../../assets/css/ckeditor-custom.css";
 
 interface TextEditorType {
   handleChange: Function;
   label: string;
-  lang?: "ru" | "tm" | "en";
+  locale?: "ru" | "tm" | "en";
   required?: boolean;
+  name?: string;
   placeholder?: string;
 }
 
@@ -17,16 +18,9 @@ const TextEditor: FC<TextEditorType> = ({
   label,
   required = false,
   placeholder = "",
+  name,
 }) => {
   const { t } = useTranslation("common");
-
-  // ClassicEditor.create(document.querySelector("#editor" as any))
-  //   .then((editor) => {
-  //     console.log(editor);
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
 
   return (
     <>
@@ -37,13 +31,12 @@ const TextEditor: FC<TextEditorType> = ({
         </span>
       </header>
 
-      {/* <textarea id="editor" placeholder="Type the content here!"></textarea> */}
       <CKEditor
         editor={ClassicEditor}
         data={`<p>${placeholder ?? "placeholder"}</p>`}
-        onChange={(event, editor) => {
+        onChange={(_, editor) => {
           const data = editor.getData();
-          handleChange(data);
+          handleChange(data, name);
         }}
       />
     </>

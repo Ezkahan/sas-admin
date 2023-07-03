@@ -5,15 +5,15 @@ import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
-import TextField from "../../components/common/Form/TextField";
+import TextField from "../../components/Form/TextField";
 import { ADD_NEWS } from "../../graphql/mutations/News/addNewsMutation";
 import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
-import TextEditor from "../../components/common/Form/TextEditor";
+import TextEditor from "../../components/Form/TextEditor";
 import Button from "../../components/Button/Button";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { INews } from "./INews";
-import ImageEditor from "../../components/common/Form/ImageEditor";
+import ImageEditor from "../../components/Image/ImageEditor";
 
 const CreateNews: React.FC = () => {
   const { t } = useTranslation(["common", "news"]);
@@ -100,7 +100,7 @@ const CreateNews: React.FC = () => {
             <TextEditor
               label="Description"
               required
-              lang="tm"
+              locale="tm"
               handleChange={formik.handleChange}
             />
           </div>
