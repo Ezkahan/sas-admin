@@ -94,7 +94,6 @@ const Products: React.FC = () => {
                       {t("common:id")}
                     </th>
                     <th className="px-4 py-3">{t("common:title")}</th>
-                    <th className="px-4 py-3">{t("common:description")}</th>
                     <th className="px-4 py-3">{t("common:image")}</th>
                     <th className="px-4 py-3 rounded-tr-lg rounded-br-lg">
                       {t("common:options")}
@@ -115,10 +114,6 @@ const Products: React.FC = () => {
                           <h1 className="font-bold">
                             {getByLocale(JSON.parse(product?.title))}
                           </h1>
-                        </td>
-
-                        <td className="border-r border-stone-100 px-4 py-3">
-                          {getByLocale(JSON.parse(product?.description))}
                         </td>
 
                         <td className="px-4 py-3">

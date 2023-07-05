@@ -3,7 +3,7 @@ import { ITranslatable } from "../../common/interfaces/ITranslatable";
 export interface ICategory {
   id: number;
   name: string;
-  description?: ITranslatable;
+  description?: string;
   icon: File | null;
   icon_url: string;
   image: File | null;

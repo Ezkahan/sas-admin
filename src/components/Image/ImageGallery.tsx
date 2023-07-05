@@ -15,7 +15,7 @@ const ImageGallery: React.FC<ImageGallery> = ({ image, images }) => {
               key={index}
               src={URL.createObjectURL(file)}
               alt=""
-              className="w-48 rounded-lg"
+              className="h-48 rounded-lg"
             />
           );
         })}
@@ -27,7 +27,7 @@ const ImageGallery: React.FC<ImageGallery> = ({ image, images }) => {
     <img
       src={URL.createObjectURL(image as File)}
       alt=""
-      className="w-48 rounded-lg"
+      className="h-48 rounded-lg"
     />
   );
 };

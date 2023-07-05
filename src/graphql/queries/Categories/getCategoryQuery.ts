@@ -6,9 +6,10 @@ export const GET_CATEGORY = gql`
       id
       name
       description
-      icon
-      image
+      icon_url
+      image_url
       visited_count
+      parent_id
     }
   }
 `;

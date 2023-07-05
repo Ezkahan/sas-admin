@@ -14,7 +14,7 @@ import {
 import Button from "../../components/Button/Button";
 import Select from "../../components/Form/Select";
 import CategoryListDTO from "./CategoryListDTO";
-import { ADD_CATEGORY } from "../../graphql/mutations/Category/addCategoryMutation";
+import { SAVE_CATEGORY } from "../../graphql/mutations/Category/saveCategoryMutation";
 import { useFormik } from "formik";
 import { ICategory } from "./ICategory";
 import * as Yup from "yup";
@@ -34,7 +34,7 @@ const AddCategory: React.FC = () => {
 
   const onError = () => toast.error(t("error_not_saved"), { duration: 2000 });
 
-  const [mutate] = useMutation(ADD_CATEGORY, {
+  const [mutate] = useMutation(SAVE_CATEGORY, {
     onCompleted,
     onError,
     refetchQueries: [

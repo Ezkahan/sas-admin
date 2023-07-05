@@ -11,13 +11,14 @@ import {
   IoStarOutline,
   IoTicketOutline,
 } from "react-icons/io5";
-import AddProduct from "../pages/Product/AddProduct";
-import Products from "../pages/Product/Products";
 
+const AddProduct = React.lazy(() => import("../pages/Product/AddProduct"));
+const Products = React.lazy(() => import("../pages/Product/Products"));
 const Banners = React.lazy(() => import("../pages/Banner/Banners"));
 const AddBanner = React.lazy(() => import("../pages/Banner/AddBanner"));
 const Brands = React.lazy(() => import("../pages/Brand/Brands"));
 const AddBrand = React.lazy(() => import("../pages/Brand/AddBrand"));
+const EditBrand = React.lazy(() => import("../pages/Brand/EditBrand"));
 const Categories = React.lazy(() => import("../pages/Category/Categories"));
 const AddCategory = React.lazy(() => import("../pages/Category/AddCategory"));
 const EditCategory = React.lazy(() => import("../pages/Category/EditCategory"));
@@ -29,6 +30,11 @@ const CouponCreate = React.lazy(() => import("../pages/Coupon/CreateCoupon"));
 const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
 const Login = React.lazy(() => import("../pages/Auth/Login"));
 const NotFound = React.lazy(() => import("../pages/NotFound"));
+const SettingPage = React.lazy(() => import("../pages/Setting/SettingPage"));
+const UsersPage = React.lazy(() => import("../pages/User/UsersPage"));
+const NotificationPage = React.lazy(
+  () => import("../pages/Notification/NotificationPage")
+);
 const Forbidden = React.lazy(() => import("../pages/Forbidden"));
 
 const RouteNames = {
@@ -38,6 +44,7 @@ const RouteNames = {
   addBanner: "/banner/add",
   brand: "/brand",
   addBrand: "/brand/add",
+  editBrand: "/brand/:id/edit",
   category: "/category",
   addCategory: "/category/add",
   editCategory: "/category/:id/edit",
@@ -211,6 +218,12 @@ const routing: IRoute[] = [
     element: AddBrand,
   },
   {
+    path: RouteNames.editBrand,
+    private: true,
+    priority: 5,
+    element: EditBrand,
+  },
+  {
     path: RouteNames.category,
     private: true,
     priority: 5,
@@ -290,6 +303,24 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: NewsDetail,
+  },
+  {
+    path: RouteNames.settings,
+    private: true,
+    priority: 5,
+    element: SettingPage,
+  },
+  {
+    path: RouteNames.notifications,
+    private: true,
+    priority: 5,
+    element: NotificationPage,
+  },
+  {
+    path: RouteNames.users,
+    private: true,
+    priority: 5,
+    element: UsersPage,
   },
   {
     path: RouteNames.forbidden,

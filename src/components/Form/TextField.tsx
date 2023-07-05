@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 interface IProps {
   lang?: "tm" | "ru" | "en";
-  handleChange: Function;
+  handleChange: any;
   placeholder: string;
   label: string;
   required?: boolean;
@@ -34,7 +34,7 @@ const TextField: FC<IProps> = ({
         defaultValue={defaultValue}
         required={required}
         name={name}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         type={type}
         className="bg-slate-50 px-4 py-2"
         placeholder={t(placeholder)}

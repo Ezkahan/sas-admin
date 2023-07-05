@@ -121,7 +121,7 @@ const Categories: React.FC = () => {
                           <img
                             src={category.image_url}
                             alt="img"
-                            className="w-12"
+                            className="w-12 rounded-md"
                           />
                         </td>
 
@@ -129,7 +129,7 @@ const Categories: React.FC = () => {
                           <img
                             src={category.icon_url}
                             alt="img"
-                            className="w-12"
+                            className="w-12 rounded-md"
                           />
                         </td>
 
