@@ -13,11 +13,13 @@ const Sidebar: React.FC = () => {
         menu ? "left-0" : "-left-72"
       } z-50 bottom-0 bg-dark-purple text-white w-72 duration-500 overflow-y-auto flex flex-col justify-between`}
     >
-      <div>
-        <Logo />
+      <>
+        <div className="mt-4">
+          <Logo />
+        </div>
         <Navbar />
         {/* <Header menu={menu} setMenu={setMenu} /> */}
-      </div>
+      </>
       <Footer />
     </section>
   );

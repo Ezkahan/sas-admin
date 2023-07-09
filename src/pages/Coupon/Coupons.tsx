@@ -43,7 +43,7 @@ const Coupons: React.FC = () => {
                 data?.coupons?.paginatorInfo?.total
               }`}
             />
-            <Button.Add link="/news/add" />
+            <Button.Add link="/coupon/add" />
           </header>
 
           {loading && <MiniLoader />}

@@ -66,7 +66,7 @@ const AddProduct: React.FC = () => {
   const onError = () =>
     toast.error(t("common:error_not_saved"), { duration: 2000 });
 
-  const [mutate] = useMutation(ADD_PRODUCT, {
+  const [mutate, { error, loading }] = useMutation(ADD_PRODUCT, {
     onCompleted,
     onError,
     refetchQueries: [
@@ -81,25 +81,30 @@ const AddProduct: React.FC = () => {
     formik.setFieldValue(name, data);
   };
 
-  const handleImage = useCallback(async (files: FileList | null) => {
-    if (!files?.length) return;
-    const dataTransfer = new DataTransfer();
-    // @ts-ignore
-    for (const file of files) {
-      if (!file.type.startsWith("image")) {
-        dataTransfer.items.add(file);
-        continue;
+  const handleImage = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files?.length) return;
+      const { files } = e.target;
+      const dataTransfer = new DataTransfer();
+
+      // @ts-ignore
+      for (const file of files) {
+        if (!file.type.startsWith("image")) {
+          dataTransfer.items.add(file);
+          continue;
+        }
+        const compressedFile = await compressImage(file, {
+          quality: 0.5,
+          type: "image/jpeg",
+        });
+        dataTransfer.items.add(compressedFile);
       }
-      const compressedFile = await compressImage(file, {
-        quality: 0.5,
-        type: "image/jpeg",
-      });
-      dataTransfer.items.add(compressedFile);
-    }
-    files = dataTransfer.files;
-    // @ts-ignore
-    formik.setFieldValue("images", [...files]);
-  }, []);
+      const compressedFiles = dataTransfer.files;
+      // @ts-ignore
+      formik.setFieldValue("images", [...compressedFiles]);
+    },
+    []
+  );
 
   return (
     <AppLayout>
@@ -107,11 +112,19 @@ const AddProduct: React.FC = () => {
         <h1 className="text-lg font-montserrat-bold">{t("product:add")}</h1>
 
         <aside className="flex flex-col gap-5">
-          {formik.values.images && (
-            <ImageGallery images={formik.values.images} />
+          {formik.values?.images && (
+            <ImageGallery images={formik.values?.images} />
           )}
-          <ImageInput label={t("product:images")} handleImage={handleImage} />
+          <ImageInput
+            multiple
+            label={t("product:images")}
+            handleImage={handleImage}
+          />
         </aside>
+
+        {JSON.stringify(error)}
+
+        {loading && "Saving product..."}
 
         <aside className="flex gap-5">
           <TextField
@@ -194,7 +207,7 @@ const AddProduct: React.FC = () => {
             <p>{t("common:cancel")}</p>
           </Button>
 
-          <Button type="submit">
+          <Button type="submit" disabled={!(formik.dirty && formik.isValid)}>
             <p>{t("common:save")}</p>
           </Button>
         </footer>

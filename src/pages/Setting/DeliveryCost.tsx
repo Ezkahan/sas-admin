@@ -9,7 +9,7 @@ import { SAVE_SETTING } from "../../graphql/mutations/Setting/saveSettingMutatio
 import Button from "../../components/Button/Button";
 
 const DeliveryCost = () => {
-  const { t } = useTranslation(["setting"]);
+  const { t } = useTranslation(["common", "setting"]);
 
   const onCompleted = () => {
     toast.success(t("success_saved"), { duration: 1500 });
@@ -73,10 +73,10 @@ const DeliveryCost = () => {
           />
         </div>
 
-        <Button type="submit">Save</Button>
+        <Button type="submit">
+          <p>{t("common:save")}</p>
+        </Button>
       </form>
-
-      {JSON.stringify(formik.values)}
     </main>
   );
 };
