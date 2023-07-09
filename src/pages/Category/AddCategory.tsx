@@ -46,8 +46,8 @@ const AddCategory: React.FC = () => {
 
   const validationSchema = () => {
     return Yup.object().shape({
-      image: Yup.string().required(t("category:image_required")),
-      icon: Yup.string().required(t("category:icon_required")),
+      // image: Yup.string().required(t("category:image_required")),
+      // icon: Yup.string().required(t("category:icon_required")),
     });
   };
 
@@ -146,7 +146,7 @@ const AddCategory: React.FC = () => {
 
         <aside className="flex gap-5">
           <Select
-            name="category_id"
+            name="parent_id"
             label={t("common:category")}
             placeholder={t("common:category_placeholder")}
             handleChange={formik.handleChange}
