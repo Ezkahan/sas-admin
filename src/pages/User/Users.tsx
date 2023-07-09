@@ -1,13 +1,13 @@
 import AppLayout from "../../layouts/AppLayout";
 
-const UsersPage = () => {
+const Users = () => {
   return (
     <>
       <AppLayout>
-        <main>UsersPage</main>
+        <main>Users</main>
       </AppLayout>
     </>
   );
 };
 
-export default UsersPage;
+export default Users;

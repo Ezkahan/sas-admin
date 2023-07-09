@@ -12,13 +12,16 @@ import { IAuthContext } from "../../common/interfaces/IAuthContext";
 import { AuthContext } from "../../components/Provider/AuthProvider";
 import Cookies from "js-cookie";
 import { IUserData } from "../../common/interfaces/User/IUserData";
+import Button from "../../components/Button/Button";
+import Logo from "../../components/Header/Logo";
 
 interface IData {
   login: IUserData;
 }
 
 const Login: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["auth"]);
+
   const showError = () => {
     toast.error("Username or password invald", { duration: 2000 });
   };
@@ -74,44 +77,48 @@ const Login: React.FC = () => {
           }, 500);
         }}
       >
-        <Form className="flex flex-col bg-white w-96 rounded-xl shadow-lg shadow-slate-200 px-10 py-16">
-          {data && data.login === null
-            ? showError()
-            : data && setUserData(data.login)}
+        <section className="flex flex-col gap-10">
+          <Logo size="lg" />
 
-          <div className="flex items-center group-focus:border-slate-600 border border-slate-200/50 rounded-xl overflow-hidden mb-5">
-            <label htmlFor="phone_login" className="text-slate-500 pl-4 pr-1.5">
-              <IoPersonOutline size={20} />
-            </label>
-            <Field
-              className="w-full focus:outline-none group placeholder:text-slate-400 p-3"
-              id="phone_login"
-              type="text"
-              name="phone"
-              placeholder={t("username")}
-            />
-          </div>
+          <Form className="flex flex-col bg-white w-96 rounded-xl shadow-lg shadow-slate-200 p-8">
+            {data && data.login === null
+              ? showError()
+              : data && setUserData(data.login)}
 
-          <div className="flex items-center border border-slate-200/50 rounded-xl overflow-hidden mb-5">
-            <label htmlFor="password" className="text-slate-500 pl-4 pr-1.5">
-              <IoKeyOutline size={20} />
-            </label>
-            <Field
-              className="w-full focus:outline-none placeholder:text-slate-400 p-3"
-              id="password"
-              type="password"
-              name="password"
-              placeholder={t("password")}
-            />
-          </div>
+            <div className="flex items-center group-focus:border-slate-600 border border-slate-200/50 rounded-xl overflow-hidden mb-5">
+              <label
+                htmlFor="phone_login"
+                className="text-slate-500 pl-4 pr-1.5"
+              >
+                <IoPersonOutline size={20} />
+              </label>
+              <Field
+                className="w-full focus:outline-none group placeholder:text-slate-400 p-3"
+                id="phone_login"
+                type="text"
+                name="phone"
+                placeholder={t("auth:phone")}
+              />
+            </div>
 
-          <button
-            type="submit"
-            className="bg-blue-600 text-white font-bold rounded-lg focus:outline-none px-6 py-3"
-          >
-            {t("signin")}
-          </button>
-        </Form>
+            <div className="flex items-center border border-slate-200/50 rounded-xl overflow-hidden mb-5">
+              <label htmlFor="password" className="text-slate-500 pl-4 pr-1.5">
+                <IoKeyOutline size={20} />
+              </label>
+              <Field
+                className="w-full focus:outline-none placeholder:text-slate-400 p-3"
+                id="password"
+                type="password"
+                name="password"
+                placeholder={t("auth:password")}
+              />
+            </div>
+
+            <Button type="submit">
+              <p>{t("auth:sign_in")}</p>
+            </Button>
+          </Form>
+        </section>
       </Formik>
     </section>
   );

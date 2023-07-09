@@ -13,6 +13,7 @@ import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
 import getByLocale from "../../common/helpers/getByLocale";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import { DELETE_PRODUCT } from "../../graphql/mutations/Product/deleteProductMutation";
+import Title from "../../components/Title/Title";
 
 const Products: React.FC = () => {
   const { t } = useTranslation(["common", "product"]);
@@ -66,21 +67,13 @@ const Products: React.FC = () => {
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
-            <aside className="flex">
-              <div className="flex flex-col">
-                <h1 className="text-xl font-montserrat-bold text-indigo-800">
-                  {t("product:title")}
-                </h1>
-                <small className="text-indigo-500 flex gap-1">
-                  {t("common:total")}:
-                  <strong>{data?.products?.paginatorInfo?.total}</strong>
-                </small>
-              </div>
-            </aside>
-
-            <div className="ml-5">
-              <Button.Add link="/product/add" />
-            </div>
+            <Title
+              title={t("product:title")}
+              subtitle={`${t("common:total")}: ${
+                data?.products?.paginatorInfo?.total
+              }`}
+            />
+            <Button.Add link="/product/add" />
           </header>
 
           {loading && <MiniLoader />}

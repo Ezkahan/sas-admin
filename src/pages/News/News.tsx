@@ -9,6 +9,7 @@ import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
 import { INews } from "./INews";
+import Title from "../../components/Title/Title";
 
 const News: React.FC = () => {
   const { t } = useTranslation(["common", "news"]);
@@ -35,21 +36,13 @@ const News: React.FC = () => {
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
-            <aside className="flex">
-              <div className="flex flex-col">
-                <h1 className="text-xl font-montserrat-bold text-indigo-800">
-                  {t("news:title")}
-                </h1>
-                <small className="text-indigo-500 flex gap-1">
-                  {t("common:total")}:
-                  <strong>{data?.news?.paginatorInfo?.total}</strong>
-                </small>
-              </div>
-            </aside>
-
-            <div className="ml-5">
-              <Button.Add link="/news/add" />
-            </div>
+            <Title
+              title={t("news:title")}
+              subtitle={`${t("common:total")}: ${
+                data?.news?.paginatorInfo?.total
+              }`}
+            />
+            <Button.Add link="/news/add" />
           </header>
 
           {loading && <MiniLoader />}

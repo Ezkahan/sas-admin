@@ -1,11 +1,17 @@
 import SAS from "../../assets/logo.svg";
 
-const Logo: React.FC = () => {
+type LogoType = {
+  size?: "lg" | "sm";
+};
+
+const Logo: React.FC<LogoType> = ({ size = "sm" }) => {
   return (
     <img
       src={SAS}
       alt="Logo"
-      className="bg-white px-4 py-2 rounded-lg mx-auto w-24 mt-4"
+      className={`bg-white px-4 py-2 rounded-lg mx-auto ${
+        size === "lg" ? "w-42" : "w-24"
+      }`}
     />
   );
 };

@@ -11,6 +11,7 @@ import Paginate from "../../components/Paginate/Paginate";
 import { IBannerList } from "./IBanner";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import { DELETE_BANNER } from "../../graphql/mutations/Banner/deleteBannerMutation";
+import Title from "../../components/Title/Title";
 
 const Banners: React.FC = () => {
   const { t } = useTranslation(["common", "banner"]);
@@ -62,21 +63,13 @@ const Banners: React.FC = () => {
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
-            <aside className="flex">
-              <div className="flex flex-col">
-                <h1 className="text-xl font-montserrat-bold text-indigo-800">
-                  {t("banner:title")}
-                </h1>
-                <small className="text-indigo-500 flex gap-1">
-                  {t("common:total")}:
-                  <strong>{data?.banners?.paginatorInfo?.total}</strong>
-                </small>
-              </div>
-            </aside>
-
-            <div className="ml-5">
-              <Button.Add link="/banner/add" />
-            </div>
+            <Title
+              title={t("banner:title")}
+              subtitle={`${t("common:total")}: ${
+                data?.banners?.paginatorInfo?.total
+              }`}
+            />
+            <Button.Add link="/banner/add" />
           </header>
 
           {loading && <MiniLoader />}

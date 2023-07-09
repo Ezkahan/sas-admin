@@ -13,6 +13,7 @@ import Button from "../../components/Button/Button";
 import getByLocale from "../../common/helpers/getByLocale";
 import { DELETE_CATEGORY } from "../../graphql/mutations/Category/deleteCategoryMutation";
 import DeleteModal from "../../components/Modal/DeleteModal";
+import Title from "../../components/Title/Title";
 
 const Categories: React.FC = () => {
   const { t } = useTranslation(["common", "category"]);
@@ -62,21 +63,13 @@ const Categories: React.FC = () => {
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
-            <aside className="flex">
-              <div className="flex flex-col">
-                <h1 className="text-xl font-montserrat-bold text-indigo-800">
-                  {t("category:title")}
-                </h1>
-                <small className="text-indigo-500 flex gap-1">
-                  {t("common:total")}:
-                  <strong>{data?.categories?.paginatorInfo?.total}</strong>
-                </small>
-              </div>
-            </aside>
-
-            <div className="ml-5">
-              <Button.Add link="/category/add" />
-            </div>
+            <Title
+              title={t("category:title")}
+              subtitle={`${t("common:total")}: ${
+                data?.categories?.paginatorInfo?.total
+              }`}
+            />
+            <Button.Add link="/category/add" />
           </header>
 
           {loading && <MiniLoader />}

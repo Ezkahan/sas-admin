@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/Form/TextField";
-import ImageEditor from "../../components/Image/ImageEditor";
 import {
   GET_CATEGORY_LIST,
   GET_SHORT_CATEGORY_LIST,

@@ -1,13 +1,13 @@
 import AppLayout from "../../layouts/AppLayout";
 
-const SettingPage = () => {
+const Orders = () => {
   return (
     <>
       <AppLayout>
-        <main>Setting page</main>
+        <main>Orders page</main>
       </AppLayout>
     </>
   );
 };
 
-export default SettingPage;
+export default Orders;

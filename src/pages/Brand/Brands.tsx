@@ -12,6 +12,7 @@ import Paginate from "../../components/Paginate/Paginate";
 import { IBrand } from "./IBrand";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import { DELETE_BRAND } from "../../graphql/mutations/Brand/deleteBrandMutation";
+import Title from "../../components/Title/Title";
 
 const Brands: React.FC = () => {
   const { t } = useTranslation(["common", "brand"]);
@@ -62,21 +63,13 @@ const Brands: React.FC = () => {
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
-            <aside className="flex">
-              <div className="flex flex-col">
-                <h1 className="text-xl font-montserrat-bold text-indigo-800">
-                  {t("brand:title")}
-                </h1>
-                <small className="text-indigo-500 flex gap-1">
-                  {t("common:total")}:
-                  <strong>{data?.brands?.paginatorInfo?.total}</strong>
-                </small>
-              </div>
-            </aside>
-
-            <div className="ml-5">
-              <Button.Add link="/brand/add" />
-            </div>
+            <Title
+              title={t("brand:title")}
+              subtitle={`${t("common:total")}: ${
+                data?.brands?.paginatorInfo?.total
+              }`}
+            />
+            <Button.Add link="/brand/add" />
           </header>
 
           {loading && <MiniLoader />}

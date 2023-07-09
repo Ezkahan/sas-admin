@@ -8,6 +8,7 @@ import {
   IoNotificationsOutline,
   IoPeopleOutline,
   IoSettingsOutline,
+  IoShirtOutline,
   IoStarOutline,
   IoTicketOutline,
 } from "react-icons/io5";
@@ -30,8 +31,9 @@ const CouponCreate = React.lazy(() => import("../pages/Coupon/CreateCoupon"));
 const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
 const Login = React.lazy(() => import("../pages/Auth/Login"));
 const NotFound = React.lazy(() => import("../pages/NotFound"));
-const SettingPage = React.lazy(() => import("../pages/Setting/SettingPage"));
-const UsersPage = React.lazy(() => import("../pages/User/UsersPage"));
+const Settings = React.lazy(() => import("../pages/Setting/Settings"));
+const Users = React.lazy(() => import("../pages/User/Users"));
+const Orders = React.lazy(() => import("../pages/Order/Orders"));
 const NotificationPage = React.lazy(
   () => import("../pages/Notification/NotificationPage")
 );
@@ -62,6 +64,7 @@ const RouteNames = {
   register: "/auth/register",
   settings: "/settings",
   notifications: "/notifications",
+  orders: "/orders",
   forbidden: "/403",
   notFound: "*",
 };
@@ -158,7 +161,7 @@ const navRoutes: INavRoute[] = [
     id: 6,
     path: RouteNames.products,
     title: "Harytlar",
-    icon: IoCartOutline,
+    icon: IoShirtOutline,
     queryTotal: `
       news(first: 10) {
         paginatorInfo {
@@ -167,15 +170,16 @@ const navRoutes: INavRoute[] = [
       }
     `,
   },
-  { id: 7, path: RouteNames.users, title: "Ulanyjylar", icon: IoPeopleOutline },
+  { id: 7, path: RouteNames.orders, title: "Sargytlar", icon: IoCartOutline },
+  { id: 8, path: RouteNames.users, title: "Ulanyjylar", icon: IoPeopleOutline },
   {
-    id: 8,
+    id: 9,
     path: RouteNames.notifications,
     title: "Bildirişler",
     icon: IoNotificationsOutline,
   },
   {
-    id: 9,
+    id: 10,
     path: RouteNames.settings,
     title: "Sazlamalar",
     icon: IoSettingsOutline,
@@ -308,7 +312,7 @@ const routing: IRoute[] = [
     path: RouteNames.settings,
     private: true,
     priority: 5,
-    element: SettingPage,
+    element: Settings,
   },
   {
     path: RouteNames.notifications,
@@ -320,7 +324,13 @@ const routing: IRoute[] = [
     path: RouteNames.users,
     private: true,
     priority: 5,
-    element: UsersPage,
+    element: Users,
+  },
+  {
+    path: RouteNames.orders,
+    private: true,
+    priority: 5,
+    element: Orders,
   },
   {
     path: RouteNames.forbidden,
