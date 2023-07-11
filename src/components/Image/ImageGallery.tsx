@@ -1,11 +1,11 @@
 import React from "react";
 
-interface ImageGallery {
+interface ImageGalleryType {
   image?: File;
   images?: FileList[];
 }
 
-const ImageGallery: React.FC<ImageGallery> = ({ image, images }) => {
+const ImageGallery: React.FC<ImageGalleryType> = ({ image, images }) => {
   if (images) {
     return (
       <div className="flex gap-5 overflow-x-auto hide-scroll">
@@ -14,8 +14,8 @@ const ImageGallery: React.FC<ImageGallery> = ({ image, images }) => {
             <img
               key={index}
               src={URL.createObjectURL(file)}
-              alt=""
-              className="h-48 rounded-lg"
+              alt="banner"
+              className="h-48 w-80 object-cover rounded-lg"
             />
           );
         })}
@@ -27,7 +27,7 @@ const ImageGallery: React.FC<ImageGallery> = ({ image, images }) => {
     <img
       src={URL.createObjectURL(image as File)}
       alt=""
-      className="h-48 rounded-lg"
+      className="h-48 w-80 object-cover rounded-lg"
     />
   );
 };

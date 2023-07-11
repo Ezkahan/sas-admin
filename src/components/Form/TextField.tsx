@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-interface IProps {
+interface TextFieldType {
   lang?: "tm" | "ru" | "en";
   handleChange: any;
   placeholder: string;
@@ -11,9 +11,10 @@ interface IProps {
   type?: "text" | "number" | "file" | "date" | "datetime-local";
   withLocale?: boolean;
   defaultValue?: string | number;
+  hasError?: boolean;
 }
 
-const TextField: FC<IProps> = ({
+const TextField: FC<TextFieldType> = ({
   handleChange,
   placeholder,
   required = false,
@@ -21,12 +22,17 @@ const TextField: FC<IProps> = ({
   name,
   type = "text",
   defaultValue,
-}: IProps) => {
+  hasError,
+}) => {
   const { t } = useTranslation("translation");
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-lg flex flex-col w-full overflow-hidden">
+    <div
+      className={`bg-slate-50 border rounded-lg flex flex-col w-full overflow-hidden ${
+        hasError ? "border-red-500 animate-pulse" : "border-slate-200"
+      }`}
+    >
       <header className="flex items-center justify-between">
-        <small className="px-4 pt-2">
+        <small className={`px-4 pt-2 ${hasError && "text-red-500"}`}>
           {t(label)} {required && <span className="text-red-600 pl-1">*</span>}
         </small>
       </header>

@@ -46,8 +46,10 @@ const AddCategory: React.FC = () => {
 
   const validationSchema = () => {
     return Yup.object().shape({
-      // image: Yup.string().required(t("category:image_required")),
-      // icon: Yup.string().required(t("category:icon_required")),
+      name: Yup.object().shape({
+        tm: Yup.string().required(t("category:name_tm_required")),
+        ru: Yup.string().required(t("category:name_ru_required")),
+      }),
     });
   };
 

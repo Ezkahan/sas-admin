@@ -9,7 +9,7 @@ import TextField from "../../components/Form/TextField";
 import Button from "../../components/Button/Button";
 import { GET_PRODUCTS } from "../../graphql/queries/Product/getProductsQuery";
 import { ADD_PRODUCT } from "../../graphql/mutations/Product/addProductMutation";
-import { IProduct } from "./IProduct";
+import { IProductSave } from "./IProduct";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextEditor from "../../components/Form/TextEditor";
@@ -21,6 +21,7 @@ import BrandListDTO from "../Brand/BrandListDTO";
 import ImageGallery from "../../components/Image/ImageGallery";
 import ImageInput from "../../components/Image/ImageInput";
 import { compressImage } from "../../common/helpers/compressImage";
+import Title from "../../components/Title/Title";
 
 const AddProduct: React.FC = () => {
   const { t } = useTranslation(["common", "product"]);
@@ -28,16 +29,24 @@ const AddProduct: React.FC = () => {
   const { data: brand } = useQuery(GET_BRANDS);
   const { data: category } = useQuery(GET_SHORT_CATEGORY_LIST);
 
+  const discountTypes = [
+    {
+      label: t("product:fix_price"),
+      value: "FIX_PRICE",
+    },
+    {
+      label: t("product:percent"),
+      value: "PERCENT",
+    },
+  ];
+
   const validationSchema = () => {
     return Yup.object().shape({
       title: Yup.object().shape({
         tm: Yup.string().required(t("product:name_tm_required")),
         ru: Yup.string().required(t("product:name_ru_required")),
       }),
-      description: Yup.object().shape({
-        tm: Yup.string().required(t("product:name_tm_required")),
-        ru: Yup.string().required(t("product:name_ru_required")),
-      }),
+      code: Yup.number().required(t("product:code_required")),
       price: Yup.number().required(t("product:price_required")),
       brand_id: Yup.number().required(t("product:brand_required")),
       category_id: Yup.number().required(t("product:category_required")),
@@ -45,7 +54,7 @@ const AddProduct: React.FC = () => {
   };
 
   const formik = useFormik({
-    initialValues: {} as IProduct,
+    initialValues: {} as IProductSave,
     validationSchema,
     onSubmit: (values) => {
       mutate({
@@ -109,7 +118,7 @@ const AddProduct: React.FC = () => {
   return (
     <AppLayout>
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
-        <h1 className="text-lg font-montserrat-bold">{t("product:add")}</h1>
+        <Title title={t("product:add")} subtitle={t("common:required_text")} />
 
         <aside className="flex flex-col gap-5">
           {formik.values?.images && (
@@ -122,10 +131,6 @@ const AddProduct: React.FC = () => {
           />
         </aside>
 
-        {JSON.stringify(error)}
-
-        {loading && "Saving product..."}
-
         <aside className="flex gap-5">
           <TextField
             name="title.tm"
@@ -133,6 +138,7 @@ const AddProduct: React.FC = () => {
             label={t("product:title_tm")}
             placeholder={t("product:title_tm")}
             handleChange={formik.handleChange}
+            hasError={Boolean(formik.errors.title?.tm)}
           />
 
           <TextField
@@ -141,6 +147,7 @@ const AddProduct: React.FC = () => {
             label={t("product:title_ru")}
             placeholder={t("product:title_ru")}
             handleChange={formik.handleChange}
+            hasError={Boolean(formik.errors.title?.ru)}
           />
         </aside>
 
@@ -151,22 +158,31 @@ const AddProduct: React.FC = () => {
             label={t("product:code")}
             placeholder={t("product:code")}
             handleChange={formik.handleChange}
+            hasError={Boolean(formik.errors.code)}
           />
 
           <TextField
             name="price"
-            required
             label={t("product:price")}
             placeholder={t("product:price")}
+            required
             handleChange={formik.handleChange}
+            hasError={Boolean(formik.errors.price)}
           />
 
           <TextField
-            name="percent"
-            required
-            label={t("product:percent")}
-            placeholder={t("product:percent")}
+            type="number"
+            name="discount_amount"
+            label={t("product:discount_amount")}
+            placeholder={t("product:discount_amount")}
             handleChange={formik.handleChange}
+          />
+          <Select
+            name="discount_type"
+            label={t("product:discount_type")}
+            placeholder={t("product:discount_type")}
+            handleChange={formik.handleChange}
+            options={discountTypes}
           />
         </aside>
 
@@ -190,14 +206,12 @@ const AddProduct: React.FC = () => {
 
         <TextEditor
           label={t("product:description_tm")}
-          required
           name="description.tm"
           handleChange={handleDescription}
         />
 
         <TextEditor
           label={t("product:description_ru")}
-          required
           name="description.ru"
           handleChange={handleDescription}
         />
@@ -207,8 +221,11 @@ const AddProduct: React.FC = () => {
             <p>{t("common:cancel")}</p>
           </Button>
 
-          <Button type="submit" disabled={!(formik.dirty && formik.isValid)}>
-            <p>{t("common:save")}</p>
+          <Button
+            type="submit"
+            disabled={!(formik.dirty && formik.isValid) || loading}
+          >
+            {loading ? "Saving..." : <p>{t("common:save")}</p>}
           </Button>
         </footer>
       </form>

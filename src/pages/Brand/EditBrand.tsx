@@ -116,8 +116,6 @@ const EditBrand: React.FC = () => {
           />
         </aside>
 
-        {JSON.stringify(formik.errors)}
-
         <footer className="flex items-center justify-end gap-3">
           <Button bg="secondary" link={RouteNames.brand}>
             <p>{t("common:cancel")}</p>

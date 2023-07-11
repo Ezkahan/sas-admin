@@ -6,7 +6,10 @@ export const GET_PRODUCTS = gql`
       data {
         id
         title
-        description
+        image
+        code
+        price
+        discount_price
       }
       paginatorInfo {
         count

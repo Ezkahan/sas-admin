@@ -9,5 +9,7 @@
     "description_tm": "Türkmençe maglumat",
     "description_ru": "Rusça maglumat",
     "image_required": "Surat saýlaň",
-    "icon_required": "Nyşan saýlaň"
+    "icon_required": "Nyşan saýlaň",
+    "name_tm_required": "Türkmençe adyny giriziň",
+    "name_ru_required": "Rusça adyny giriziň"
 }
