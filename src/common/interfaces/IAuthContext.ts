@@ -1,8 +1,8 @@
-import { IUserData } from "./User/IUserData";
+import { IUser } from "./User/IUser";
 
 export type IAuthContext = {
   isAuth: boolean;
-  user: IUserData | null;
+  user: IUser | null;
   setIsAuth: (isAuth: boolean) => void;
-  setUserData: (data: IUserData) => void;
+  setUserData: (data: IUser) => void;
 };

@@ -11,12 +11,12 @@ import { RouteNames } from "../../router/routing";
 import { IAuthContext } from "../../common/interfaces/IAuthContext";
 import { AuthContext } from "../../components/Provider/AuthProvider";
 import Cookies from "js-cookie";
-import { IUserData } from "../../common/interfaces/User/IUserData";
+import { IUser } from "../../common/interfaces/User/IUser";
 import Button from "../../components/Button/Button";
 import Logo from "../../components/Header/Logo";
 
 interface IData {
-  login: IUserData;
+  login: IUser;
 }
 
 const Login: React.FC = () => {

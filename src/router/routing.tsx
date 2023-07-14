@@ -33,6 +33,7 @@ const Login = React.lazy(() => import("../pages/Auth/Login"));
 const NotFound = React.lazy(() => import("../pages/NotFound"));
 const Settings = React.lazy(() => import("../pages/Setting/Settings"));
 const Users = React.lazy(() => import("../pages/User/Users"));
+const UserAddresses = React.lazy(() => import("../pages/User/UserAddresses"));
 const Orders = React.lazy(() => import("../pages/Order/Orders"));
 const NotificationPage = React.lazy(
   () => import("../pages/Notification/NotificationPage")
@@ -56,6 +57,7 @@ const RouteNames = {
   newsCreate: "/news/create",
   newsDetail: "/news/:id",
   users: "/users",
+  userAddresses: "/users/:id/addresses",
   products: "/products",
   addProduct: "/product/add",
   editProduct: "/product/:id/edit",
@@ -325,6 +327,12 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: Users,
+  },
+  {
+    path: RouteNames.userAddresses,
+    private: true,
+    priority: 5,
+    element: UserAddresses,
   },
   {
     path: RouteNames.orders,
