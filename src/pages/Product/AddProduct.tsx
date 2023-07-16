@@ -31,11 +31,15 @@ const AddProduct: React.FC = () => {
 
   const discountTypes = [
     {
-      label: t("product:fix_price"),
+      label: t("common:select"),
+      value: "",
+    },
+    {
+      label: t("common:fix_price"),
       value: "FIX_PRICE",
     },
     {
-      label: t("product:percent"),
+      label: t("common:percent"),
       value: "PERCENT",
     },
   ];
@@ -68,12 +72,12 @@ const AddProduct: React.FC = () => {
   });
 
   const onCompleted = () => {
-    toast.success(t("common:success_saved"), { duration: 500 }) &&
-      setTimeout(() => navigate(RouteNames.products), 500);
+    toast.success(t("common:success_saved"), { duration: 1000 }) &&
+      setTimeout(() => navigate(RouteNames.products), 1000);
   };
 
   const onError = () =>
-    toast.error(t("common:error_not_saved"), { duration: 2000 });
+    toast.error(t("common:error_not_saved"), { duration: 1000 });
 
   const [mutate, { error, loading }] = useMutation(ADD_PRODUCT, {
     onCompleted,
@@ -225,7 +229,7 @@ const AddProduct: React.FC = () => {
             type="submit"
             disabled={!(formik.dirty && formik.isValid) || loading}
           >
-            {loading ? "Saving..." : <p>{t("common:save")}</p>}
+            {loading ? <p>{t("common:saving")}</p> : <p>{t("common:save")}</p>}
           </Button>
         </footer>
       </form>

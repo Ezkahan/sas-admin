@@ -1,4 +1,4 @@
-import { IUser } from "./User/IUser";
+import { IUser } from "../../pages/User/IUser";
 
 export type IAuthContext = {
   isAuth: boolean;

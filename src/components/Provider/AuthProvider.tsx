@@ -2,7 +2,7 @@ import { createContext, FC, useState } from "react";
 
 import { IAuthContext } from "../../common/interfaces/IAuthContext";
 import IChildren from "../../common/interfaces/IChildren";
-import { IUser } from "../../common/interfaces/User/IUser";
+import { IUser } from "../../pages/User/IUser";
 
 export const AuthContext = createContext<IAuthContext | null>(null);
 

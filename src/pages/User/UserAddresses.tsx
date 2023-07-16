@@ -4,7 +4,7 @@ import AppLayout from "../../layouts/AppLayout";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Title from "../../components/Title/Title";
-import { IUserAddresses } from "../../common/interfaces/User/IUser";
+import { IUserAddresses } from "./IUser";
 import { useParams } from "react-router-dom";
 import { GET_USER } from "../../graphql/queries/User/getUserQuery";
 
@@ -38,7 +38,7 @@ const UserAddresses = () => {
               <table className="w-full table-fixed text-sm">
                 <thead className="bg-slate-100 text-left text-gray-800">
                   <tr>
-                    <th className="px-3 py-2 rounded-tl-lg rounded-bl-lg">
+                    <th className="px-3 py-2 rounded-tl-lg rounded-bl-lg w-20">
                       {t("common:id")}
                     </th>
                     <th className="px-3 py-2 rounded-tr-lg rounded-br-lg">

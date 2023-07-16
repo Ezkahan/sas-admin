@@ -27,7 +27,8 @@ const News = React.lazy(() => import("../pages/News/News"));
 const NewsCreate = React.lazy(() => import("../pages/News/CreateNews"));
 const NewsDetail = React.lazy(() => import("../pages/News/ShowNews"));
 const Coupons = React.lazy(() => import("../pages/Coupon/Coupons"));
-const CouponCreate = React.lazy(() => import("../pages/Coupon/CreateCoupon"));
+const AddCoupon = React.lazy(() => import("../pages/Coupon/AddCoupon"));
+const EditCoupon = React.lazy(() => import("../pages/Coupon/EditCoupon"));
 const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
 const Login = React.lazy(() => import("../pages/Auth/Login"));
 const NotFound = React.lazy(() => import("../pages/NotFound"));
@@ -52,7 +53,8 @@ const RouteNames = {
   addCategory: "/category/add",
   editCategory: "/category/:id/edit",
   coupon: "/coupon",
-  couponCreate: "/coupon/create",
+  addCoupon: "/coupon/add",
+  editCoupon: "/coupon/:id/edit",
   news: "/news",
   newsCreate: "/news/create",
   newsDetail: "/news/:id",
@@ -256,6 +258,18 @@ const routing: IRoute[] = [
     nav: navRoutes[4],
   },
   {
+    path: RouteNames.addCoupon,
+    private: true,
+    priority: 5,
+    element: AddCoupon,
+  },
+  {
+    path: RouteNames.editCoupon,
+    private: true,
+    priority: 5,
+    element: EditCoupon,
+  },
+  {
     path: RouteNames.products,
     private: true,
     priority: 5,
@@ -272,12 +286,6 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: AddProduct,
-  },
-  {
-    path: RouteNames.couponCreate,
-    private: true,
-    priority: 5,
-    element: CouponCreate,
   },
   {
     path: RouteNames.products,

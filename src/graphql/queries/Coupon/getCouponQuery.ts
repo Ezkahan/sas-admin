@@ -5,9 +5,11 @@ export const GET_COUPON = gql`
     coupon(id: $id) {
       id
       title
-      promo_price
-      started_at
-      ended_at
+      discount
+      discount_type
+      confirmed
+      type
+      expires_at
     }
   }
 `;

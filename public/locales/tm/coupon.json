@@ -1,4 +1,16 @@
 {
     "title": "Kuponlar",
-    "promo_price": "Promo baha"
+    "add": "Kupon gosmak",
+    "edit": "Kupony uytgetmek",
+    "discount": "Aksiya bahasy",
+    "discount_type": "Aksiya gornusi",
+    "confirmed": "Yagdayy",
+    "type": "Gornusi",
+    "expires_at": "Gutaryan wagty",
+    "title_tm_required": "Turkmence adyny girizin",
+    "title_ru_required": "Rusca adyny girizin",
+    "discount_required": "Arzanladys baha girizin",
+    "discount_type_required": "Arzanladys gornusi saylan",
+    "expires_at_required": "Gutaryan wagtyny saylan",
+    "type_required": "Gornusini saylan"
 }

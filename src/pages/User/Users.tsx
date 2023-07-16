@@ -8,7 +8,7 @@ import { useState } from "react";
 import { RouteNames } from "../../router/routing";
 import Title from "../../components/Title/Title";
 import { GET_USERS } from "../../graphql/queries/User/getUsersQuery";
-import { IUser } from "../../common/interfaces/User/IUser";
+import { IUser } from "./IUser";
 import { NavLink } from "react-router-dom";
 import { IoLocationOutline } from "react-icons/io5";
 

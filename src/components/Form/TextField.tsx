@@ -32,8 +32,13 @@ const TextField: FC<TextFieldType> = ({
       }`}
     >
       <header className="flex items-center justify-between">
-        <small className={`px-4 pt-2 ${hasError && "text-red-500"}`}>
-          {t(label)} {required && <span className="text-red-600 pl-1">*</span>}
+        <small
+          className={`px-4 pt-1 flex items-center gap-1 ${
+            hasError && "text-red-500"
+          }`}
+        >
+          {t(label)}
+          {required && <span className="text-red-600 text-lg">*</span>}
         </small>
       </header>
       <input
@@ -42,7 +47,7 @@ const TextField: FC<TextFieldType> = ({
         name={name}
         onChange={handleChange}
         type={type}
-        className="bg-slate-50 px-4 py-2"
+        className="bg-slate-50 px-4 py-1.5"
         placeholder={t(placeholder)}
       />
     </div>

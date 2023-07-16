@@ -6,9 +6,11 @@ export const GET_COUPONS = gql`
       data {
         id
         title
-        promo_price
-        started_at
-        ended_at
+        discount
+        discount_type
+        confirmed
+        type
+        expires_at
       }
       paginatorInfo {
         count
@@ -23,5 +25,3 @@ export const GET_COUPONS = gql`
     }
   }
 `;
-
-

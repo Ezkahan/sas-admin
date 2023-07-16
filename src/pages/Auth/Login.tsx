@@ -11,7 +11,7 @@ import { RouteNames } from "../../router/routing";
 import { IAuthContext } from "../../common/interfaces/IAuthContext";
 import { AuthContext } from "../../components/Provider/AuthProvider";
 import Cookies from "js-cookie";
-import { IUser } from "../../common/interfaces/User/IUser";
+import { IUser } from "../User/IUser";
 import Button from "../../components/Button/Button";
 import Logo from "../../components/Header/Logo";
 

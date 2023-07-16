@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { IUser } from "../../interfaces/User/IUser";
+import { IUser } from "../../../pages/User/IUser";
 
 export const setUserData = (data: IUser) => {
   Cookies.set("orlan_token", data.token, { expires: 1 });

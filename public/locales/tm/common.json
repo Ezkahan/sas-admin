@@ -4,6 +4,7 @@
     "save": "Ýatda sakla",
     "cancel": "Bes et",
     "image": "Surat",
+    "select": "Saýlaň",
     "select_image": "Surat saýlaň",
     "icon": "Nyşan",
     "select_icon": "Nyşan saýlaň",
@@ -26,5 +27,14 @@
     "yes": "Hawa",
     "no": "Ýok",
     "confirm_delete": "Pozmagy tassyklan",
-    "required_text": "Ýyldyzjyk bilen bellenen öýjükleri hökmany doldurmaly!"
+    "required_text": "Ýyldyzjyk bilen bellenen öýjükleri hökmany doldurmaly!",
+    "saving": "Ýatda saklanyar...",
+    "percent": "Göterim",
+    "discount_price": "Arzanladyş baha",
+    "discount_amount": "Arzanladyş baha",
+    "discount_type": "Arzanladyş görnüşi",
+    "fix_price": "Bellenen baha",
+    "type": "Gornusi",
+    "cart": "Sebet",
+    "delivery": "Eltip berme"
 }
