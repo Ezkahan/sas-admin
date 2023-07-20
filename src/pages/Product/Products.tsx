@@ -25,7 +25,8 @@ const Products: React.FC = () => {
   const toggleDeleteModal = (id: number) =>
     setDeleteProduct({ delete: !deleteProduct.delete, id });
 
-  const onError = () => toast.error(t("error_not_loaded"), { duration: 2000 });
+  const onError = () =>
+    toast.error(t("common:error_not_loaded"), { duration: 2000 });
 
   const { loading, data } = useQuery(GET_PRODUCTS, {
     variables: { page },
@@ -33,7 +34,7 @@ const Products: React.FC = () => {
   });
 
   const onCompleted = () => {
-    toast.success(t("success_deleted"), { duration: 1500 }) &&
+    toast.success(t("common:success_deleted"), { duration: 1500 }) &&
       setTimeout(() => toggleDeleteModal, 2000);
   };
 
@@ -83,7 +84,7 @@ const Products: React.FC = () => {
               <table className="w-full table-fixed text-sm">
                 <thead className="bg-slate-100 text-left text-gray-800">
                   <tr>
-                    <th className="px-3 py-2 rounded-tl-lg rounded-bl-lg">
+                    <th className="px-3 py-2 w-32 rounded-tl-lg rounded-bl-lg">
                       {t("common:image")}
                     </th>
                     <th className="px-3 py-2">{t("common:title")}</th>
@@ -102,11 +103,11 @@ const Products: React.FC = () => {
                         key={product.id}
                         className="border-b border-stone-100 text-indigo-900/80"
                       >
-                        <td className="flex items-center justify-center py-3">
+                        <td className="px-4 py-3">
                           <img
                             src={product.image}
                             alt="img"
-                            className="w-24 rounded-lg"
+                            className="w-20 h-20 object-cover rounded-lg"
                           />
                         </td>
 

@@ -2,12 +2,14 @@
     "title": "Bannerlar",
     "link": "Salgy",
     "position": "Tertip",
-    "type": "Gornusi",
+    "type": "Görnüşi",
     "image": "Surat",
     "add": "Banner goşmak",
     "select_image": "Surat saýlaň",
     "url": "URL salgy",
     "url_placeholder": "example.com",
     "position_placeholder": "Tertibini belläň",
-    "confirm_delete": "Pozmagy tassyklaň!"
+    "confirm_delete": "Pozmagy tassyklaň!",
+    "select_position": "Ýerleşýän ýerini saýlaň",
+    "select_type": "Görnüşini saýlaň"
 }

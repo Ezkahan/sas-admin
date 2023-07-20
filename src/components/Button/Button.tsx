@@ -5,7 +5,14 @@ import { CiEdit } from "react-icons/ci";
 
 type ButtonType = {
   link?: string;
-  bg?: "secondary" | "primary" | "success" | "info" | "danger" | "warning";
+  bg?:
+    | "secondary"
+    | "primary"
+    | "success"
+    | "info"
+    | "danger"
+    | "warning"
+    | "outline";
   children?: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -27,6 +34,8 @@ const Button: ButtonCompositionType &
     info: "bg-blue-500 hover:bg-blue-800",
     danger: "bg-red-500 hover:bg-red-800",
     warning: "bg-orange-400 hover:bg-orange-600",
+    outline:
+      "bg-transparent text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white",
   };
 
   return link ? (

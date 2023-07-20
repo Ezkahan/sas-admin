@@ -4,7 +4,7 @@ export const ADD_BANNER = gql`
   mutation AddBanner(
     $link: String
     $image: Upload!
-    $category_id: ID!
+    $category_id: ID
     $position: String!
     $type: String!
   ) {

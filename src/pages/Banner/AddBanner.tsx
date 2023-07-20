@@ -25,12 +25,14 @@ const AddBanner: React.FC = () => {
   const { data } = useQuery(GET_SHORT_CATEGORY_LIST);
 
   const positions = [
+    { label: t("banner:select_position"), value: "" },
     { label: "TOP", value: "TOP" },
     { label: "MAIN", value: "MAIN" },
     { label: "BOTTOM", value: "BOTTOM" },
   ];
 
   const types = [
+    { label: t("banner:select_type"), value: "" },
     { label: "WEB", value: "WEB" },
     { label: "MOBILE", value: "MOBILE" },
   ];
@@ -43,7 +45,7 @@ const AddBanner: React.FC = () => {
   const onError = () =>
     toast.error(t("common:error_not_saved"), { duration: 2000 });
 
-  const [mutate] = useMutation(ADD_BANNER, {
+  const [mutate, { loading }] = useMutation(ADD_BANNER, {
     onCompleted,
     onError,
     refetchQueries: [
@@ -59,7 +61,6 @@ const AddBanner: React.FC = () => {
       image: Yup.string().required(t("banner:image_required")),
       position: Yup.string().required(t("banner:position_required")),
       link: Yup.string().required(t("banner:link_required")),
-      category_id: Yup.string().required(t("banner:category_required")),
       type: Yup.string().required(t("banner:category_required")),
     });
   };
@@ -137,8 +138,11 @@ const AddBanner: React.FC = () => {
             <p>{t("common:cancel")}</p>
           </Button>
 
-          <Button type="submit" disabled={!(formik.dirty && formik.isValid)}>
-            <p>{t("common:save")}</p>
+          <Button
+            type="submit"
+            disabled={!(formik.dirty && formik.isValid) || loading}
+          >
+            {loading ? <p>{t("common:saving")}</p> : <p>{t("common:save")}</p>}
           </Button>
         </footer>
       </form>

@@ -36,6 +36,7 @@ const Settings = React.lazy(() => import("../pages/Setting/Settings"));
 const Users = React.lazy(() => import("../pages/User/Users"));
 const UserAddresses = React.lazy(() => import("../pages/User/UserAddresses"));
 const Orders = React.lazy(() => import("../pages/Order/Orders"));
+const Order = React.lazy(() => import("../pages/Order/Order"));
 const NotificationPage = React.lazy(
   () => import("../pages/Notification/NotificationPage")
 );
@@ -69,6 +70,7 @@ const RouteNames = {
   settings: "/settings",
   notifications: "/notifications",
   orders: "/orders",
+  order: "/orders/:id",
   forbidden: "/403",
   notFound: "*",
 };
@@ -176,12 +178,12 @@ const navRoutes: INavRoute[] = [
   },
   { id: 7, path: RouteNames.orders, title: "Sargytlar", icon: IoCartOutline },
   { id: 8, path: RouteNames.users, title: "Ulanyjylar", icon: IoPeopleOutline },
-  {
-    id: 9,
-    path: RouteNames.notifications,
-    title: "Bildirişler",
-    icon: IoNotificationsOutline,
-  },
+  // {
+  //   id: 9,
+  //   path: RouteNames.notifications,
+  //   title: "Bildirişler",
+  //   icon: IoNotificationsOutline,
+  // },
   {
     id: 10,
     path: RouteNames.settings,
@@ -347,6 +349,12 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: Orders,
+  },
+  {
+    path: RouteNames.order,
+    private: true,
+    priority: 5,
+    element: Order,
   },
   {
     path: RouteNames.forbidden,

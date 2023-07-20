@@ -2,14 +2,16 @@ import { useTranslation } from "react-i18next";
 import Title from "../../components/Title/Title";
 import TextField from "../../components/Form/TextField";
 import toast from "react-hot-toast";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { SAVE_SETTING } from "../../graphql/mutations/Setting/saveSettingMutation";
 import Button from "../../components/Button/Button";
+import { GET_DELIVERY_COST } from "../../graphql/queries/Setting/getDeliveryCostQuery";
 
 const DeliveryCost = () => {
   const { t } = useTranslation(["common", "setting"]);
+  const { data } = useQuery(GET_DELIVERY_COST);
 
   const onCompleted = () => {
     toast.success(t("success_saved"), { duration: 1500 });
@@ -20,12 +22,11 @@ const DeliveryCost = () => {
   const [mutate] = useMutation(SAVE_SETTING, {
     onCompleted,
     onError,
-    // refetchQueries: [
-    //   {
-    //     query: GET_CATEGORY_LIST,
-    //     variables: { page: 1 },
-    //   },
-    // ],
+    refetchQueries: [
+      {
+        query: GET_DELIVERY_COST,
+      },
+    ],
   });
 
   const validationSchema = () => {
@@ -36,8 +37,9 @@ const DeliveryCost = () => {
   };
 
   const formik = useFormik({
-    initialValues: {} as any,
+    initialValues: data && JSON.parse(data?.getDeliveryCosts?.value),
     validationSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
       mutate({
         variables: {
@@ -60,6 +62,7 @@ const DeliveryCost = () => {
             placeholder="20"
             label={t("setting:delivery_cost")}
             handleChange={formik.handleChange}
+            defaultValue={formik.values?.default}
           />
         </div>
 
@@ -70,6 +73,7 @@ const DeliveryCost = () => {
             placeholder="20"
             label={t("setting:express_delivery_cost")}
             handleChange={formik.handleChange}
+            defaultValue={formik.values?.express}
           />
         </div>
 

@@ -42,10 +42,10 @@ const Users = () => {
               <table className="w-full table-fixed text-sm">
                 <thead className="bg-slate-100 text-left text-gray-800">
                   <tr>
-                    <th className="px-3 py-2 rounded-tl-lg rounded-bl-lg">
+                    <th className="px-3 py-2 w-16 rounded-tl-lg rounded-bl-lg">
                       {t("common:id")}
                     </th>
-                    <th className="px-3 py-2">{t("user:photo")}</th>
+                    <th className="px-3 py-2 w-20">{t("user:photo")}</th>
                     <th className="px-3 py-2">{t("user:fullname")}</th>
                     <th className="px-3 py-2">{t("user:birth_day")}</th>
                     <th className="px-3 py-2">{t("user:phone")}</th>
