@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ISelectOptionsList } from "../../common/interfaces/ISelect";
 
 interface IProps extends ISelectOptionsList {
-  label: string;
+  label?: string;
   handleChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -22,9 +22,9 @@ const Select: FC<IProps> = ({
   selected_value,
 }: IProps) => {
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-lg flex flex-col w-full overflow-hidden">
+    <div className="bg-slate-50 border border-slate-200 rounded-lg flex flex-col w-full overflow-hidden select-none">
       <header className="flex items-center justify-between">
-        <small className="px-4 pt-2">{label}</small>
+        {label && <small className="px-4 pt-2">{label}</small>}
       </header>
 
       <select

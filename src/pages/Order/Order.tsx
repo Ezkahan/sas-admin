@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import AppLayout from "../../layouts/AppLayout";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import Title from "../../components/Title/Title";
@@ -10,35 +10,100 @@ import Paginate from "../../components/Paginate/Paginate";
 import { useParams } from "react-router-dom";
 import { GET_ORDER } from "../../graphql/queries/Order/getOrderQuery";
 import getByLocale from "../../common/helpers/getByLocale";
-import Button from "../../components/Button/Button";
+import Select from "../../components/Form/Select";
+import { ORDER_CHANGE_STATUS } from "../../graphql/mutations/Cart/changeStatusMutation";
 
 const Order: React.FC = () => {
   const { t } = useTranslation(["common", "order", "product"]);
   const { id } = useParams();
   const [page, setPage] = useState<number>(1);
 
-  const onError = () =>
+  const onLoadError = () =>
     toast.error(t("common:error_not_loaded"), { duration: 2000 });
 
   const { loading, data } = useQuery(GET_ORDER, {
     variables: { id },
-    onError,
+    onError: onLoadError,
   });
+
+  const statusList = [
+    {
+      label: t("order:select_status"),
+      value: "",
+    },
+    {
+      label: t("order:waiting"),
+      value: "WAITING",
+    },
+    {
+      label: t("order:in_progress"),
+      value: "IN_PROGRESS",
+    },
+    {
+      label: t("order:in_delivery"),
+      value: "IN_DELIVERY",
+    },
+    {
+      label: t("order:delivered"),
+      value: "DELIVERED",
+    },
+    {
+      label: t("order:canceled"),
+      value: "CANCELED",
+    },
+  ];
+
+  const onCompleted = () => {
+    toast.success(t("common:success_saved"), { duration: 1000 });
+  };
+
+  const onError = () =>
+    toast.error(t("common:error_not_saved"), { duration: 1000 });
+
+  const [mutate, { error, loading: saving }] = useMutation(
+    ORDER_CHANGE_STATUS,
+    {
+      onCompleted,
+      onError,
+      refetchQueries: [
+        {
+          query: GET_ORDER,
+          variables: { id },
+        },
+      ],
+    }
+  );
+
+  const handleStatus = (e: React.ChangeEvent<any>) => {
+    mutate({
+      variables: { id, status: e.target.value },
+    });
+  };
 
   return (
     <AppLayout>
       <>
         <main className="section">
-          <header className="flex justify-between items-center mb-5">
+          <header className="flex justify-between items-start mb-5">
             <Title
               title={`${t("order:order")}: #${data?.order?.id}`}
-              subtitle={`${t("order:user_phone")}: ${data?.order?.user?.phone}`}
+              subtitle={`${t("order:status")}: ${t(
+                `order:${data?.order?.status.toLowerCase()}`
+              )}`}
             />
 
-            <Button type="button" bg="outline">
-              <p>{t("order:accept")}</p>
-            </Button>
+            <div className="w-max">
+              <Select
+                name="discount_type"
+                handleChange={handleStatus}
+                options={statusList}
+              />
+            </div>
           </header>
+
+          <section className="bg-slate-100 rounded-lg p-3 mb-5">
+            {t("order:user_phone")}: {data?.order?.user?.phone}
+          </section>
 
           {loading && <MiniLoader />}
 

@@ -7,5 +7,11 @@
     "status": "Ýagdaýy",
     "products_count": "Haryt sany",
     "user_progress": "Söwda dowam edýär",
-    "accept": "Kabul et"
+    "accept": "Kabul et",
+    "select_status": "Ýagdaýyny saýlaň",
+    "waiting": "Garaşylýar",
+    "in_progress": "Gaplanýar",
+    "in_delivery": "Ýolda",
+    "delivered": "Eltip berildi",
+    "canceled": "Yzyna gaýtaryldy"
 }

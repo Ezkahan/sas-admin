@@ -134,9 +134,9 @@ const Products: React.FC = () => {
 
                         <td className="px-2 py-3">
                           <div className="flex">
-                            <Button.Edit
+                            {/* <Button.Edit
                               link={`${RouteNames.products}/${product.id}/edit`}
-                            />
+                            /> */}
 
                             <Button.Delete
                               onClick={() => toggleDeleteModal(product.id)}
