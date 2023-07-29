@@ -69,7 +69,7 @@ const Categories: React.FC = () => {
                 data?.categories?.paginatorInfo?.total
               }`}
             />
-            <Button.Add link="/category/add" />
+            <Button.Add link="/categories/add" />
           </header>
 
           {loading && <MiniLoader />}

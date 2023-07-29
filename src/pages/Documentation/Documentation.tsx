@@ -5,50 +5,49 @@ import { useState } from "react";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
-import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
-import { INews } from "./INews";
 import Title from "../../components/Title/Title";
-import getByLocale from "../../common/helpers/getByLocale";
+import { IDocumentation } from "./IDocumentation";
+import { GET_DOCUMENTATION } from "../../graphql/queries/Documentation/getDocumentationQuery";
 
-const News: React.FC = () => {
-  const { t } = useTranslation(["common", "news"]);
+const Documentation: React.FC = () => {
+  const { t } = useTranslation(["common", "documentation"]);
   const [page, setPage] = useState(1);
-  const [newsDelete, setNewsDelete] = useState<IDeleteModal>(
+  const [deleteModal, setDeleteModal] = useState<IDeleteModal>(
     {} as IDeleteModal
   );
 
-  const { loading, data } = useQuery(GET_NEWS, {
+  const { loading, data } = useQuery(GET_DOCUMENTATION, {
     variables: { page },
     onError: () =>
       toast.error(t("common:error_not_loaded"), { duration: 2000 }),
   });
 
   const toggleDeleteModal = (id: number) =>
-    setNewsDelete({ delete: !newsDelete.delete, id });
+    setDeleteModal({ delete: !deleteModal.delete, id });
 
   return (
     <AppLayout>
       <>
-        {/* <Modal isOpen={newsDelete.delete} close={toggleDeleteModal}>
-          <DeleteNews id={newsDelete.id} close={toggleDeleteModal} />
+        {/* <Modal isOpen={deleteModal.delete} close={toggleDeleteModal}>
+          <DeleteNews id={deleteModal.id} close={toggleDeleteModal} />
         </Modal> */}
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
             <Title
-              title={t("news:title")}
+              title={t("documentation:title")}
               subtitle={`${t("common:total")}: ${
-                data?.news?.paginatorInfo?.total ?? 0
+                data?.documentation?.paginatorInfo?.total ?? 0
               }`}
             />
-            <Button.Add link="/news/add" />
+            <Button.Add link="/documentation/add" />
           </header>
 
           {loading && <MiniLoader />}
 
-          {data?.news?.data && (
+          {data?.documentation?.data && (
             <section className="overflow-x-auto">
               <table className="w-full table-fixed text-sm">
                 <thead className="bg-slate-100 text-left text-gray-800">
@@ -56,8 +55,7 @@ const News: React.FC = () => {
                     <th className="px-4 py-3 w-20 rounded-tl-lg rounded-bl-lg">
                       {t("common:id")}
                     </th>
-                    <th className="px-4 py-3 w-28">{t("common:image")}</th>
-                    <th className="px-4 py-3">{t("common:title")}</th>
+                    <th className="px-4 py-3 w-96">{t("common:title")}</th>
                     <th className="px-4 py-3 w-52">
                       {t("common:description")}
                     </th>
@@ -67,38 +65,35 @@ const News: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.news.data.map((news: INews) => {
+                  {data.news.data.map((documentation: IDocumentation) => {
                     return (
                       <tr
-                        key={news.id}
+                        key={documentation.id}
                         className="border-b border-stone-100 text-indigo-900/80"
                       >
                         <td className="border-r border-stone-100 px-4 py-3 text-xs">
-                          {news.id}
+                          {documentation.id}
                         </td>
-
-                        <td className="px-4 py-3">
-                          <img
-                            src={news.image_url}
-                            alt="img"
-                            className="w-20 rounded-lg"
-                          />
-                        </td>
-
-                        <td className="border-r border-stone-100 px-4 py-3">
+                        <td className="border-r border-stone-100 w-96 px-4 py-3">
                           <h1 className="font-bold">
-                            {getByLocale(JSON.parse(news?.title))}
+                            {JSON.stringify(documentation.title)}
                           </h1>
                         </td>
 
                         <td className="border-r border-stone-100 px-4 py-3">
-                          <p>{getByLocale(JSON.parse(news?.description))}</p>
+                          <p>{JSON.stringify(documentation.description)}</p>
+                        </td>
+
+                        <td className="px-4 py-3">
+                          <img src={documentation.image} alt="img" />
                         </td>
 
                         <td className="px-2 py-3">
                           <div className="flex">
                             <Button.Delete
-                              onClick={() => toggleDeleteModal(news.id)}
+                              onClick={() =>
+                                toggleDeleteModal(documentation.id)
+                              }
                             />
                           </div>
                         </td>
@@ -123,4 +118,4 @@ const News: React.FC = () => {
   );
 };
 
-export default News;
+export default Documentation;

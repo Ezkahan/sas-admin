@@ -31,7 +31,7 @@ const Orders: React.FC = () => {
             <Title
               title={t("order:title")}
               subtitle={`${t("common:total")}: ${
-                data?.orders?.paginatorInfo?.total
+                data?.orders?.paginatorInfo?.total ?? 0
               }`}
             />
           </header>

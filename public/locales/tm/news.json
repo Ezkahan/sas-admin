@@ -1,3 +1,8 @@
 {
-    "title": "Täzelikler"
+    "title": "Täzelikler",
+    "add": "Täzelik goşmak",
+    "title_tm_required": "Türkmençe adyny giriziň",
+    "title_ru_required": "Rusça adyny giriziň",
+    "description_tm_required": "Türkmençe maglumatyny giriziň",
+    "description_ru_required": "Rusça maglumatyny giriziň"
 }

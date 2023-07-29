@@ -1,76 +1,64 @@
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
 import AppLayout from "../../layouts/AppLayout";
-import { gql, useQuery } from "@apollo/client";
-import { navRoutes } from "../../router/routing";
+import { useQuery } from "@apollo/client";
+import { GET_TOTALS } from "../../graphql/queries/Dashboard/TotalQuery";
+import { NavLink } from "react-router-dom";
+import {
+  IoImageOutline,
+  IoListOutline,
+  IoNewspaperOutline,
+  IoStarOutline,
+  IoTicketOutline,
+} from "react-icons/io5";
 
 const Dashboard: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["common"]);
+  const { data } = useQuery(GET_TOTALS);
 
-  const _TOTALS = gql`
-    query GetAll {
-      ${navRoutes.map((r) => {
-        if (r.is_main)
-          return `
-          ${r.queryTotal}
-        
-        `;
-        else return "\n";
-      })}
-    }
-  `;
-
-  const { data } = useQuery(_TOTALS);
-  const bgClasses = [
-    "bg-sky-200/50",
-    "bg-green-200/50",
-    "bg-red-200/50",
-    "bg-orange-200/50",
-    "bg-teal-200/50",
-  ];
-  var count = 0;
-  const returnTotal = (query: string | undefined) => {
-    if (!query) return 0;
-    var name = query.split("(")[0].replaceAll("\n", "").replaceAll(" ", "");
-    if (data && name && data[name]) {
-      return data[name].paginatorInfo.total;
-    } else return 0;
+  const bgClasses = {
+    banners: "bg-sky-200/50",
+    brands: "bg-green-200/50",
+    news: "bg-red-200/50",
+    coupons: "bg-orange-200/50",
+    categories: "bg-teal-200/50",
   };
+
+  const icons = {
+    banners: <IoImageOutline size={48} />,
+    brands: <IoStarOutline size={48} />,
+    coupons: <IoTicketOutline size={48} />,
+    news: <IoNewspaperOutline size={48} />,
+    categories: <IoListOutline size={48} />,
+  };
+
   return (
     <AppLayout>
-      <section className="xl:p-5">
-        <main className="bg-white bg grid grid-cols-12 gap-6 rounded-xl p-5">
-          {navRoutes.map((route, index) => {
-            if (index === 0) count = -1;
-            if (!route.is_main) return <></>;
-            count++;
+      <main className="bg-white flex flex-wrap gap-4 justify-between rounded-xl p-5">
+        {data &&
+          Object.keys(data).map((key) => {
             return (
               <NavLink
-                key={route.path + index}
-                to={route.path}
-                className={`col-span-12 xl:col-span-4 flex  items-center justify-between ${bgClasses[count]}  text-sky-900/80 p-4 rounded-2xl hover:scale-105 duration-500`}
+                key={key}
+                to={`/${key}`}
+                className={`flex items-center justify-between ${
+                  bgClasses[key as keyof typeof bgClasses]
+                }  text-sky-900/80 xl:px-8 xl:py-4 px-5 py-3 rounded-2xl hover:scale-105 duration-500`}
               >
                 <aside className="flex items-center px-2">
-                  <route.icon size={48} />
+                  {icons[key as keyof typeof icons]}
                   <div className="flex flex-col p-3">
                     <h1 className="text-xl font-montserrat-bold">
-                      {t(route.title)}
+                      {t(`common:${key}`)}
                     </h1>
                     <small className="mt-2">
-                      {" "}
-                      {t("total")}: {returnTotal(route.queryTotal)}{" "}
+                      {t("common:total")}:{data[key]?.paginatorInfo?.total ?? 0}
                     </small>
                   </div>
                 </aside>
-                {/* <div className="bg-white text-center px-6 py-4 rounded-3xl">
-                  <h3 className="font-bold text-lg">+0</h3>
-                  <small className="text-xs">{t("new")}</small>
-                </div> */}
               </NavLink>
             );
           })}
-        </main>
-      </section>
+      </main>
     </AppLayout>
   );
 };

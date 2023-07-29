@@ -6,7 +6,7 @@ export const GET_ONE_NEWS = gql`
       id
       title
       description
-      image
+      image_url
     }
   }
 `;

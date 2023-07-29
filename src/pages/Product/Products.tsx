@@ -71,7 +71,7 @@ const Products: React.FC = () => {
             <Title
               title={t("product:title")}
               subtitle={`${t("common:total")}: ${
-                data?.products?.paginatorInfo?.total
+                data?.products?.paginatorInfo?.total ?? 0
               }`}
             />
             <Button.Add link="/product/add" />

@@ -88,7 +88,7 @@ const Order: React.FC = () => {
             <Title
               title={`${t("order:order")}: #${data?.order?.id}`}
               subtitle={`${t("order:status")}: ${t(
-                `order:${data?.order?.status.toLowerCase()}`
+                `order:${data?.order?.status?.toLowerCase()}`
               )}`}
             />
 

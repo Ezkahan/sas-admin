@@ -30,7 +30,7 @@ const Users = () => {
             <Title
               title={t("user:title")}
               subtitle={`${t("common:total")}: ${
-                data?.users?.paginatorInfo?.total
+                data?.users?.paginatorInfo?.total ?? 0
               }`}
             />
           </header>

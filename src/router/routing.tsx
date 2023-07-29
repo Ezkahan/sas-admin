@@ -7,6 +7,7 @@ import {
   IoNewspaperOutline,
   IoNotificationsOutline,
   IoPeopleOutline,
+  IoReceiptOutline,
   IoSettingsOutline,
   IoShirtOutline,
   IoStarOutline,
@@ -24,8 +25,8 @@ const Categories = React.lazy(() => import("../pages/Category/Categories"));
 const AddCategory = React.lazy(() => import("../pages/Category/AddCategory"));
 const EditCategory = React.lazy(() => import("../pages/Category/EditCategory"));
 const News = React.lazy(() => import("../pages/News/News"));
-const NewsCreate = React.lazy(() => import("../pages/News/CreateNews"));
-const NewsDetail = React.lazy(() => import("../pages/News/ShowNews"));
+const AddNews = React.lazy(() => import("../pages/News/AddNews"));
+const NewsDetail = React.lazy(() => import("../pages/News/Show"));
 const Coupons = React.lazy(() => import("../pages/Coupon/Coupons"));
 const AddCoupon = React.lazy(() => import("../pages/Coupon/AddCoupon"));
 const EditCoupon = React.lazy(() => import("../pages/Coupon/EditCoupon"));
@@ -37,6 +38,9 @@ const Users = React.lazy(() => import("../pages/User/Users"));
 const UserAddresses = React.lazy(() => import("../pages/User/UserAddresses"));
 const Orders = React.lazy(() => import("../pages/Order/Orders"));
 const Order = React.lazy(() => import("../pages/Order/Order"));
+const Documentation = React.lazy(
+  () => import("../pages/Documentation/Documentation")
+);
 const NotificationPage = React.lazy(
   () => import("../pages/Notification/NotificationPage")
 );
@@ -44,20 +48,20 @@ const Forbidden = React.lazy(() => import("../pages/Forbidden"));
 
 const RouteNames = {
   home: "/",
-  banner: "/banner",
-  bannerDetail: "/banner/",
-  addBanner: "/banner/add",
-  brand: "/brand",
-  addBrand: "/brand/add",
-  editBrand: "/brand/:id/edit",
-  category: "/category",
-  addCategory: "/category/add",
-  editCategory: "/category/:id/edit",
-  coupon: "/coupon",
-  addCoupon: "/coupon/add",
-  editCoupon: "/coupon/:id/edit",
+  banner: "/banners",
+  bannerDetail: "/banners/",
+  addBanner: "/banners/add",
+  brand: "/brands",
+  addBrand: "/brands/add",
+  editBrand: "/brands/:id/edit",
+  category: "/categories",
+  addCategory: "/categories/add",
+  editCategory: "/categories/:id/edit",
+  coupon: "/coupons",
+  addCoupon: "/coupons/add",
+  editCoupon: "/coupons/:id/edit",
   news: "/news",
-  newsCreate: "/news/create",
+  addNews: "/news/add",
   newsDetail: "/news/:id",
   users: "/users",
   userAddresses: "/users/:id/addresses",
@@ -65,6 +69,7 @@ const RouteNames = {
   addProduct: "/product/add",
   editProduct: "/product/:id/edit",
   profile: "/user/profile",
+  documentation: "/documentation",
   login: "/auth/login",
   register: "/auth/register",
   settings: "/settings",
@@ -99,82 +104,42 @@ const navRoutes: INavRoute[] = [
     path: RouteNames.banner,
     title: "Bannerler",
     icon: IoImageOutline,
-    is_main: true,
-    queryTotal: `
-      banners(first: 10) {
-        paginatorInfo {
-          total
-        }
-      }
-    `,
   },
   {
     id: 2,
     path: RouteNames.brand,
     title: "Brendler",
     icon: IoStarOutline,
-    is_main: true,
-    queryTotal: `
-      brands(first: 10) {
-        paginatorInfo {
-          total
-        }
-      }
-    `,
   },
   {
     id: 3,
     path: RouteNames.category,
     title: "Kategoriýalar",
     icon: IoListOutline,
-    queryTotal: `
-      categories(first: 10) {
-        paginatorInfo {
-          total
-        }
-      }
-    `,
   },
   {
     id: 4,
     path: RouteNames.coupon,
     title: "Kuponlar",
     icon: IoTicketOutline,
-    is_main: true,
-    queryTotal: `
-      coupons(first: 10) {
-        paginatorInfo {
-          total
-        }
-      }
-    `,
   },
   {
     id: 5,
     path: RouteNames.news,
     title: "Habarlar",
     icon: IoNewspaperOutline,
-    is_main: true,
-    queryTotal: `
-      news(first: 10) {
-        paginatorInfo {
-          total
-        }
-      }
-    `,
+  },
+  {
+    id: 5,
+    path: RouteNames.documentation,
+    title: "Dokumentasiya",
+    icon: IoReceiptOutline,
   },
   {
     id: 6,
     path: RouteNames.products,
     title: "Harytlar",
     icon: IoShirtOutline,
-    queryTotal: `
-      news(first: 10) {
-        paginatorInfo {
-          total
-        }
-      }
-    `,
   },
   { id: 7, path: RouteNames.orders, title: "Sargytlar", icon: IoCartOutline },
   { id: 8, path: RouteNames.users, title: "Ulanyjylar", icon: IoPeopleOutline },
@@ -309,10 +274,10 @@ const routing: IRoute[] = [
     nav: navRoutes[5],
   },
   {
-    path: RouteNames.newsCreate,
+    path: RouteNames.addNews,
     private: true,
     priority: 5,
-    element: NewsCreate,
+    element: AddNews,
   },
   {
     path: RouteNames.newsDetail + ":id",
@@ -355,6 +320,12 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: Order,
+  },
+  {
+    path: RouteNames.documentation,
+    private: true,
+    priority: 5,
+    element: Documentation,
   },
   {
     path: RouteNames.forbidden,

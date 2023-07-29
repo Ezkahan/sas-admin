@@ -37,5 +37,18 @@
     "type": "Gornusi",
     "cart": "Sebet",
     "delivery": "Eltip berme",
-    "unknown": "Näbelli"
+    "unknown": "Näbelli",
+    "banners": "Bannerlar",
+    "brands": "Brendlar",
+    "categories": "Bölümler",
+    "coupons": "Kuponlar",
+    "news": "Habarlar",
+    "name_tm": "Türkmençe ady",
+    "name_ru": "Rusça ady",
+    "description_tm": "Türkmençe maglumat",
+    "description_ru": "Rusça maglumat",
+    "image_required": "Surat saýlaň",
+    "icon_required": "Nyşan saýlaň",
+    "name_tm_required": "Türkmençe adyny giriziň",
+    "name_ru_required": "Rusça adyny giriziň"
 }
