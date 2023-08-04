@@ -1,8 +1,8 @@
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import React, { useCallback } from "react";
-import { useMutation } from "@apollo/client";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "@apollo/client";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RouteNames } from "../../router/routing";
 import TextField from "../../components/Form/TextField";
@@ -12,17 +12,36 @@ import * as Yup from "yup";
 import ImageInput from "../../components/Image/ImageInput";
 import ImageGallery from "../../components/Image/ImageGallery";
 import { compressImage } from "../../common/helpers/compressImage";
-import { INews } from "./INews";
-import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
+import { INewsSave } from "./INews";
 import { SAVE_NEWS } from "../../graphql/mutations/News/saveNewsMutation";
+import { GET_NEWS_DETAIL } from "../../graphql/queries/News/getNewsDetailQuery";
+import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
+import NewsSaveDTO from "./NewsSaveDTO";
 
-const AddNews: React.FC = () => {
+const EditNews: React.FC = () => {
   const { t } = useTranslation(["common", "news"]);
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { data } = useQuery(GET_NEWS_DETAIL, {
+    variables: { id },
+  });
+
+  const validationSchema = () => {
+    return Yup.object().shape({
+      title: Yup.object().shape({
+        tm: Yup.string().required(t("news:title_tm_required")),
+        ru: Yup.string().required(t("news:title_ru_required")),
+      }),
+      description: Yup.object().shape({
+        tm: Yup.string().required(t("news:description_tm_required")),
+        ru: Yup.string().required(t("news:description_ru_required")),
+      }),
+    });
+  };
 
   const onCompleted = () => {
-    toast.success(t("common:success_saved"), { duration: 1500 }) &&
-      setTimeout(() => navigate(RouteNames.news), 2000);
+    toast.success(t("common:success_saved"), { duration: 1500 });
+    setTimeout(() => navigate(RouteNames.news), 2000);
   };
 
   const onError = () =>
@@ -39,26 +58,15 @@ const AddNews: React.FC = () => {
     ],
   });
 
-  const validationSchema = () => {
-    return Yup.object().shape({
-      title: Yup.object().shape({
-        tm: Yup.string().required(t("news:title_tm_required")),
-        ru: Yup.string().required(t("news:title_ru_required")),
-      }),
-      description: Yup.object().shape({
-        tm: Yup.string().required(t("news:description_tm_required")),
-        ru: Yup.string().required(t("news:description_ru_required")),
-      }),
-    });
-  };
-
   const formik = useFormik({
-    initialValues: {} as INews,
+    initialValues: NewsSaveDTO(data?.newsDetail) as INewsSave,
     validationSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
       mutate({
         variables: {
           ...values,
+          id,
           title: JSON.stringify(values.title),
           description: JSON.stringify(values.description),
         },
@@ -85,8 +93,15 @@ const AddNews: React.FC = () => {
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
         <h1 className="text-lg font-montserrat-bold">{t("news:add")}</h1>
 
-        <aside className="flex flex-col gap-5">
-          {formik.values.image && <ImageGallery image={formik.values.image} />}
+        <aside className="flex flex-col gap-5 w-full">
+          <div className="flex gap-5">
+            {formik.values?.image_url && (
+              <img src={formik.values?.image_url} className="h-48 rounded-lg" />
+            )}
+            {formik.values?.image && (
+              <ImageGallery image={formik.values.image} />
+            )}
+          </div>
           <ImageInput
             name="image"
             label={t("common:image")}
@@ -102,6 +117,7 @@ const AddNews: React.FC = () => {
             label={t("common:name_tm")}
             placeholder={t("common:name_tm")}
             handleChange={formik.handleChange}
+            defaultValue={formik.values.title?.tm}
           />
 
           <TextField
@@ -111,6 +127,7 @@ const AddNews: React.FC = () => {
             label={t("common:name_ru")}
             placeholder={t("common:name_ru")}
             handleChange={formik.handleChange}
+            defaultValue={formik.values.title?.ru}
           />
         </aside>
 
@@ -121,6 +138,7 @@ const AddNews: React.FC = () => {
             label={t("common:description_tm")}
             placeholder={t("common:description_tm")}
             handleChange={formik.handleChange}
+            defaultValue={formik.values.description?.tm}
           />
 
           <TextField
@@ -129,6 +147,7 @@ const AddNews: React.FC = () => {
             label={t("common:description_ru")}
             placeholder={t("common:description_ru")}
             handleChange={formik.handleChange}
+            defaultValue={formik.values.description?.ru}
           />
         </aside>
 
@@ -146,4 +165,4 @@ const AddNews: React.FC = () => {
   );
 };
 
-export default AddNews;
+export default EditNews;

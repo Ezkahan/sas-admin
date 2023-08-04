@@ -48,7 +48,7 @@
     }
 
     .section {
-        @apply bg-white lg:px-8 px-5 lg:py-6 py-3 rounded-lg
+        @apply bg-white lg:px-8 px-5 lg:py-6 py-3 rounded-lg mb-5
     }
 
     .btn {

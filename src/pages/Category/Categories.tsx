@@ -45,13 +45,12 @@ const Categories: React.FC = () => {
     ],
   });
 
-  const handleDelete = (
-    e: React.FormEvent<HTMLFormElement>,
-    id: number = categoryDelete.id as number
-  ) => {
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate({ variables: { id } });
+    categoryDelete?.id && mutate({ variables: { id: categoryDelete?.id } });
+    toggleDeleteModal();
   };
+
   return (
     <AppLayout>
       <>

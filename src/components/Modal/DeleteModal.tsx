@@ -41,7 +41,7 @@ const DeleteModal: React.FC<DeleteType> = ({
             <p> {t("common:yes")} </p>
           </Button>
 
-          <Button onClick={toggle}>
+          <Button bg="secondary" type="button" onClick={toggle}>
             <p> {t("common:no")} </p>
           </Button>
         </div>

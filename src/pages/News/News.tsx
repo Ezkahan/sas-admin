@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -11,6 +11,9 @@ import Paginate from "../../components/Paginate/Paginate";
 import { INews } from "./INews";
 import Title from "../../components/Title/Title";
 import getByLocale from "../../common/helpers/getByLocale";
+import { RouteNames } from "../../router/routing";
+import DeleteModal from "../../components/Modal/DeleteModal";
+import { DELETE_NEWS } from "../../graphql/mutations/News/deleteNewsMutation";
 
 const News: React.FC = () => {
   const { t } = useTranslation(["common", "news"]);
@@ -25,15 +28,42 @@ const News: React.FC = () => {
       toast.error(t("common:error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number) =>
+  const onCompleted = () => {
+    toast.success(t("common:success_deleted"), { duration: 1500 }) &&
+      setTimeout(() => toggleDeleteModal, 2000);
+  };
+
+  const onError = () =>
+    toast.error(t("common:error_not_deleted"), { duration: 2000 });
+
+  const [mutate] = useMutation(DELETE_NEWS, {
+    onCompleted,
+    onError,
+    refetchQueries: [
+      {
+        query: GET_NEWS,
+        variables: { page: 1 },
+      },
+    ],
+  });
+
+  const toggleDeleteModal = (id?: number) =>
     setNewsDelete({ delete: !newsDelete.delete, id });
+
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    newsDelete?.id && mutate({ variables: { id: newsDelete?.id } });
+    toggleDeleteModal();
+  };
 
   return (
     <AppLayout>
       <>
-        {/* <Modal isOpen={newsDelete.delete} close={toggleDeleteModal}>
-          <DeleteNews id={newsDelete.id} close={toggleDeleteModal} />
-        </Modal> */}
+        <DeleteModal
+          isOpen={newsDelete.delete}
+          handleDelete={handleDelete}
+          toggle={toggleDeleteModal}
+        />
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">
@@ -97,6 +127,10 @@ const News: React.FC = () => {
 
                         <td className="px-2 py-3">
                           <div className="flex">
+                            <Button.Edit
+                              link={`${RouteNames.news}/${news.id}/edit`}
+                            />
+
                             <Button.Delete
                               onClick={() => toggleDeleteModal(news.id)}
                             />

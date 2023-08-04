@@ -44,12 +44,12 @@ const Banners: React.FC = () => {
     ],
   });
 
-  const handleDelete = (
-    e: React.FormEvent<HTMLFormElement>,
-    id: number = bannerDelete.id as number
-  ) => {
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate({ variables: { id } });
+    console.log(bannerDelete);
+
+    bannerDelete?.id && mutate({ variables: { id: bannerDelete?.id } });
+    toggleDeleteModal();
   };
 
   return (

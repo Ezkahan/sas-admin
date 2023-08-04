@@ -22,7 +22,7 @@ const Products: React.FC = () => {
     {} as IDeleteModal
   );
 
-  const toggleDeleteModal = (id: number) =>
+  const toggleDeleteModal = (id?: number) =>
     setDeleteProduct({ delete: !deleteProduct.delete, id });
 
   const onError = () =>
@@ -49,12 +49,10 @@ const Products: React.FC = () => {
     ],
   });
 
-  const handleDelete = (
-    e: React.FormEvent<HTMLFormElement>,
-    id: number = deleteProduct.id as number
-  ) => {
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate({ variables: { id } });
+    deleteProduct?.id && mutate({ variables: { id: deleteProduct?.id } });
+    toggleDeleteModal();
   };
 
   return (

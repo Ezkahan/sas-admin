@@ -1,6 +1,6 @@
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
-import React, { useCallback } from "react";
+import React from "react";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -9,31 +9,28 @@ import TextField from "../../components/Form/TextField";
 import Button from "../../components/Button/Button";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import ImageInput from "../../components/Image/ImageInput";
-import ImageGallery from "../../components/Image/ImageGallery";
-import { compressImage } from "../../common/helpers/compressImage";
-import { INews } from "./INews";
-import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
-import { SAVE_NEWS } from "../../graphql/mutations/News/saveNewsMutation";
+import { IDocumentation } from "./IDocumentation";
+import { SAVE_DOCUMENTATION } from "../../graphql/mutations/Documentation/saveDocsMutation";
+import { GET_DOCUMENTATION_LIST } from "../../graphql/queries/Documentation/getDocListQuery";
 
-const AddNews: React.FC = () => {
-  const { t } = useTranslation(["common", "news"]);
+const AddDocumentation: React.FC = () => {
+  const { t } = useTranslation(["common", "documentation"]);
   const navigate = useNavigate();
 
   const onCompleted = () => {
     toast.success(t("common:success_saved"), { duration: 1500 }) &&
-      setTimeout(() => navigate(RouteNames.news), 2000);
+      setTimeout(() => navigate(RouteNames.documentation), 2000);
   };
 
   const onError = () =>
     toast.error(t("common:error_not_saved"), { duration: 2000 });
 
-  const [mutate] = useMutation(SAVE_NEWS, {
+  const [mutate] = useMutation(SAVE_DOCUMENTATION, {
     onCompleted,
     onError,
     refetchQueries: [
       {
-        query: GET_NEWS,
+        query: GET_DOCUMENTATION_LIST,
         variables: { page: 1 },
       },
     ],
@@ -42,57 +39,36 @@ const AddNews: React.FC = () => {
   const validationSchema = () => {
     return Yup.object().shape({
       title: Yup.object().shape({
-        tm: Yup.string().required(t("news:title_tm_required")),
-        ru: Yup.string().required(t("news:title_ru_required")),
+        tm: Yup.string().required(t("documentation:title_tm_required")),
+        ru: Yup.string().required(t("documentation:title_ru_required")),
       }),
-      description: Yup.object().shape({
-        tm: Yup.string().required(t("news:description_tm_required")),
-        ru: Yup.string().required(t("news:description_ru_required")),
+      text: Yup.object().shape({
+        tm: Yup.string().required(t("documentation:text_tm_required")),
+        ru: Yup.string().required(t("documentation:text_ru_required")),
       }),
     });
   };
 
   const formik = useFormik({
-    initialValues: {} as INews,
+    initialValues: {} as IDocumentation,
     validationSchema,
     onSubmit: (values) => {
       mutate({
         variables: {
           ...values,
           title: JSON.stringify(values.title),
-          description: JSON.stringify(values.description),
+          text: JSON.stringify(values.text),
         },
       });
     },
   });
 
-  const handleImage = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-
-      const compressedFile = await compressImage(file as File, {
-        quality: 0.5,
-        type: "image/jpeg",
-      });
-
-      formik.setFieldValue(e.target.name, compressedFile);
-    },
-    []
-  );
-
   return (
     <AppLayout>
       <form onSubmit={formik.handleSubmit} className="section space-y-6">
-        <h1 className="text-lg font-montserrat-bold">{t("news:add")}</h1>
-
-        <aside className="flex flex-col gap-5">
-          {formik.values.image && <ImageGallery image={formik.values.image} />}
-          <ImageInput
-            name="image"
-            label={t("common:image")}
-            handleImage={handleImage}
-          />
-        </aside>
+        <h1 className="text-lg font-montserrat-bold">
+          {t("documentation:add")}
+        </h1>
 
         <aside className="flex gap-5">
           <TextField
@@ -116,24 +92,24 @@ const AddNews: React.FC = () => {
 
         <aside className="flex gap-5">
           <TextField
-            name="description.tm"
+            name="text.tm"
             required
-            label={t("common:description_tm")}
-            placeholder={t("common:description_tm")}
+            label={t("common:text_tm")}
+            placeholder={t("common:text_tm")}
             handleChange={formik.handleChange}
           />
 
           <TextField
-            name="description.ru"
+            name="text.ru"
             required
-            label={t("common:description_ru")}
-            placeholder={t("common:description_ru")}
+            label={t("common:text_ru")}
+            placeholder={t("common:text_ru")}
             handleChange={formik.handleChange}
           />
         </aside>
 
         <footer className="flex items-center justify-end gap-3">
-          <Button bg="secondary" link={RouteNames.news}>
+          <Button bg="secondary" link={RouteNames.documentation}>
             <p>{t("common:cancel")}</p>
           </Button>
 
@@ -146,4 +122,4 @@ const AddNews: React.FC = () => {
   );
 };
 
-export default AddNews;
+export default AddDocumentation;

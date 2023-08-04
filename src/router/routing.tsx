@@ -26,6 +26,7 @@ const AddCategory = React.lazy(() => import("../pages/Category/AddCategory"));
 const EditCategory = React.lazy(() => import("../pages/Category/EditCategory"));
 const News = React.lazy(() => import("../pages/News/News"));
 const AddNews = React.lazy(() => import("../pages/News/AddNews"));
+const EditNews = React.lazy(() => import("../pages/News/EditNews"));
 const NewsDetail = React.lazy(() => import("../pages/News/Show"));
 const Coupons = React.lazy(() => import("../pages/Coupon/Coupons"));
 const AddCoupon = React.lazy(() => import("../pages/Coupon/AddCoupon"));
@@ -40,6 +41,12 @@ const Orders = React.lazy(() => import("../pages/Order/Orders"));
 const Order = React.lazy(() => import("../pages/Order/Order"));
 const Documentation = React.lazy(
   () => import("../pages/Documentation/Documentation")
+);
+const AddDocumentation = React.lazy(
+  () => import("../pages/Documentation/AddDocumentation")
+);
+const EditDocumentation = React.lazy(
+  () => import("../pages/Documentation/EditDocumentation")
 );
 const NotificationPage = React.lazy(
   () => import("../pages/Notification/NotificationPage")
@@ -63,6 +70,7 @@ const RouteNames = {
   news: "/news",
   addNews: "/news/add",
   newsDetail: "/news/:id",
+  editNews: "/news/:id/edit",
   users: "/users",
   userAddresses: "/users/:id/addresses",
   products: "/products",
@@ -70,6 +78,8 @@ const RouteNames = {
   editProduct: "/product/:id/edit",
   profile: "/user/profile",
   documentation: "/documentation",
+  addDocumentation: "/documentation/add",
+  editDocumentation: "/documentation/:id/edit",
   login: "/auth/login",
   register: "/auth/register",
   settings: "/settings",
@@ -285,6 +295,13 @@ const routing: IRoute[] = [
     priority: 5,
     element: NewsDetail,
   },
+
+  {
+    path: RouteNames.editNews,
+    private: true,
+    priority: 5,
+    element: EditNews,
+  },
   {
     path: RouteNames.settings,
     private: true,
@@ -326,6 +343,18 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: Documentation,
+  },
+  {
+    path: RouteNames.addDocumentation,
+    private: true,
+    priority: 5,
+    element: AddDocumentation,
+  },
+  {
+    path: RouteNames.editDocumentation,
+    private: true,
+    priority: 5,
+    element: EditDocumentation,
   },
   {
     path: RouteNames.forbidden,

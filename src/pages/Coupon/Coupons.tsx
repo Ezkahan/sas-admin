@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import AppLayout from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -12,6 +12,8 @@ import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
 import Title from "../../components/Title/Title";
 import getByLocale from "../../common/helpers/getByLocale";
+import DeleteModal from "../../components/Modal/DeleteModal";
+import { DELETE_COUPON } from "../../graphql/mutations/Coupon/deleteCouponMutation";
 
 const Coupons: React.FC = () => {
   const { t } = useTranslation(["common", "coupon"]);
@@ -25,15 +27,38 @@ const Coupons: React.FC = () => {
     onError: () => toast.error(t("error_not_loaded"), { duration: 2000 }),
   });
 
-  const toggleDeleteModal = (id: number) =>
+  const [mutate] = useMutation(DELETE_COUPON, {
+    onCompleted: () => {
+      toast.success(t("common:success_deleted"), { duration: 2000 });
+      toggleDeleteModal();
+    },
+    onError: () =>
+      toast.error(t("common:error_not_deleted"), { duration: 2000 }),
+    refetchQueries: [
+      {
+        query: GET_COUPONS,
+        variables: { page: 1 },
+      },
+    ],
+  });
+
+  const toggleDeleteModal = (id?: number) =>
     setCouponDelete({ delete: !couponDelete.delete, id });
+
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    couponDelete?.id && mutate({ variables: { id: couponDelete?.id } });
+    toggleDeleteModal();
+  };
 
   return (
     <AppLayout>
       <>
-        {/* <Modal isOpen={couponDelete.delete} close={toggleDeleteModal}>
-          <DeleteCoupon id={couponDelete.id} close={toggleDeleteModal} />
-        </Modal> */}
+        <DeleteModal
+          isOpen={couponDelete.delete}
+          handleDelete={handleDelete}
+          toggle={toggleDeleteModal}
+        />
 
         <main className="section">
           <header className="flex justify-between items-center mb-5">

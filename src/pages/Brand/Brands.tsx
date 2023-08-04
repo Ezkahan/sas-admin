@@ -44,12 +44,10 @@ const Brands: React.FC = () => {
     ],
   });
 
-  const handleDelete = (
-    e: React.FormEvent<HTMLFormElement>,
-    id: number = brandDelete.id as number
-  ) => {
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate({ variables: { id } });
+    brandDelete?.id && mutate({ variables: { id: brandDelete?.id } });
+    toggleDeleteModal();
   };
 
   return (
