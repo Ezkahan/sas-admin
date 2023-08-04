@@ -10,7 +10,6 @@ import Button from "../../components/Button/Button";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IPageSave } from "./IPage";
-import DocSaveDTO from "./PageSaveDTO";
 import { SAVE_PAGE } from "../../graphql/mutations/Page/savePageMutation";
 import { GET_PAGES } from "../../graphql/queries/Page/getPagesQuery";
 import { GET_PAGE } from "../../graphql/queries/Page/getPageQuery";

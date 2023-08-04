@@ -31,5 +31,23 @@ export const GET_TOTALS = gql`
         total
       }
     }
+
+    orders {
+      paginatorInfo {
+        total
+      }
+    }
+
+    products {
+      paginatorInfo {
+        total
+      }
+    }
+
+    users {
+      paginatorInfo {
+        total
+      }
+    }
   }
 `;
