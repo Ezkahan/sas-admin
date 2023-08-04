@@ -10,14 +10,14 @@ interface TextEditorType {
   locale?: "ru" | "tm" | "en";
   required?: boolean;
   name?: string;
-  placeholder?: string;
+  value?: string;
 }
 
 const TextEditor: FC<TextEditorType> = ({
   handleChange,
   label,
   required = false,
-  placeholder = "",
+  value = "",
   name,
 }) => {
   const { t } = useTranslation("common");
@@ -33,7 +33,7 @@ const TextEditor: FC<TextEditorType> = ({
 
       <CKEditor
         editor={ClassicEditor}
-        data={`<p>${placeholder ?? "placeholder"}</p>`}
+        data={value}
         onChange={(_, editor) => {
           const data = editor.getData();
           handleChange(data, name);

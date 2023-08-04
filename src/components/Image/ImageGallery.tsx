@@ -15,7 +15,7 @@ const ImageGallery: React.FC<ImageGalleryType> = ({ image, images }) => {
               key={index}
               src={URL.createObjectURL(file)}
               alt="banner"
-              className="h-48 w-80 object-cover rounded-lg"
+              className="w-max h-48 rounded-lg"
             />
           );
         })}
@@ -27,7 +27,7 @@ const ImageGallery: React.FC<ImageGalleryType> = ({ image, images }) => {
     <img
       src={URL.createObjectURL(image as File)}
       alt=""
-      className="h-48 w-80 object-cover rounded-lg"
+      className="w-max h-48 rounded-lg"
     />
   );
 };

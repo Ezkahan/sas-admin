@@ -9,7 +9,7 @@ import TextField from "../../components/Form/TextField";
 import Button from "../../components/Button/Button";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { IDocumentation, IDocumentationSave } from "./IDocumentation";
+import { IDocumentationSave } from "./IDocumentation";
 import { SAVE_DOCUMENTATION } from "../../graphql/mutations/Documentation/saveDocsMutation";
 import { GET_DOCUMENTATION } from "../../graphql/queries/Documentation/getDocByIdQuery";
 import DocSaveDTO from "./DocSaveDTO";

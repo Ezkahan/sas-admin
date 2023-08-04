@@ -5,24 +5,24 @@ import { useState } from "react";
 import MiniLoader from "../../components/Loader/MiniLoader";
 import toast from "react-hot-toast";
 import { IDeleteModal } from "../../common/interfaces/IDeleteModal";
-import { GET_NEWS } from "../../graphql/queries/News/getNewsQuery";
 import Button from "../../components/Button/Button";
 import Paginate from "../../components/Paginate/Paginate";
-import { INews } from "./INews";
 import Title from "../../components/Title/Title";
+import DeleteModal from "../../components/Modal/DeleteModal";
 import getByLocale from "../../common/helpers/getByLocale";
 import { RouteNames } from "../../router/routing";
-import DeleteModal from "../../components/Modal/DeleteModal";
-import { DELETE_NEWS } from "../../graphql/mutations/News/deleteNewsMutation";
+import { GET_PAGES } from "../../graphql/queries/Page/getPagesQuery";
+import { DELETE_PAGE } from "../../graphql/mutations/Page/deletePageMutation";
+import { IPage } from "./IPage";
 
-const News: React.FC = () => {
-  const { t } = useTranslation(["common", "news"]);
+const Pages: React.FC = () => {
+  const { t } = useTranslation(["common", "page"]);
   const [page, setPage] = useState(1);
-  const [newsDelete, setNewsDelete] = useState<IDeleteModal>(
+  const [deleteModal, setDeleteModal] = useState<IDeleteModal>(
     {} as IDeleteModal
   );
 
-  const { loading, data } = useQuery(GET_NEWS, {
+  const { loading, data } = useQuery(GET_PAGES, {
     variables: { page },
     onError: () =>
       toast.error(t("common:error_not_loaded"), { duration: 2000 }),
@@ -36,23 +36,23 @@ const News: React.FC = () => {
   const onError = () =>
     toast.error(t("common:error_not_deleted"), { duration: 2000 });
 
-  const [mutate] = useMutation(DELETE_NEWS, {
+  const toggleDeleteModal = (id?: number) =>
+    setDeleteModal({ delete: !deleteModal.delete, id });
+
+  const [mutate] = useMutation(DELETE_PAGE, {
     onCompleted,
     onError,
     refetchQueries: [
       {
-        query: GET_NEWS,
-        variables: { page: 1 },
+        query: GET_PAGES,
+        variables: { page },
       },
     ],
   });
 
-  const toggleDeleteModal = (id?: number) =>
-    setNewsDelete({ delete: !newsDelete.delete, id });
-
   const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    newsDelete?.id && mutate({ variables: { id: newsDelete?.id } });
+    deleteModal?.id && mutate({ variables: { id: deleteModal?.id } });
     toggleDeleteModal();
   };
 
@@ -60,7 +60,7 @@ const News: React.FC = () => {
     <AppLayout>
       <>
         <DeleteModal
-          isOpen={newsDelete.delete}
+          isOpen={deleteModal.delete}
           handleDelete={handleDelete}
           toggle={toggleDeleteModal}
         />
@@ -68,17 +68,17 @@ const News: React.FC = () => {
         <main className="section">
           <header className="flex justify-between items-center mb-5">
             <Title
-              title={t("news:title")}
+              title={t("page:title")}
               subtitle={`${t("common:total")}: ${
-                data?.news?.paginatorInfo?.total ?? 0
+                data?.pages?.paginatorInfo?.total ?? 0
               }`}
             />
-            <Button.Add link="/news/add" />
+            <Button.Add link="/pages/add" />
           </header>
 
           {loading && <MiniLoader />}
 
-          {data?.news?.data && (
+          {data?.pages?.data && (
             <section className="overflow-x-auto hide-scroll">
               <table className="w-full table-fixed text-sm">
                 <thead className="bg-slate-100 text-left text-gray-800">
@@ -86,8 +86,7 @@ const News: React.FC = () => {
                     <th className="px-4 py-3 w-20 rounded-tl-lg rounded-bl-lg">
                       {t("common:id")}
                     </th>
-                    <th className="px-4 py-3 w-28">{t("common:image")}</th>
-                    <th className="px-4 py-3">{t("common:title")}</th>
+                    <th className="px-4 py-3 w-96">{t("common:title")}</th>
                     <th className="px-4 py-3 w-52">
                       {t("common:description")}
                     </th>
@@ -97,42 +96,33 @@ const News: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.news.data.map((news: INews) => {
+                  {data?.pages?.data?.map((page: IPage) => {
                     return (
                       <tr
-                        key={news.id}
+                        key={page.id}
                         className="border-b border-stone-100 text-indigo-900/80"
                       >
                         <td className="border-r border-stone-100 px-4 py-3 text-xs">
-                          {news.id}
+                          {page.id}
                         </td>
-
-                        <td className="px-4 py-3">
-                          <img
-                            src={news.image_url}
-                            alt="img"
-                            className="w-20 rounded-lg"
-                          />
-                        </td>
-
-                        <td className="border-r border-stone-100 px-4 py-3">
+                        <td className="border-r border-stone-100 w-96 px-4 py-3">
                           <h1 className="font-bold">
-                            {getByLocale(JSON.parse(news?.title))}
+                            {getByLocale(JSON.parse(page.title))}
                           </h1>
                         </td>
 
                         <td className="border-r border-stone-100 px-4 py-3">
-                          <p>{getByLocale(JSON.parse(news?.description))}</p>
+                          <p>{getByLocale(JSON.parse(page.text))}</p>
                         </td>
 
                         <td className="px-2 py-3">
                           <div className="flex">
                             <Button.Edit
-                              link={`${RouteNames.news}/${news.id}/edit`}
+                              link={`${RouteNames.pages}/${page.id}/edit`}
                             />
 
                             <Button.Delete
-                              onClick={() => toggleDeleteModal(news.id)}
+                              onClick={() => toggleDeleteModal(page.id)}
                             />
                           </div>
                         </td>
@@ -148,7 +138,7 @@ const News: React.FC = () => {
         {data?.news?.paginatorInfo?.lastPage > 1 && (
           <Paginate
             currentPage={page.toString()}
-            lastPage={data?.news?.paginatorInfo?.lastPage}
+            lastPage={data?.pages?.paginatorInfo?.lastPage}
             setPage={setPage}
           />
         )}
@@ -157,4 +147,4 @@ const News: React.FC = () => {
   );
 };
 
-export default News;
+export default Pages;

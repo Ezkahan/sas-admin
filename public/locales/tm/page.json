@@ -1,0 +1,13 @@
+{
+    "title": "Sahypalar",
+    "add": "Sahypa goşmak",
+    "edit": "Sahypany üýtgetmek",
+    "title_tm_required": "Türkmençe sözbaşy giriziň",
+    "title_ru_required": "Rusça sözbaşy giriziň",
+    "text_tm_required": "Türkmençe ýazgysyny giriziň",
+    "text_ru_required": "Rusça ýazgysyny giriziň",
+    "position_required": "Tertibini saýlaň",
+    "position": "Ýerleşmeli ýeri",
+    "position_header": "Ýokarda (Header)",
+    "position_footer": "Aşakda (Footer)"
+}

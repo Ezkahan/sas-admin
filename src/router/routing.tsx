@@ -1,11 +1,12 @@
 import React from "react";
 import {
   IoCartOutline,
+  IoDocumentOutline,
   IoGridOutline,
   IoImageOutline,
   IoListOutline,
   IoNewspaperOutline,
-  IoNotificationsOutline,
+  // IoNotificationsOutline,
   IoPeopleOutline,
   IoReceiptOutline,
   IoSettingsOutline,
@@ -51,6 +52,9 @@ const EditDocumentation = React.lazy(
 const NotificationPage = React.lazy(
   () => import("../pages/Notification/NotificationPage")
 );
+const PagesPage = React.lazy(() => import("../pages/Page/Pages"));
+const AddPage = React.lazy(() => import("../pages/Page/AddPage"));
+const EditPage = React.lazy(() => import("../pages/Page/EditPage"));
 const Forbidden = React.lazy(() => import("../pages/Forbidden"));
 
 const RouteNames = {
@@ -86,6 +90,9 @@ const RouteNames = {
   notifications: "/notifications",
   orders: "/orders",
   order: "/orders/:id",
+  pages: "/pages",
+  addPage: "/pages/add",
+  editPage: "/pages/:id/edit",
   forbidden: "/403",
   notFound: "*",
 };
@@ -153,6 +160,12 @@ const navRoutes: INavRoute[] = [
   },
   { id: 7, path: RouteNames.orders, title: "Sargytlar", icon: IoCartOutline },
   { id: 8, path: RouteNames.users, title: "Ulanyjylar", icon: IoPeopleOutline },
+  {
+    id: 8,
+    path: RouteNames.pages,
+    title: "Sahypalar",
+    icon: IoDocumentOutline,
+  },
   // {
   //   id: 9,
   //   path: RouteNames.notifications,
@@ -355,6 +368,24 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: EditDocumentation,
+  },
+  {
+    path: RouteNames.pages,
+    private: true,
+    priority: 5,
+    element: PagesPage,
+  },
+  {
+    path: RouteNames.addPage,
+    private: true,
+    priority: 5,
+    element: AddPage,
+  },
+  {
+    path: RouteNames.editPage,
+    private: true,
+    priority: 5,
+    element: EditPage,
   },
   {
     path: RouteNames.forbidden,
