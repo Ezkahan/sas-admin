@@ -1,30 +1,29 @@
 import { useTranslation } from "react-i18next";
 import Modal from "./Modal";
 import Button from "../Button/Button";
-import { useEffect } from "react";
 
 type DeleteType = {
   isOpen: boolean;
   toggle: any;
-  handleDelete: (e: React.FormEvent<HTMLFormElement>, id?: number) => void;
+  handleConfirm: (e: React.FormEvent<HTMLFormElement>, id?: number) => void;
 };
 
-const DeleteModal: React.FC<DeleteType> = ({
+const ConfirmModal: React.FC<DeleteType> = ({
   isOpen,
   toggle,
-  handleDelete,
+  handleConfirm,
 }) => {
   const { t } = useTranslation(["common"]);
 
   return (
     <Modal isOpen={isOpen} close={toggle}>
-      <form onSubmit={handleDelete}>
+      <form onSubmit={handleConfirm}>
         <h1 className="text-xl text-center font-montserrat-bold py-3">
-          {t("common:confirm_delete")}
+          {t("common:confirm_activation")}
         </h1>
 
         <div className="flex items-center justify-center gap-5 p-2">
-          <Button bg="danger" type="submit">
+          <Button bg="warning" type="submit">
             <p> {t("common:yes")} </p>
           </Button>
 
@@ -37,4 +36,4 @@ const DeleteModal: React.FC<DeleteType> = ({
   );
 };
 
-export default DeleteModal;
+export default ConfirmModal;

@@ -66,6 +66,10 @@
     .btn__delete {
         @apply border border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-300 w-8 h-8 mx-1 flex items-center justify-center rounded-full
     }
+
+    .btn__confirm {
+        @apply border border-green-500 text-green-500 hover:bg-green-500 hover:text-white duration-300 w-8 h-8 mx-1 flex items-center justify-center rounded-full
+    }
     
     .navlink {
         @apply bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 font-montserrat-bold px-6 py-3 duration-300 rounded-lg ml-10

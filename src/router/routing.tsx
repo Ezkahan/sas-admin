@@ -1,6 +1,7 @@
 import React from "react";
 import {
   IoCartOutline,
+  IoMailUnreadOutline,
   IoDocumentOutline,
   IoGridOutline,
   IoImageOutline,
@@ -55,6 +56,7 @@ const NotificationPage = React.lazy(
 const PagesPage = React.lazy(() => import("../pages/Page/Pages"));
 const AddPage = React.lazy(() => import("../pages/Page/AddPage"));
 const EditPage = React.lazy(() => import("../pages/Page/EditPage"));
+const SupportPage = React.lazy(() => import("../pages/Support/SupportPage"));
 const Forbidden = React.lazy(() => import("../pages/Forbidden"));
 
 const RouteNames = {
@@ -93,6 +95,7 @@ const RouteNames = {
   pages: "/pages",
   addPage: "/pages/add",
   editPage: "/pages/:id/edit",
+  support: "/support",
   forbidden: "/403",
   notFound: "*",
 };
@@ -184,6 +187,12 @@ const navRoutes: INavRoute[] = [
   // },
   {
     id: 10,
+    path: RouteNames.support,
+    title: "common:support",
+    icon: IoMailUnreadOutline,
+  },
+  {
+    id: 11,
     path: RouteNames.settings,
     title: "common:settings",
     icon: IoSettingsOutline,
@@ -396,6 +405,12 @@ const routing: IRoute[] = [
     private: true,
     priority: 5,
     element: EditPage,
+  },
+  {
+    path: RouteNames.support,
+    private: true,
+    priority: 5,
+    element: SupportPage,
   },
   {
     path: RouteNames.forbidden,

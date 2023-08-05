@@ -49,6 +49,7 @@
     "notifications": "Bildirişler",
     "users": "Müşderiler",
     "pages": "Sahypalar",
+    "support": "Kömek hatlary",
     "settings": "Sazlamalar",
     "name_tm": "Türkmençe ady",
     "name_ru": "Rusça ady",
@@ -63,5 +64,6 @@
     "name_tm_required": "Türkmençe adyny giriziň",
     "name_ru_required": "Rusça adyny giriziň",
     "title_tm_required": "Türkmençe sözbaşyny giriziň",
-    "title_ru_required": "Rusça sözbaşyny giriziň"
+    "title_ru_required": "Rusça sözbaşyny giriziň",
+    "confirm_activation": "Aktiw etmek üçin tassyklaň!"
 }

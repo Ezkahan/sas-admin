@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import AppLayout from "../../layouts/AppLayout";
+import AppLayout, { userRole } from "../../layouts/AppLayout";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import MiniLoader from "../../components/Loader/MiniLoader";
@@ -14,12 +14,22 @@ import Title from "../../components/Title/Title";
 import getByLocale from "../../common/helpers/getByLocale";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import { DELETE_COUPON } from "../../graphql/mutations/Coupon/deleteCouponMutation";
+import { IoCheckmarkOutline } from "react-icons/io5";
+import HasPermission from "../../components/HasPermission/HasPermission";
+import { useAtom } from "jotai";
+import { IConfirmModal } from "../../common/interfaces/IConfirmModal";
+import ConfirmModal from "../../components/Modal/ConfirmModal";
+import { CONFIRM_COUPON } from "../../graphql/mutations/Coupon/confirmCouponMutation";
 
 const Coupons: React.FC = () => {
   const { t } = useTranslation(["common", "coupon"]);
+  const [role] = useAtom(userRole);
   const [page, setPage] = useState(1);
   const [couponDelete, setCouponDelete] = useState<IDeleteModal>(
     {} as IDeleteModal
+  );
+  const [confirmModal, setConfirmModal] = useState<IConfirmModal>(
+    {} as IConfirmModal
   );
 
   const { loading, data } = useQuery(GET_COUPONS, {
@@ -42,13 +52,41 @@ const Coupons: React.FC = () => {
     ],
   });
 
-  const toggleDeleteModal = (id?: number) =>
-    setCouponDelete({ delete: !couponDelete.delete, id });
+  const [mutateConfirm] = useMutation(CONFIRM_COUPON, {
+    onCompleted: () => {
+      toast.success(t("coupon:success_confirmed"), { duration: 2000 });
+      toggleDeleteModal();
+    },
+    onError: () =>
+      toast.error(t("coupon:error_not_confirmed"), { duration: 2000 }),
+    refetchQueries: [
+      {
+        query: GET_COUPONS,
+        variables: { page: 1 },
+      },
+    ],
+  });
+
+  const toggleDeleteModal = (id?: number) => {
+    id
+      ? setCouponDelete({ delete: !couponDelete.delete, id })
+      : setCouponDelete({ delete: false });
+  };
+
+  const toggleConfirmModal = (id?: number) => {
+    setConfirmModal({ confirm: !confirmModal.confirm, id });
+  };
 
   const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     couponDelete?.id && mutate({ variables: { id: couponDelete?.id } });
     toggleDeleteModal();
+  };
+
+  const handleConfirm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    confirmModal?.id && mutateConfirm({ variables: { id: confirmModal?.id } });
+    toggleConfirmModal();
   };
 
   return (
@@ -58,6 +96,12 @@ const Coupons: React.FC = () => {
           isOpen={couponDelete.delete}
           handleDelete={handleDelete}
           toggle={toggleDeleteModal}
+        />
+
+        <ConfirmModal
+          isOpen={confirmModal.confirm}
+          handleConfirm={handleConfirm}
+          toggle={toggleConfirmModal}
         />
 
         <main className="section">
@@ -74,6 +118,8 @@ const Coupons: React.FC = () => {
           {loading && <MiniLoader />}
 
           <section className="overflow-x-auto hide-scroll">
+            {/* <p>{JSON.stringify(couponDelete)}</p> */}
+
             <table className="w-full table-fixed text-sm">
               <thead className="bg-slate-100 text-left text-gray-800">
                 <tr>
@@ -117,7 +163,17 @@ const Coupons: React.FC = () => {
                       </td>
 
                       <td className="px-4 py-3">
-                        <p>{coupon.confirmed}</p>
+                        <div>
+                          {coupon.confirmed ? (
+                            <p className="text-green-500">
+                              {t("coupon:confirmed")}
+                            </p>
+                          ) : (
+                            <p className="text-red-500">
+                              {t("coupon:not_confirmed")}
+                            </p>
+                          )}
+                        </div>
                       </td>
 
                       <td className="px-4 py-3">
@@ -130,6 +186,16 @@ const Coupons: React.FC = () => {
 
                       <td className="px-2 py-3">
                         <div className="flex">
+                          <HasPermission role={role} accessRole="BOSS">
+                            <button
+                              type="button"
+                              onClick={() => toggleConfirmModal(coupon.id)}
+                              className="btn__confirm"
+                            >
+                              <IoCheckmarkOutline size={24} />
+                            </button>
+                          </HasPermission>
+
                           <Button.Edit
                             link={`${RouteNames.coupon}/${coupon.id}/edit`}
                           />
