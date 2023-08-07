@@ -1,11 +1,11 @@
 import { useState } from "react";
-// import Header from "../Header/Header";
+import Header from "../Header/Header";
 import Logo from "../Header/Logo";
 import Navbar from "./Navbar";
 import Footer from "../Footer/Footer";
 
 const Sidebar: React.FC = () => {
-  const [menu] = useState<boolean>(false);
+  const [menu, setMenu] = useState<boolean>(false);
 
   return (
     <section
@@ -17,7 +17,7 @@ const Sidebar: React.FC = () => {
         <Logo />
         <Navbar />
       </div>
-      {/* <Header menu={menu} setMenu={setMenu} /> */}
+      <Header menu={menu} setMenu={setMenu} />
       <Footer />
     </section>
   );

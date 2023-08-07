@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_CATEGORY_LIST = gql`
   query Categories($page: Int) {
-    categories(page: $page, orderBy: [{ column: ID, order: DESC }]) {
+    subcategories(page: $page, orderBy: [{ column: ID, order: DESC }]) {
       data {
         id
         name

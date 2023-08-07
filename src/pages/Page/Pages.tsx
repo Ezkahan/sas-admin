@@ -14,6 +14,7 @@ import { RouteNames } from "../../router/routing";
 import { GET_PAGES } from "../../graphql/queries/Page/getPagesQuery";
 import { DELETE_PAGE } from "../../graphql/mutations/Page/deletePageMutation";
 import { IPage } from "./IPage";
+import HTMLRenderer from "react-html-renderer";
 
 const Pages: React.FC = () => {
   const { t } = useTranslation(["common", "page"]);
@@ -113,6 +114,9 @@ const Pages: React.FC = () => {
 
                         <td className="border-r border-stone-100 px-4 py-3">
                           <p>{getByLocale(JSON.parse(page.text))}</p>
+                          <HTMLRenderer
+                            html={getByLocale(JSON.parse(page.text))}
+                          />
                         </td>
 
                         <td className="px-2 py-3">

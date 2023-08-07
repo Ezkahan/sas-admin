@@ -122,7 +122,7 @@ const News: React.FC = () => {
                         </td>
 
                         <td className="border-r border-stone-100 px-4 py-3">
-                          <p>{getByLocale(JSON.parse(news?.description))}</p>
+                          <p className="truncate">{getByLocale(JSON.parse(news?.description))}</p>
                         </td>
 
                         <td className="px-2 py-3">
